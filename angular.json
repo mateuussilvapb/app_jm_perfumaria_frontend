@@ -20,9 +20,7 @@
             "outputPath": "dist/app_jm_perfumaria",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -51,15 +49,76 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.producao.ts"
+                }
+              ]
             },
-            "development": {
+            "localhost": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.localhost.ts"
+                }
+              ]
+            },
+            "desenvolvimento": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desenvolvimento.ts"
+                }
+              ]
+            },
+            "testes": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testes.ts"
+                }
+              ]
+            },
+            "homologacao": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.homologacao.ts"
+                }
+              ]
+            },
+            "producao": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.producao.ts"
+                }
+              ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "localhost"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -67,11 +126,23 @@
             "production": {
               "buildTarget": "app_jm_perfumaria:build:production"
             },
-            "development": {
-              "buildTarget": "app_jm_perfumaria:build:development"
+            "desenvolvimento": {
+              "buildTarget": "app_jm_perfumaria:build:desenvolvimento"
+            },
+            "localhost": {
+              "buildTarget": "app_jm_perfumaria:build:localhost"
+            },
+            "homologacao": {
+              "buildTarget": "app_jm_perfumaria:build:homologacao"
+            },
+            "producao": {
+              "buildTarget": "app_jm_perfumaria:build:producao"
+            },
+            "testes": {
+              "buildTarget": "app_jm_perfumaria:build:testes"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "localhost"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -79,10 +150,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -91,9 +159,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }
