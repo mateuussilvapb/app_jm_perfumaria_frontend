@@ -6,9 +6,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 //Externos
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
+import { provideKeycloak } from 'keycloak-angular';
 
 //Internos
 import { routes } from './app.routes';
+import { environment } from 'environments/environment';
 import { Opcoes } from './config/primeNG/traducao.config';
 
 export const appConfig: ApplicationConfig = {
@@ -28,6 +30,21 @@ export const appConfig: ApplicationConfig = {
       },
       ripple: false,
       translation: Opcoes.traducaoPtBr,
+    }),
+
+    provideKeycloak({
+      config: {
+        url: environment.keycloak.url,
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId,
+      },
+      initOptions: {
+        onLoad: 'login-required',
+        redirectUri: window.location.href,
+        useNonce: true,
+        checkLoginIframe: false,
+        scope: 'openid',
+      },
     }),
   ],
 };
