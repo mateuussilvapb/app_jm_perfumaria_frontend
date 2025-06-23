@@ -1,3 +1,5 @@
+import * as packageJson from '../../package.json';
+
 export const environment = {
   apiUrl: '',
   postLogoutUrl: '',
@@ -7,4 +9,5 @@ export const environment = {
     clientId: '',
     acceptablePaths: [],
   },
+  packageInfo: packageJson,
 };
