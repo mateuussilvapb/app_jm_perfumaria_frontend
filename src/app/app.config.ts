@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { provideKeycloak } from 'keycloak-angular';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 //Internos
 import { routes } from './app.routes';
@@ -46,5 +47,8 @@ export const appConfig: ApplicationConfig = {
         scope: 'openid',
       },
     }),
+
+    MessageService,
+    ConfirmationService,
   ],
 };

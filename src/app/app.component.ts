@@ -6,6 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
+import { UTILS_COMPONENTS } from './utils/utils-components';
 
 //Internos
 
@@ -21,6 +22,7 @@ import { DatePickerModule } from 'primeng/datepicker';
     ButtonModule,
 
     //Internos
+    UTILS_COMPONENTS,
   ],
   templateUrl: './app.component.html',
 })
