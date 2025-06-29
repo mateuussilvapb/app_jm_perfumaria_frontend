@@ -7,21 +7,24 @@ export interface DateFormat {
 }
 
 export const DATE_FORMATS: DateFormat[] = [
-  { regex: new RegExp('^\\d{4}-\\d{2}-\\d{2}$'), mustBeAdjusted: true },
   {
-    regex: new RegExp('^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$'),
+    regex: /^\d{4}-\d{2}-\d{2}$/,
     mustBeAdjusted: true,
   },
   {
-    regex: new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$'),
+    regex: /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/,
     mustBeAdjusted: true,
   },
   {
-    regex: new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}$'),
+    regex: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+    mustBeAdjusted: true,
+  },
+  {
+    regex: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}$/,
     mustBeAdjusted: false,
   },
   {
-    regex: new RegExp('^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}$'),
+    regex: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/,
     mustBeAdjusted: false,
   },
 ];
