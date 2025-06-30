@@ -1,0 +1,22 @@
+@import './variables.scss';
+@import './topbar.scss';
+@import './mixins.scss';
+@import './menu.scss';
+@import './main.scss';
+@import './content.scss';
+@import './responsive.scss';
+@import './footer.scss';
+@import './custom.scss';
+
+.layout-wrapper {
+  min-height: 100vh;
+}
+
+.layout-footer {
+  transition: margin-left 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--p-surface-border);
+}

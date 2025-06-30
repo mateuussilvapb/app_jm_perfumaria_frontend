@@ -3,11 +3,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 //Externos
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
 
 //Internos
 import { UTILS_COMPONENTS } from './utils/utils-components';
@@ -19,8 +16,6 @@ import { UTILS_COMPONENTS } from './utils/utils-components';
     RouterOutlet,
 
     //Externos
-    CardModule,
-    ButtonModule,
     DatePickerModule,
     ConfirmDialogModule,
 
@@ -29,9 +24,4 @@ import { UTILS_COMPONENTS } from './utils/utils-components';
   ],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('app_jm_perfumaria');
-  }
-}
+export class AppComponent {}
