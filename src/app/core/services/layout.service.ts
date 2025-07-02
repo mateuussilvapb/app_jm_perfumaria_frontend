@@ -1,9 +1,17 @@
 //Angular
 import { Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 //Internos
 import { ScreenSizeService } from './screen-size.service';
+
+interface LayoutConfig {
+  // preset?: string;
+  // primary?: string;
+  // surface?: string | undefined | null;
+  darkTheme?: boolean;
+  // menuMode?: string;
+}
 
 interface LayoutState {
   mainMenuVisible: boolean;
@@ -17,17 +25,23 @@ export class LayoutService {
   private readonly menuToggle = new Subject<boolean>();
   public menuToggle$ = this.menuToggle.asObservable();
 
+  _config: LayoutConfig = {
+    darkTheme: false,
+  };
+
   public state: LayoutState = {
     mainMenuVisible: this.isDesktop,
     sidebarMenuOptionsVisible: false,
   };
 
-  constructor(private readonly  screenSizeService: ScreenSizeService) {
+  constructor(private readonly screenSizeService: ScreenSizeService) {
     this.screenResize();
   }
 
+  layoutConfig = signal<LayoutConfig>(this._config);
+
   private screenResize() {
-    this.screenSizeService.width$.subscribe(width => {
+    this.screenSizeService.width$.subscribe((width) => {
       if (width > 991) {
         this.state.mainMenuVisible = true;
       } else {
@@ -44,6 +58,8 @@ export class LayoutService {
     this.state.mainMenuVisible = !this.state.mainMenuVisible;
     this.menuToggle.next(this.state.mainMenuVisible);
   }
+
+  isDarkTheme = computed(() => this.layoutConfig().darkTheme);
 
   get isDesktop() {
     return window.innerWidth > 991;
