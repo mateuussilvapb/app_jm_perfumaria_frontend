@@ -1,0 +1,63 @@
+//Angular
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+//Externos
+import { ButtonModule } from 'primeng/button';
+
+//Internos
+import { LayoutService } from 'app/core/services/layout.service';
+
+@Component({
+  selector: 'app-topbar-menu-options',
+  imports: [
+    //Angular
+    CommonModule,
+
+    //Externos
+    ButtonModule,
+  ],
+  template: `
+    <button
+      pButton
+      pRipple
+      [outlined]="true"
+      class="menu-buttons"
+      severity="secondary"
+      [icon]="getIconThemeMode"
+      (click)="this.toggleDarkMode()"
+    ></button>
+
+    <button
+      pButton
+      pRipple
+      icon="pi pi-user"
+      [outlined]="true"
+      severity="secondary"
+      class="menu-buttons"
+      [ngClass]="{
+        'ml-2': this.layoutService.isDesktop,
+        'mt-2': !this.layoutService.isDesktop,
+      }"
+    ></button>
+  `,
+})
+export class TopbarMenuOptionsComponent {
+  constructor(public readonly layoutService: LayoutService) {}
+
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element?.classList.toggle('app_jm_perfumaria');
+    this.layoutService.layoutConfig.update((state) => ({
+      ...state,
+      darkTheme: !state.darkTheme,
+    }));
+  }
+
+  get getIconThemeMode() {
+    if (this.layoutService.isDarkTheme()) {
+      return 'pi pi-moon';
+    }
+    return 'pi pi-sun';
+  }
+}
