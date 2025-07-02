@@ -1,0 +1,21 @@
+<ul class="layout-menu">
+  <ng-container *ngFor="let item of itensMenu">
+    <li *ngIf="item.separator" class="font-bold my-2">
+      {{ item.label }}
+    </li>
+    <ul>
+      <ng-container *ngFor="let subItem of item.children">
+        <li>
+          <a
+            routerLinkActive="active"
+            [routerLink]="subItem.route"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i [ngClass]="subItem.icon" class="layout-menuitem-icon"></i>
+            {{ subItem.label }}
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+</ul>
