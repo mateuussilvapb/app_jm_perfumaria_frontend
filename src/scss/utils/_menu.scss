@@ -1,5 +1,5 @@
-@import './mixins';
-@import './variables';
+@import "./mixins";
+@import "./variables";
 
 .layout-sidebar {
   position: fixed;
@@ -32,6 +32,7 @@
     list-style-type: none;
 
     a {
+      margin-bottom: 0.5rem !important;
       -webkit-user-select: none;
       user-select: none;
       display: flex;
@@ -42,8 +43,7 @@
       cursor: pointer;
       padding: 0.75rem 1rem;
       border-radius: $borderRadius;
-      transition: background-color $transitionDuration,
-        box-shadow $transitionDuration;
+      transition: background $transitionDuration, box-shadow $transitionDuration;
 
       .layout-menuitem-icon {
         font-size: small;
@@ -51,15 +51,39 @@
       }
 
       &:hover {
-        background-color: var(--p-surface-hover);
+        color: black;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       &:focus {
         @include focused-inset();
       }
+
       &.active {
+        color: $white;
         font-weight: bold;
-        color: var(--p-primary-color);
+        background: $gradientApplication;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0);
+          transition: background $transitionDuration;
+        }
+
+        &:hover::after {
+          background: rgba(0, 0, 0, 0.05);
+        }
+
+        &:hover {
+          color: black;
+          transition: $transitionDuration;
+        }
       }
     }
   }
