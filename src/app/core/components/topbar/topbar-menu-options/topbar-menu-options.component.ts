@@ -1,8 +1,9 @@
 //Angular
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 //Externos
+import Keycloak from 'keycloak-js';
 import { ButtonModule } from 'primeng/button';
 
 //Internos
@@ -52,10 +53,14 @@ import { LayoutService } from 'app/core/services/layout.service';
         'ml-2': this.layoutService.isDesktop,
         'mt-2': !this.layoutService.isDesktop,
       }"
+      (click)="this.logout()"
     ></button>
   `,
 })
 export class TopbarMenuOptionsComponent {
+
+  private readonly keycloak = inject(Keycloak);
+
   constructor(public readonly layoutService: LayoutService) {}
 
   toggleDarkMode() {
@@ -73,5 +78,9 @@ export class TopbarMenuOptionsComponent {
       return 'pi pi-moon';
     }
     return 'pi pi-sun';
+  }
+
+  logout() {
+    this.keycloak.logout();
   }
 }
