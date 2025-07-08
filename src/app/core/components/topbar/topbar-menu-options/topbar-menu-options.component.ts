@@ -40,6 +40,19 @@ import { LayoutService } from 'app/core/services/layout.service';
         'mt-2': !this.layoutService.isDesktop,
       }"
     ></button>
+
+    <button
+      pButton
+      pRipple
+      [outlined]="true"
+      severity="secondary"
+      class="menu-buttons"
+      icon="pi pi-sign-out"
+      [ngClass]="{
+        'ml-2': this.layoutService.isDesktop,
+        'mt-2': !this.layoutService.isDesktop,
+      }"
+    ></button>
   `,
 })
 export class TopbarMenuOptionsComponent {

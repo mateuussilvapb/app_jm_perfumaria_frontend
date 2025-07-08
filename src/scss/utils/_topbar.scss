@@ -1,5 +1,5 @@
-@import './variables.scss';
-@import './mixins.scss';
+@import "./variables.scss";
+@import "./mixins.scss";
 
 .layout-topbar {
   position: fixed;
@@ -73,6 +73,25 @@
         -webkit-background-clip: initial;
         -webkit-text-fill-color: initial;
         color: white !important;
+      }
+    }
+  }
+}
+
+.layout-config-sidebar {
+  .p-drawer-content {
+    app-topbar-menu-options {
+      .menu-buttons {
+        background: $gradientApplication;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: all $transitionDuration;
+        &:hover {
+          background: $gradientApplication !important;
+          -webkit-background-clip: initial;
+          -webkit-text-fill-color: initial;
+          color: white !important;
+        }
       }
     }
   }
