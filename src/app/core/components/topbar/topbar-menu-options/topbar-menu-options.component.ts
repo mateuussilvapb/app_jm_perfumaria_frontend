@@ -52,6 +52,7 @@ export class TopbarMenuOptionsComponent {
       ...state,
       darkTheme: !state.darkTheme,
     }));
+    this.layoutService.onToggleTheme();
   }
 
   get getIconThemeMode() {

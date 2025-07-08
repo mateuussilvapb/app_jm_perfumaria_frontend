@@ -1,3 +1,4 @@
+import { $dt } from '@primeng/themes';
 //Angular
 import { Subject } from 'rxjs';
 import { computed, Injectable, signal } from '@angular/core';
@@ -79,5 +80,15 @@ export class LayoutService {
 
   set mainMenuVisible(_val: boolean) {
     this.state.mainMenuVisible = _val;
+  }
+
+  onToggleTheme() {
+    const body = document.body;
+    if (!this.isDarkTheme()) {
+      body.style.backgroundColor = $dt('gray.100').value;
+    } else {
+      body.style.backgroundColor = $dt('zinc.950').value;
+    }
+    body.style.transition = 'background-color 0.3s ease';
   }
 }
