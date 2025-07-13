@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { removeNullValues } from 'app/utils/extras/object.utils';
 
-export abstract class AbstractService<T> {
+export abstract class AbstractQueryService<T> {
   protected constructor(
     protected readonly http: HttpClient,
     protected readonly apiURL: string = environment.apiUrl
@@ -19,21 +19,13 @@ export abstract class AbstractService<T> {
   }
 
   byID = (id: string): Observable<T> =>
-    this.http.get<T>(`${this.baseURL}/${id}`);
+    this.http.get<T>(`${this.baseURL}/query/${id}`);
 
-  all = (): Observable<T[]> => this.http.get<T[]>(this.baseURL);
+  all = (): Observable<T[]> => this.http.get<T[]>(`${this.baseURL}/query`);
 
   find = (params?: any): Observable<T[]> =>
-    this.http.get<T[]>(this.baseURL, { params: removeNullValues(params) });
+    this.http.get<T[]>(`${this.baseURL}/query`, { params: removeNullValues(params) });
 
   findOne = (params?: any): Observable<T> =>
-    this.http.get<T>(this.baseURL, { params: removeNullValues(params) });
-
-  create = (body: any): Observable<T> => this.http.post<T>(this.baseURL, body);
-
-  update = (id: string, body: any): Observable<T> =>
-    this.http.put<T>(`${this.baseURL}/${id}`, body);
-
-  delete = (id: string): Observable<T> =>
-    this.http.delete<T>(`${this.baseURL}/${id}`);
+    this.http.get<T>(`${this.baseURL}/query`, { params: removeNullValues(params) });
 }
