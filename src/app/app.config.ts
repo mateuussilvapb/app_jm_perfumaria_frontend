@@ -1,53 +1,35 @@
 //Angular
+import {
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 //Externos
-import Aura from '@primeng/themes/aura';
-import { providePrimeNG } from 'primeng/config';
-import { provideKeycloak } from 'keycloak-angular';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { includeBearerTokenInterceptor } from 'keycloak-angular';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
 import { routes } from './app.routes';
-import { environment } from 'environments/environment';
-import { Opcoes } from './config/primeNG/traducao.config';
+import { PRIMENG_PROVIDER } from './config/providers/primeng.provider';
+import { KEYCLOAK_PROVIDERS } from './config/providers/keycloak.provider';
+import { INTERCEPTORS_PROVIDERS } from './config/providers/interceptors.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-
-    providePrimeNG({
-      theme: {
-        preset: Aura,
-        options: {
-          prefix: 'p',
-          darkModeSelector: '.app_jm_perfumaria',
-          cssLayer: false,
-        },
-      },
-      ripple: false,
-      translation: Opcoes.traducaoPtBr,
-    }),
-
-    provideKeycloak({
-      config: {
-        url: environment.keycloak.url,
-        realm: environment.keycloak.realm,
-        clientId: environment.keycloak.clientId,
-      },
-      initOptions: {
-        onLoad: 'login-required',
-        redirectUri: window.location.href,
-        useNonce: true,
-        checkLoginIframe: false,
-        scope: 'openid',
-      },
-    }),
-
+    provideHttpClient(
+      withInterceptors([includeBearerTokenInterceptor]),
+      withInterceptorsFromDi()
+    ),
+    ...INTERCEPTORS_PROVIDERS,
+    PRIMENG_PROVIDER,
+    ...KEYCLOAK_PROVIDERS,
     MessageService,
     ConfirmationService,
   ],
