@@ -2,17 +2,15 @@
 import { Routes } from '@angular/router';
 
 //Internos
-import { CORE_ROUTES } from '@core/core.routes';
 import { ALL_ROLES } from '@shared/models/roles';
 import { AuthGuard } from '@core/guards/auth.guard';
+import { CategoriaListComponent } from '@categoria/pages/categoria-list/categoria-list.component';
 
-export const routes: Routes = [
+export const CATEGORIA_ROUTES: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./core/layout/layout.component').then((c) => c.LayoutComponent),
-    children: CORE_ROUTES,
+    component: CategoriaListComponent,
     data: {
       roles: [ALL_ROLES],
     },

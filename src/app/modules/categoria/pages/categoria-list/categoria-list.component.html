@@ -1,0 +1,10 @@
+<p-card header="Categorias">
+  @if (loading$ |async) {
+    <app-loading></app-loading>
+  }
+  @if (categorias$ | async; as categorias) {
+    <div>
+      <app-categoria-filters></app-categoria-filters>
+    </div>
+  }
+</p-card>
