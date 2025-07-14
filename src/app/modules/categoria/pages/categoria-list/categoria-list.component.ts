@@ -4,12 +4,14 @@ import { Component, OnInit } from '@angular/core';
 
 //Externos
 import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 import { BehaviorSubject, finalize, Observable, take } from 'rxjs';
 
 //Internos
 import { Categoria } from '@categoria/interfaces/categoria';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
+import { CategoriaTableComponent } from '@categoria/components/categoria-table/categoria-table.component';
 import { CategoriaFiltersComponent } from '@categoria/components/categoria-filters/categoria-filters.component';
 
 @Component({
@@ -20,9 +22,11 @@ import { CategoriaFiltersComponent } from '@categoria/components/categoria-filte
 
     //Externos
     CardModule,
+    DividerModule,
 
     //Internos
     LoadingComponent,
+    CategoriaTableComponent,
     CategoriaFiltersComponent,
   ],
   templateUrl: './categoria-list.component.html',
@@ -40,7 +44,7 @@ export class CategoriaListComponent implements OnInit {
 
   private loadData() {
     this.loading$.next(true);
-    this.categorias$ = this.categoriaQueryService.all().pipe(
+    this.categorias$ = this.categoriaQueryService.find().pipe(
       take(1),
       finalize(() => this.loading$.next(false))
     );
