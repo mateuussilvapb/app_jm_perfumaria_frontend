@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 
 //Internos
 import { environment } from 'environments/environment';
-import { removeNullValues } from 'app/utils/extras/object.utils';
 
 export abstract class AbstractQueryService<T> {
   protected constructor(
@@ -23,9 +22,11 @@ export abstract class AbstractQueryService<T> {
 
   all = (): Observable<T[]> => this.http.get<T[]>(`${this.baseURL}/query`);
 
-  find = (params?: any): Observable<T[]> =>
-    this.http.get<T[]>(`${this.baseURL}/query`, { params: removeNullValues(params) });
+  find = (filters?: URLSearchParams): Observable<T[]> => {
+    let params = filters ? `?${filters.toString()}` : '';
+    return this.http.get<T[]>(`${this.baseURL}/query${params}`);
+  }
 
-  findOne = (params?: any): Observable<T> =>
-    this.http.get<T>(`${this.baseURL}/query`, { params: removeNullValues(params) });
+  findOne = (id: string): Observable<T> =>
+    this.http.get<T>(`${this.baseURL}/query/${id}`,);
 }

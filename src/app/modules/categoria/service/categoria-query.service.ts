@@ -15,4 +15,9 @@ export class CategoriaQueryService extends AbstractQueryService<Categoria> {
   constructor(http: HttpClient) {
     super(http);
   }
+
+  searchByTermAndStatus = (filters?: URLSearchParams) => {
+    let params = filters ? `?${filters.toString()}` : '';
+    return this.http.get<Categoria[]>(`${this.baseURL}/query/searchByTermAndStatus${params}`);
+  };
 }

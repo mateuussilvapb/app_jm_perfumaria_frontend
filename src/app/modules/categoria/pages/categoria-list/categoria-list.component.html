@@ -1,12 +1,14 @@
 <p-card header="Categorias">
+  <div>
+    <app-categoria-filters
+      (onFilter)="onFilter($event)"
+    ></app-categoria-filters>
+  </div>
+  <p-divider />
   @if (loading$ |async) {
     <app-loading></app-loading>
   }
   @if (categorias$ | async; as categorias) {
-    <div>
-      <app-categoria-filters></app-categoria-filters>
-    </div>
-    <p-divider />
     <div>
       <app-categoria-table [data]="categorias"></app-categoria-table>
     </div>

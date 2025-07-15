@@ -1,1 +1,44 @@
-<p>categoria-filters works!</p>
+<p-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <!-- FORM -->
+    <div class="grid">
+      <div class="col-12 lg:col-6 xl:col-4">
+        <label for="nome-categoria">Nome</label>
+        <input
+          pInputText
+          type="text"
+          maxlength="100"
+          class="w-full mt-1"
+          id="nome-categoria"
+          formControlName="nome"
+          placeholder="Informe o nome..."
+          [ngClass]="{ 'ng-invalid ng-dirty': isInvalid('nome') }"
+        />
+      </div>
+      <div class="col-12 lg:col-6 xl:col-4">
+        <label>Status</label>
+        <div class="flex flex-wrap flex-row w-full align-content-center mt-3">
+          @for (status of statusSelect; track $index) {
+            <div class="mr-3">
+              <p-radiobutton
+                [value]="status"
+                [inputId]="status.key"
+                formControlName="status"
+              />
+              <label [for]="status.key" class="ml-2">{{ status.value }}</label>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <!-- BOTÕES -->
+    <div class="grid justify-content-end mt-2">
+      <div class="col-12 lg:col-2 lg:pr-1">
+        <p-button label="Limpar" class="w-full" styleClass="w-full" variant="outlined" severity="secondary" (onClick)="limparCampos()" />
+      </div>
+      <div class="col-12 lg:col-2 lg:pl-1">
+        <p-button label="Buscar" class="w-full" styleClass="w-full" type="submit" [disabled]="disableButtonBuscar()" />
+      </div>
+    </div>
+  </form>
+</p-card>

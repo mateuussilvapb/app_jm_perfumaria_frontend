@@ -33,7 +33,6 @@ import { CategoriaFiltersComponent } from '@categoria/components/categoria-filte
 })
 export class CategoriaListComponent implements OnInit {
   public categorias$ = new Observable<Categoria[]>();
-  // public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly categoriaQueryService: CategoriaQueryService) {}
@@ -42,11 +41,31 @@ export class CategoriaListComponent implements OnInit {
     this.loadData();
   }
 
-  private loadData() {
+  private loadData(formValue: any = null) {
     this.loading$.next(true);
-    this.categorias$ = this.categoriaQueryService.find().pipe(
-      take(1),
-      finalize(() => this.loading$.next(false))
-    );
+    this.categorias$ = this.categoriaQueryService
+      .searchByTermAndStatus(this.getParams(formValue))
+      .pipe(
+        take(1),
+        finalize(() => this.loading$.next(false))
+      );
+  }
+
+  onFilter(event) {
+    this.loadData(event);
+  }
+
+  getParams(values) {
+    let params = new URLSearchParams();
+    if (values) {
+      if (values.nome) {
+        params.append('term', values.nome);
+      }
+      if (values.status) {
+        params.append('status', values.status.key);
+      }
+      return params;
+    }
+    return null;
   }
 }

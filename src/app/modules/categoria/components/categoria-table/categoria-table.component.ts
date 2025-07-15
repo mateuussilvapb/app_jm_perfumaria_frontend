@@ -1,7 +1,9 @@
 //Angular
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 //Externos
+import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 
@@ -10,7 +12,7 @@ import { STATUS } from '@shared/enums/status.enum';
 import { StatusPipe } from '@shared/pipes/status.pipe';
 import { Categoria } from '@categoria/interfaces/categoria';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-categoria-table',
@@ -19,6 +21,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
 
     //Externos
+    CardModule,
     TableModule,
     ButtonModule,
 
@@ -32,4 +35,6 @@ export class CategoriaTableComponent {
   @Input() data: Array<Categoria> = [];
 
   readonly STATUS = STATUS;
+
+  onCadastrarCategoria() {}
 }
