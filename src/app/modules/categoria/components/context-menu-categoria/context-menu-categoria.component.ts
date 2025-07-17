@@ -44,7 +44,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/corretores/${data.categoria.idString}/editar`,
+      url: `${this.baseHref}/categoria/${data.categoria.idString}/editar`,
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
     },
     ...(data.categoria.status === STATUS.ATIVO
