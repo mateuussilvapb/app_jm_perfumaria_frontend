@@ -6,11 +6,13 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 
+//Externos
+import { Observable, map } from 'rxjs';
+
 //Internos
-import { getAdjustedDateIfPossible } from 'app/utils/extras/date.utils';
+import { getAdjustedDateIfPossible } from '@utils/extras/date.utils';
 
 @Injectable()
 export class DateConverterInterceptor implements HttpInterceptor {
