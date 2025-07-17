@@ -26,10 +26,16 @@ export const ItensMenu: ItemMenu[] = [
     separator: true,
     children: [
       {
-        label: 'Categorias',
+        label: 'Listar Categorias',
         separator: false,
         icon: PrimeIcons.BOOKMARK,
         route: '/categoria',
+      },
+      {
+        label: 'Adicionar Categoria',
+        separator: false,
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/categoria/adicionar',
       },
     ],
   },
