@@ -12,7 +12,6 @@ import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { Categoria } from '@categoria/interfaces/categoria';
-import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 
 export interface ContextMenuCategoriaData {
@@ -26,7 +25,6 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
     private readonly refresh$: Subject<boolean>,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
-    private readonly categoriaQueryService: CategoriaQueryService,
     private readonly categoriaCommandService: CategoriaCommandService
   ) {
     super(actionMenu, utilsService);

@@ -1,11 +1,19 @@
 //Angular
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 //Externos
+import {
+  BehaviorSubject,
+  finalize,
+  Observable,
+  startWith,
+  switchMap,
+  take,
+} from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
-import { BehaviorSubject, finalize, Observable, take } from 'rxjs';
 
 //Internos
 import { Categoria } from '@categoria/interfaces/categoria';
@@ -19,6 +27,7 @@ import { CategoriaFiltersComponent } from '@categoria/components/categoria-filte
   imports: [
     //Angular
     CommonModule,
+    RouterModule,
 
     //Externos
     CardModule,
@@ -33,6 +42,7 @@ import { CategoriaFiltersComponent } from '@categoria/components/categoria-filte
 })
 export class CategoriaListComponent implements OnInit {
   public categorias$ = new Observable<Categoria[]>();
+  public readonly refresh$ = new BehaviorSubject<boolean>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly categoriaQueryService: CategoriaQueryService) {}
@@ -43,12 +53,18 @@ export class CategoriaListComponent implements OnInit {
 
   private loadData(formValue: any = null) {
     this.loading$.next(true);
-    this.categorias$ = this.categoriaQueryService
-      .searchByTermAndStatus(this.getParams(formValue))
-      .pipe(
-        take(1),
-        finalize(() => this.loading$.next(false))
-      );
+    this.categorias$ = this.refresh$.pipe(
+      startWith(undefined),
+      switchMap((value) => {
+        console.log(value);
+        return this.categoriaQueryService
+          .searchByTermAndStatus(this.getParams(value ? null : formValue))
+          .pipe(
+            take(1),
+            finalize(() => this.loading$.next(false))
+          );
+      })
+    );
   }
 
   onFilter(event) {

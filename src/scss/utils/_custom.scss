@@ -16,18 +16,46 @@
   align-items: center !important;
   width: 100% !important;
   text-decoration: none;
-  color: var(--primary-color-text);
+  color: var(--p-button-primary-color);
   border-color: var(--p-primary-color);
   background-color: var(--p-primary-color);
   font-size: 1rem;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
-  border-radius: var(--p-border-radius);
+  border-radius: var(--p-button-border-radius);
   text-align: center;
 
   &:hover {
     border-color: var(--p-primary-600);
     background-color: var(--p-primary-600);
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+      box-shadow 0.2s;
+    border-radius: 6px;
+  }
+}
+
+.btn-primary-outlined-link {
+  height: 39px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  text-decoration: none;
+  border: 0.5px solid;
+  border-color: var(--p-button-outlined-primary-border-color);
+  color: var(--p-button-outlined-primary-color);
+  background: transparent;
+  font-size: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border-radius: var(--p-button-border-radius);
+  text-align: center;
+
+  &:hover {
+    background: var(--p-button-outlined-primary-hover-background);
     padding: 0.75rem 1.25rem;
     font-size: 1rem;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s,

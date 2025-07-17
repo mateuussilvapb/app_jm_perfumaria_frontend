@@ -1,9 +1,4 @@
 <p-card>
-  <div class="grid justify-content-end">
-    <div class="col-12 lg:col-3">
-      <p-button label="Cadastrar Categoria" class="w-full" styleClass="w-full" variant="outlined" (onClick)="onCadastrarCategoria()" />
-    </div>
-  </div>
   @if (data.length > 0) {
     <p-table
       [rows]="10"
@@ -32,6 +27,7 @@
               [text]="true"
               icon="pi pi-ellipsis-v"
               styleClass="text-color"
+              (onClick)="onToggleMenu($event, categoria)"
             ></p-button>
           </td>
         </tr>
@@ -40,3 +36,5 @@
   }
   <sem-dados [data]="data"></sem-dados>
 </p-card>
+
+<p-menu #actionMenu [popup]="true" />
