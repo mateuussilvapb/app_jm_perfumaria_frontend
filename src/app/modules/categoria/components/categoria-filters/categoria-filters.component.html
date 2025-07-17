@@ -1,4 +1,7 @@
 <p-card>
+  <ng-template #header>
+    <h4 class="m-0 pl-3 pt-3 font-medium">Buscar por...</h4>
+  </ng-template>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
     <!-- FORM -->
     <div class="grid">

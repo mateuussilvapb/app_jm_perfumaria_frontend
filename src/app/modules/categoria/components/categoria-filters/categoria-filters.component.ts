@@ -6,13 +6,14 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 //Externos
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { BehaviorSubject, map, startWith } from 'rxjs';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
 //Internos
@@ -36,6 +37,7 @@ import { STATUS } from '@shared/enums/status.enum';
   templateUrl: './categoria-filters.component.html',
 })
 export class CategoriaFiltersComponent implements OnInit {
+  @Input() refresh$: BehaviorSubject<boolean>;
   @Output() onFilter = new EventEmitter<any>();
 
   form: FormGroup;
@@ -54,6 +56,15 @@ export class CategoriaFiltersComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+
+    this.refresh$
+      .pipe(
+        startWith(undefined),
+        map(() => {
+          this.form.reset();
+        })
+      )
+      .subscribe();
   }
 
   createForm() {
