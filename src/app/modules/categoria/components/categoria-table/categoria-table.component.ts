@@ -39,7 +39,7 @@ import { ContextMenuCategoria } from '@categoria/components/context-menu-categor
 })
 export class CategoriaTableComponent implements AfterViewInit {
   @Input() data: Array<Categoria> = [];
-  @Input() refresh$: BehaviorSubject<boolean>;
+  @Input() refresh$: BehaviorSubject<void>;
   private contextMenu: ContextMenuCategoria;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 

@@ -22,7 +22,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
   constructor(
     actionMenu: Menu,
     utilsService: UtilsService,
-    private readonly refresh$: Subject<boolean>,
+    private readonly refresh$: Subject<void>,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly categoriaCommandService: CategoriaCommandService
@@ -103,7 +103,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
         detail: 'Categoria excluído com sucesso.',
         life: 5000,
       });
-      this.refresh$.next(true);
+      this.refresh$.next();
     });
   }
 
@@ -129,7 +129,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
         detail: 'Status da Categoria alterado com sucesso!',
         life: 5000,
       });
-      this.refresh$.next(true);
+      this.refresh$.next();
     });
   }
 }
