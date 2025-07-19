@@ -1,23 +1,82 @@
-import { Directive } from '@angular/core';
+//Angular
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Directive, OnInit } from '@angular/core';
+
+//Internos
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 
 @Directive()
-export class FormBase {
-  public isView: boolean = false;
-  public isUpdate: boolean = false;
-  public isCreate: boolean = false;
+export abstract class FormBase implements OnInit {
+  public form: FormGroup;
 
-  constructor(public readonly activatedRoute: ActivatedRoute) {}
+  protected id: string | null = null;
 
-  identificarTipoRota() {
-    const path = this.activatedRoute.snapshot.routeConfig?.path;
-    if (path.includes(ROTAS_FORM.VISUALIZAR)) {
-      this.isView = true;
-    } else if (path.includes(ROTAS_FORM.EDITAR)) {
-      this.isUpdate = true;
-    } else if (path.includes(ROTAS_FORM.ADICIONAR)) {
-      this.isCreate = true;
+  public isView = false;
+  public isUpdate = false;
+  public isCreate = false;
+
+  constructor(protected readonly activatedRoute: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.identificarTipoRota();
+    this.obterIdDaRota();
+    this.buildForm();
+    this.tratarCamposForm();
+    this.afterFormInit();
+  }
+
+  /**
+   * Método abstrato para forçar os filhos a implementarem o form.
+   */
+  protected abstract buildForm(): void;
+
+  /**
+   * Hook opcional: executado após a criação e tratamento do form.
+   */
+  protected afterFormInit(): void {}
+
+  /**
+   * Identifica o tipo de ação baseado na rota.
+   */
+  protected identificarTipoRota(): void {
+    const path = this.activatedRoute.snapshot.routeConfig?.path ?? '';
+
+    this.isView = path.includes(ROTAS_FORM.VISUALIZAR);
+    this.isUpdate = path.includes(ROTAS_FORM.EDITAR);
+    this.isCreate = path.includes(ROTAS_FORM.ADICIONAR);
+  }
+
+  /**
+   * Desabilita os campos se estiver em modo de visualização.
+   */
+  protected tratarCamposForm(): void {
+    if (this.isView && this.form) {
+      Object.keys(this.form.controls).forEach((key) => {
+        this.form.get(key)?.disable({ emitEvent: false });
+      });
     }
+  }
+
+  /**
+   * Recupera o id presente na rota, caso informado.
+   */
+  protected obterIdDaRota(): void {
+    const param = this.activatedRoute.snapshot.paramMap.get('id');
+    this.id = param ?? null;
+  }
+
+  /**
+   * Helper: true se o form estiver em modo leitura
+   */
+  public get isReadOnly(): boolean {
+    return this.isView;
+  }
+
+  /**
+   * Helper: true se o form estiver em modo edição ou criação
+   */
+  public get isEditable(): boolean {
+    return this.isUpdate || this.isCreate;
   }
 }
