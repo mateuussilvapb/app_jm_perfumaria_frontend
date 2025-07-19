@@ -20,8 +20,11 @@ export abstract class FormBase implements OnInit {
 
   ngOnInit(): void {
     this.identificarTipoRota();
+    this.afterIdentificarTipoRota();
     this.obterIdDaRota();
+    this.afterObterIdDaRota();
     this.buildForm();
+    this.afterBuildForm();
     this.tratarCamposForm();
     this.afterFormInit();
   }
@@ -32,7 +35,12 @@ export abstract class FormBase implements OnInit {
   protected abstract buildForm(): void;
 
   /**
-   * Hook opcional: executado após a criação e tratamento do form.
+   * Hook opcional: executado após a criação do form.
+   */
+  protected afterBuildForm() {}
+
+  /**
+   * Hook opcional: executado após o tratamento do form.
    */
   protected afterFormInit(): void {}
 
@@ -46,6 +54,11 @@ export abstract class FormBase implements OnInit {
     this.isUpdate = path.includes(ROTAS_FORM.EDITAR);
     this.isCreate = path.includes(ROTAS_FORM.ADICIONAR);
   }
+
+  /**
+   * Hook opcional: executado após a identificação do tipo da aba.
+   */
+  protected afterIdentificarTipoRota() {}
 
   /**
    * Desabilita os campos se estiver em modo de visualização.
@@ -65,6 +78,11 @@ export abstract class FormBase implements OnInit {
     const param = this.activatedRoute.snapshot.paramMap.get('id');
     this.id = param ?? null;
   }
+
+  /**
+   * Hook opcional: executado após a captura do id da rota.
+   */
+  protected afterObterIdDaRota() {}
 
   /**
    * Helper: true se o form estiver em modo leitura
