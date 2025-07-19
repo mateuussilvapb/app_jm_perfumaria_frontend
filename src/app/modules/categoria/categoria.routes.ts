@@ -6,6 +6,7 @@ import { AuthGuard } from '@core/guards/auth.guard';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { CategoriaFormComponent } from '@categoria/pages/categoria-form/categoria-form.component';
 import { CategoriaListComponent } from '@categoria/pages/categoria-list/categoria-list.component';
+import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 
 export const CATEGORIA_ROUTES: Routes = [
   {
@@ -17,7 +18,7 @@ export const CATEGORIA_ROUTES: Routes = [
     },
   },
   {
-    path: 'adicionar',
+    path: `${ROTAS_FORM.ADICIONAR}`,
     canActivate: [AuthGuard],
     component: CategoriaFormComponent,
     data: {
@@ -25,7 +26,7 @@ export const CATEGORIA_ROUTES: Routes = [
     },
   },
   {
-    path: ':id/visualizar',
+    path: `:id/${ROTAS_FORM.VISUALIZAR}`,
     canActivate: [AuthGuard],
     component: CategoriaFormComponent,
     data: {
@@ -33,7 +34,7 @@ export const CATEGORIA_ROUTES: Routes = [
     },
   },
   {
-    path: ':id/editar',
+    path: `:id/${ROTAS_FORM.EDITAR}`,
     canActivate: [AuthGuard],
     component: CategoriaFormComponent,
     data: {
