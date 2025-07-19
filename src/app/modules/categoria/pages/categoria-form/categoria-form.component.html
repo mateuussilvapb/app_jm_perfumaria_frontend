@@ -1,1 +1,21 @@
-<p>categoria-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+  <p-card [header]="titleCard">
+    <div class="grid">
+      <div class="col-12 lg:col-6 xl:col-4">
+        <label for="nome-categoria">Nome</label>
+        <input
+          pInputText
+          type="text"
+          maxlength="100"
+          class="w-full mt-1"
+          id="nome-categoria"
+          formControlName="nome"
+          placeholder="Informe o nome..."
+        />
+        <app-form-control-errors
+          [control]="getControlForm('nome')"
+        ></app-form-control-errors>
+      </div>
+    </div>
+  </p-card>
+</form>

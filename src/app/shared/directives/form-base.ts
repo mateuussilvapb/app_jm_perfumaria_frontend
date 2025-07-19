@@ -1,7 +1,7 @@
 //Angular
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 //Internos
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
@@ -96,5 +96,17 @@ export abstract class FormBase implements OnInit {
    */
   public get isEditable(): boolean {
     return this.isUpdate || this.isCreate;
+  }
+
+  /**
+   * Helper: retorna um controle de formulário de acordo com o nome
+   */
+  getControlForm(controlName: string) {
+    const control = this.form.controls[controlName] as FormControl;
+    if (control) {
+      return control;
+    }
+    console.error(`Controle de formulário "${controlName}" não existe`);
+    return new FormControl;
   }
 }
