@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
   <p-card [header]="titleCard">
-    <div class="grid">
-      <div class="col-12 lg:col-6 xl:col-4">
+    <div class="grid mt-2">
+      <div class="col-12" [ngClass]="['col-12', isView ? 'lg:col-8' : '']">
         <label for="nome-categoria">Nome</label>
         <input
           pInputText
@@ -15,6 +15,22 @@
         <app-form-control-errors
           [control]="getControlForm('nome')"
         ></app-form-control-errors>
+      </div>
+      @if (isView) {
+        <div class="col-12 lg:col-4">
+          <label for="status-categoria">Status</label>
+          <input
+            pInputText
+            type="text"
+            class="w-full mt-1"
+            id="status-categoria"
+            formControlName="status"
+          />
+        </div>
+      }
+      <div class="col-12">
+        <label for="descricao-categoria">Descrição</label>
+        <textarea rows="5" cols="30" pTextarea formControlName="descricao" ></textarea>
       </div>
     </div>
   </p-card>
