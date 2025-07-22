@@ -5,12 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
 
 //Externos
 import { CardModule } from 'primeng/card';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
@@ -18,12 +19,11 @@ import { InputTextModule } from 'primeng/inputtext';
 
 //Internos
 import { FormBase } from '@shared/directives/form-base';
+import { Categoria } from '@categoria/interfaces/categoria';
+import { CategoriaUpdateDTO } from '@categoria/interfaces/categoria-update-dto';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
-import { Categoria } from '@categoria/interfaces/categoria';
-import { MessageService } from 'primeng/api';
-import { CategoriaUpdateDTO } from '@categoria/interfaces/categoria-update-dto';
 
 @Component({
   selector: 'app-categoria-form',
