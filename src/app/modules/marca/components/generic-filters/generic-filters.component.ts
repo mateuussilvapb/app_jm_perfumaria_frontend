@@ -62,6 +62,7 @@ export class GenericFiltersComponent implements OnInit {
         startWith(undefined),
         map(() => {
           this.form.reset();
+          this.onFilter.emit();
         })
       )
       .subscribe();
