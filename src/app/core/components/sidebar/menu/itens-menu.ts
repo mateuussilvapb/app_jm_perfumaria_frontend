@@ -39,4 +39,22 @@ export const ItensMenu: ItemMenu[] = [
       },
     ],
   },
+  {
+    label: 'MARCA',
+    separator: true,
+    children: [
+      {
+        label: 'Listar Marcas',
+        separator: false,
+        icon: PrimeIcons.BOOKMARK,
+        route: '/marca',
+      },
+      {
+        label: 'Adicionar Marca',
+        separator: false,
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/marca/adicionar',
+      },
+    ],
+  },
 ];
