@@ -4,9 +4,9 @@ import { Routes } from '@angular/router';
 //Internos
 import { AuthGuard } from '@core/guards/auth.guard';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
+import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { CategoriaFormComponent } from '@categoria/pages/categoria-form/categoria-form.component';
 import { CategoriaListComponent } from '@categoria/pages/categoria-list/categoria-list.component';
-import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 
 export const CATEGORIA_ROUTES: Routes = [
   {

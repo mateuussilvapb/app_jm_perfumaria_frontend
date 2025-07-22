@@ -2,10 +2,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+//Externos
+import { Observable } from 'rxjs';
+
 //Internos
 import { Categoria } from '@categoria/interfaces/categoria';
 import { AbstractCommandService } from '@shared/services/abstract-command.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
