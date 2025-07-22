@@ -19,7 +19,13 @@
     "module": "ES2022",
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
-    "paths": {}
+    "paths": {
+      "@core/*": ["app/core/*"],
+      "@home/*": ["app/modules/home/*"],
+      "@shared/*": ["app/shared/*"],
+      "@categoria/*": ["app/modules/categoria/*"],
+      "@utils/*": ["app/utils/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

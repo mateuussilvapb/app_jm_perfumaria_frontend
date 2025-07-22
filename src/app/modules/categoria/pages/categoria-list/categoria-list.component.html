@@ -1,0 +1,26 @@
+<p-card header="Categorias">
+  <div>
+    <app-categoria-filters
+      [refresh$]="refresh$"
+      (onFilter)="onFilter($event)"
+    ></app-categoria-filters>
+  </div>
+  <p-divider />
+  <div class="grid justify-content-end">
+    <div class="col-12 lg:col-3">
+      <a [routerLink]="['adicionar']" class="btn-primary-outlined-link">
+        Cadastrar Categoria
+      </a>
+    </div>
+  </div>
+  @if (loading$ |async) {
+  <app-loading></app-loading>
+  } @if (categorias$ | async; as categorias) {
+  <div>
+    <app-categoria-table
+      [data]="categorias"
+      [refresh$]="refresh$"
+    ></app-categoria-table>
+  </div>
+  }
+</p-card>

@@ -21,4 +21,22 @@ export const ItensMenu: ItemMenu[] = [
       },
     ],
   },
+  {
+    label: 'CATEGORIA',
+    separator: true,
+    children: [
+      {
+        label: 'Listar Categorias',
+        separator: false,
+        icon: PrimeIcons.BOOKMARK,
+        route: '/categoria',
+      },
+      {
+        label: 'Adicionar Categoria',
+        separator: false,
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/categoria/adicionar',
+      },
+    ],
+  },
 ];

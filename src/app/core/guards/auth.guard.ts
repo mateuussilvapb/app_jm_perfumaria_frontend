@@ -1,25 +1,23 @@
 //Angular
-import {
-  ActivatedRouteSnapshot,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
 import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 //Externos
 import Keycloak from 'keycloak-js';
 import { MessageService } from 'primeng/api';
 
 //Internos
-import { ROLES } from 'app/shared/models/roles';
+import { ROLES } from '@shared/models/roles';
+import { UtilsService } from '@utils/utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard {
-  private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
   private readonly keycloak = inject(Keycloak);
+
+  constructor(private readonly utilsService: UtilsService) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     try {
@@ -35,7 +33,7 @@ export class AuthGuard {
       }
 
       //Recupera as roles do usuário autenticado
-      const userRoles = this.getUserRoles();
+      const userRoles = this.utilsService.getUserRoles();
 
       //Recupera as roles da rota
       const allowedRoles: string[] = route.data['roles'];
@@ -68,36 +66,5 @@ export class AuthGuard {
           (error?.message ?? error)
       );
     }
-  }
-
-  private getUserRoles(realmRoles = true): string[] {
-    if (!this.keycloak?.authenticated) {
-      return [];
-    }
-
-    let roles: string[] = [];
-
-    if (this.keycloak.resourceAccess) {
-      Object.keys(this.keycloak.resourceAccess).forEach((key) => {
-        if (key !== this.keycloak.clientId) {
-          return;
-        }
-
-        if (!this.keycloak.resourceAccess) {
-          return;
-        }
-
-        const resourceAccess = this.keycloak.resourceAccess[key];
-        const clientRoles = resourceAccess['roles'] || [];
-        roles = roles.concat(clientRoles);
-      });
-    }
-
-    if (realmRoles && this.keycloak.realmAccess) {
-      const realmRoles = this.keycloak.realmAccess['roles'] || [];
-      roles.push(...realmRoles);
-    }
-
-    return roles;
   }
 }

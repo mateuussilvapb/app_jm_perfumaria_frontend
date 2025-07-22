@@ -2,9 +2,9 @@
 import { Routes } from '@angular/router';
 
 //Internos
-import { ALL_ROLES } from './shared/models/roles';
-import { AuthGuard } from './core/guards/auth.guard';
-import { CORE_ROUTES } from './core/core.routes';
+import { CORE_ROUTES } from '@core/core.routes';
+import { ALL_ROLES } from '@shared/models/roles';
+import { AuthGuard } from '@core/guards/auth.guard';
 
 export const routes: Routes = [
   {

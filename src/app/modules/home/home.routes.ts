@@ -1,7 +1,10 @@
+//Angular
 import { Routes } from '@angular/router';
-import { PainelInformativoComponent } from './painel-informativo/painel-informativo.component';
-import { AuthGuard } from 'app/core/guards/auth.guard';
-import { ALL_ROLES } from 'app/shared/models/roles';
+
+//Internos
+import { ALL_ROLES } from '@shared/models/roles';
+import { AuthGuard } from '@core/guards/auth.guard';
+import { PainelInformativoComponent } from '@home/painel-informativo/painel-informativo.component';
 
 export const HOME_ROUTES: Routes = [
   {
