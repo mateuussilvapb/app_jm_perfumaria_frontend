@@ -90,6 +90,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
         'Tem certeza que deseja excluir esta categoria? A ação não poderá ser desfeita.',
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => this.excluir(idString),
     });
@@ -100,7 +101,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
       this.messageService.add({
         severity: 'success',
         summary: 'Sucesso',
-        detail: 'Categoria excluído com sucesso.',
+        detail: 'Categoria excluída com sucesso.',
         life: 5000,
       });
       this.refresh$.next();
