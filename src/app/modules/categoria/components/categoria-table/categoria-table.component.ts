@@ -4,6 +4,7 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
 //Externos
 import { BehaviorSubject } from 'rxjs';
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
@@ -11,10 +12,11 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
-import { StatusPipe } from '@shared/pipes/status.pipe';
 import { Categoria } from '@categoria/interfaces/categoria';
+import { LayoutService } from '@core/services/layout.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { ContextMenuCategoria } from '@categoria/components/context-menu-categoria/context-menu-categoria.component';
@@ -26,27 +28,32 @@ import { ContextMenuCategoria } from '@categoria/components/context-menu-categor
     CommonModule,
 
     //Externos
+    TagModule,
     CardModule,
     MenuModule,
     TableModule,
     ButtonModule,
 
     //Internos
-    StatusPipe,
     SemDadosComponent,
   ],
   templateUrl: './categoria-table.component.html',
 })
 export class CategoriaTableComponent implements AfterViewInit {
   @Input() data: Array<Categoria> = [];
-  @Input() refresh$: BehaviorSubject<boolean>;
+  @Input() refresh$: BehaviorSubject<void>;
   private contextMenu: ContextMenuCategoria;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
+
+  get isDarkTheme() {
+    return this.layoutService.isDarkTheme();
+  }
 
   readonly STATUS = STATUS;
 
   constructor(
     private readonly utilsService: UtilsService,
+    private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly categoriaCommandService: CategoriaCommandService
@@ -65,5 +72,9 @@ export class CategoriaTableComponent implements AfterViewInit {
 
   onToggleMenu(event: MouseEvent, categoria: Categoria) {
     this.contextMenu.toggle(event, { categoria });
+  }
+
+  getStatusNormalized(status: STATUS) {
+    return Utils.getStatusNormalized(status);
   }
 }

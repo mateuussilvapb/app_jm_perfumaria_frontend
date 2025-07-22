@@ -37,7 +37,7 @@ import { STATUS } from '@shared/enums/status.enum';
   templateUrl: './categoria-filters.component.html',
 })
 export class CategoriaFiltersComponent implements OnInit {
-  @Input() refresh$: BehaviorSubject<boolean>;
+  @Input() refresh$: BehaviorSubject<void>;
   @Output() onFilter = new EventEmitter<any>();
 
   form: FormGroup;
@@ -62,6 +62,7 @@ export class CategoriaFiltersComponent implements OnInit {
         startWith(undefined),
         map(() => {
           this.form.reset();
+          this.onFilter.emit();
         })
       )
       .subscribe();

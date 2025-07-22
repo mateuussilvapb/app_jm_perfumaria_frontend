@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 
 //Externos
 import {
+  auditTime,
   BehaviorSubject,
   finalize,
   Observable,
@@ -42,7 +43,7 @@ import { CategoriaFiltersComponent } from '@categoria/components/categoria-filte
 })
 export class CategoriaListComponent implements OnInit {
   public categorias$ = new Observable<Categoria[]>();
-  public readonly refresh$ = new BehaviorSubject<boolean>(null);
+  public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly categoriaQueryService: CategoriaQueryService) {}
@@ -55,10 +56,11 @@ export class CategoriaListComponent implements OnInit {
     this.loading$.next(true);
     this.categorias$ = this.refresh$.pipe(
       startWith(undefined),
-      switchMap((value) => {
-        console.log(value);
+      //Impede que as ações sejam realizadas caso o refresh$ seja emitido mais de uma vez seguida em menos de 50ms
+      auditTime(50),
+      switchMap(() => {
         return this.categoriaQueryService
-          .searchByTermAndStatus(this.getParams(value ? null : formValue))
+          .searchByTermAndStatus(this.getParams(formValue))
           .pipe(
             take(1),
             finalize(() => this.loading$.next(false))

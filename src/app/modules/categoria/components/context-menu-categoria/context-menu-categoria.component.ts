@@ -22,7 +22,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
   constructor(
     actionMenu: Menu,
     utilsService: UtilsService,
-    private readonly refresh$: Subject<boolean>,
+    private readonly refresh$: Subject<void>,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly categoriaCommandService: CategoriaCommandService
@@ -44,7 +44,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/corretores/${data.categoria.idString}/editar`,
+      url: `${this.baseHref}/categoria/${data.categoria.idString}/editar`,
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
     },
     ...(data.categoria.status === STATUS.ATIVO
@@ -90,6 +90,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
         'Tem certeza que deseja excluir esta categoria? A ação não poderá ser desfeita.',
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => this.excluir(idString),
     });
@@ -100,10 +101,10 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
       this.messageService.add({
         severity: 'success',
         summary: 'Sucesso',
-        detail: 'Categoria excluído com sucesso.',
+        detail: 'Categoria excluída com sucesso.',
         life: 5000,
       });
-      this.refresh$.next(true);
+      this.refresh$.next();
     });
   }
 
@@ -129,7 +130,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
         detail: 'Status da Categoria alterado com sucesso!',
         life: 5000,
       });
-      this.refresh$.next(true);
+      this.refresh$.next();
     });
   }
 }
