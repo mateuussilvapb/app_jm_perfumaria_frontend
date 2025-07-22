@@ -90,6 +90,7 @@ export class ContextMenuMarca extends ContextMenu<ContextMenuMarcaData> {
         'Tem certeza que deseja excluir esta marca? A ação não poderá ser desfeita.',
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
+      rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => this.excluir(idString),
     });

@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 //Internos
 import { AuthGuard } from 'app/core/guards/auth.guard';
 import { ALL_ROLES, ROLES } from 'app/shared/models/roles';
+import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { MarcaListComponent } from './pages/marca-list/marca-list.component';
 import { MarcaFormComponent } from './pages/marca-form/marca-form.component';
 
@@ -17,7 +18,7 @@ export const MARCA_ROUTES: Routes = [
     },
   },
   {
-    path: 'adicionar',
+    path: `${ROTAS_FORM.ADICIONAR}`,
     canActivate: [AuthGuard],
     component: MarcaFormComponent,
     data: {
@@ -25,7 +26,7 @@ export const MARCA_ROUTES: Routes = [
     },
   },
   {
-    path: ':id/visualizar',
+    path: `:id/${ROTAS_FORM.VISUALIZAR}`,
     canActivate: [AuthGuard],
     component: MarcaFormComponent,
     data: {
@@ -33,7 +34,7 @@ export const MARCA_ROUTES: Routes = [
     },
   },
   {
-    path: ':id/editar',
+    path: `:id/${ROTAS_FORM.EDITAR}`,
     canActivate: [AuthGuard],
     component: MarcaFormComponent,
     data: {

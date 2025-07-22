@@ -4,6 +4,7 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
 //Externos
 import { BehaviorSubject } from 'rxjs';
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
@@ -11,10 +12,11 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
-import { StatusPipe } from '@shared/pipes/status.pipe';
 import { Marca } from '../../interfaces/marca';
+import { LayoutService } from '@core/services/layout.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { MarcaCommandService } from '../../service/marca-command.service';
 import { ContextMenuMarca } from '../../components/context-menu-marca/context-menu-marca.component';
@@ -26,13 +28,13 @@ import { ContextMenuMarca } from '../../components/context-menu-marca/context-me
     CommonModule,
 
     //Externos
+    TagModule,
     CardModule,
     MenuModule,
     TableModule,
     ButtonModule,
 
     //Internos
-    StatusPipe,
     SemDadosComponent,
   ],
   templateUrl: './marca-table.component.html',
@@ -43,10 +45,15 @@ export class MarcaTableComponent implements AfterViewInit {
   private contextMenu: ContextMenuMarca;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
+  get isDarkTheme() {
+    return this.layoutService.isDarkTheme();
+  }
+
   readonly STATUS = STATUS;
 
   constructor(
     private readonly utilsService: UtilsService,
+    private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly marcaCommandService: MarcaCommandService
@@ -65,5 +72,9 @@ export class MarcaTableComponent implements AfterViewInit {
 
   onToggleMenu(event: MouseEvent, marca: Marca) {
     this.contextMenu.toggle(event, { marca });
+  }
+
+  getStatusNormalized(status: STATUS) {
+    return Utils.getStatusNormalized(status);
   }
 }
