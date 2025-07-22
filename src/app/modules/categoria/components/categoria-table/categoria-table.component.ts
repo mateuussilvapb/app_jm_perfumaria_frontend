@@ -1,3 +1,4 @@
+import { LayoutService } from './../../../../core/services/layout.service';
 //Angular
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
@@ -43,13 +44,18 @@ export class CategoriaTableComponent implements AfterViewInit {
   private contextMenu: ContextMenuCategoria;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
+  get isDarkTheme() {
+    return this.layoutService.isDarkTheme();
+  }
+
   readonly STATUS = STATUS;
 
   constructor(
     private readonly utilsService: UtilsService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
-    private readonly categoriaCommandService: CategoriaCommandService
+    private readonly categoriaCommandService: CategoriaCommandService,
+    private readonly layoutService: LayoutService
   ) {}
 
   ngAfterViewInit(): void {
