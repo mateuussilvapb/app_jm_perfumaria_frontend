@@ -5,6 +5,7 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
 //Externos
 import { BehaviorSubject } from 'rxjs';
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
@@ -19,6 +20,7 @@ import { Categoria } from '@categoria/interfaces/categoria';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { ContextMenuCategoria } from '@categoria/components/context-menu-categoria/context-menu-categoria.component';
+import { Utils } from '@utils/utils';
 
 @Component({
   selector: 'app-categoria-table',
@@ -27,6 +29,7 @@ import { ContextMenuCategoria } from '@categoria/components/context-menu-categor
     CommonModule,
 
     //Externos
+    TagModule,
     CardModule,
     MenuModule,
     TableModule,
@@ -71,5 +74,9 @@ export class CategoriaTableComponent implements AfterViewInit {
 
   onToggleMenu(event: MouseEvent, categoria: Categoria) {
     this.contextMenu.toggle(event, { categoria });
+  }
+
+  getStatusNormalized(status: STATUS) {
+    return Utils.getStatusNormalized(status);
   }
 }

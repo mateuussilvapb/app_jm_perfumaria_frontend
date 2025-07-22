@@ -18,18 +18,12 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-categoria>
-        <tr [ngClass]="{
-            'bg-red-50': categoria.status === STATUS.INATIVO && !isDarkTheme,
-            'bg-green-50': categoria.status === STATUS.ATIVO && !isDarkTheme,
-            'bg-red-900': categoria.status === STATUS.INATIVO && isDarkTheme,
-            'bg-green-900': categoria.status === STATUS.ATIVO && isDarkTheme,
-          }">
+        <tr [ngClass]="{'surface-50': categoria.status === STATUS.INATIVO}">
           <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ categoria.nome ? categoria.nome : '-' }}</td>
           <td class="text-center" style="width: 19%; min-width: 5rem">{{ categoria.descricao ? categoria.descricao : '-'}}</td>
-          <td class="text-center" style="width: 19%; min-width: 5rem" [ngClass]="{
-              'text-green-500': categoria.status === STATUS.ATIVO,
-              'text-red-500': categoria.status === STATUS.INATIVO
-            }">{{ categoria.status | status }}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">
+            <p-tag [severity]="categoria.status === STATUS.ATIVO ? 'success' : 'danger'" [value]="getStatusNormalized(categoria.status)" class="w-full" />
+          </td>
           <td class="text-center" style="width: 4%; min-width: 5rem">
             <p-button
               [text]="true"
