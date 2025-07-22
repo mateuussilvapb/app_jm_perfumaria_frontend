@@ -72,7 +72,7 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
         ],
       ],
       status: [null],
-      descricao: [null, [Validators.maxLength(1000)]],
+      descricao: ['', [Validators.maxLength(1000)]],
     });
   }
 

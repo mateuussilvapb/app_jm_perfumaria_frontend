@@ -1,4 +1,3 @@
-import { LayoutService } from './../../../../core/services/layout.service';
 //Angular
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
@@ -13,14 +12,14 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
-import { StatusPipe } from '@shared/pipes/status.pipe';
 import { Categoria } from '@categoria/interfaces/categoria';
+import { LayoutService } from '@core/services/layout.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { ContextMenuCategoria } from '@categoria/components/context-menu-categoria/context-menu-categoria.component';
-import { Utils } from '@utils/utils';
 
 @Component({
   selector: 'app-categoria-table',
@@ -36,7 +35,6 @@ import { Utils } from '@utils/utils';
     ButtonModule,
 
     //Internos
-    StatusPipe,
     SemDadosComponent,
   ],
   templateUrl: './categoria-table.component.html',
@@ -55,10 +53,10 @@ export class CategoriaTableComponent implements AfterViewInit {
 
   constructor(
     private readonly utilsService: UtilsService,
+    private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
-    private readonly categoriaCommandService: CategoriaCommandService,
-    private readonly layoutService: LayoutService
+    private readonly categoriaCommandService: CategoriaCommandService
   ) {}
 
   ngAfterViewInit(): void {
