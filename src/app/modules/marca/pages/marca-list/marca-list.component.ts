@@ -1,0 +1,89 @@
+//Angular
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
+//Externos
+import {
+  auditTime,
+  BehaviorSubject,
+  finalize,
+  Observable,
+  startWith,
+  switchMap,
+  take,
+} from 'rxjs';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+
+//Internos
+import { Marca } from 'app/modules/marca/interfaces/marca';
+import { LoadingComponent } from 'app/shared/components/loading/loading.component';
+import { MarcaQueryService } from 'app/modules/marca/service/marca-query.service';
+import { GenericFiltersComponent } from 'app/modules/marca/components/generic-filters/generic-filters.component';
+import { MarcaTableComponent } from 'app/modules/marca/components/marca-table/marca-table.component';
+
+@Component({
+  selector: 'app-marca-list',
+  imports: [
+    //Angular
+    CommonModule,
+    RouterModule,
+
+    //Externos
+    CardModule,
+    DividerModule,
+
+    //Internos
+    LoadingComponent,
+    MarcaTableComponent,
+    GenericFiltersComponent,
+  ],
+  templateUrl: './marca-list.component.html',
+})
+export class MarcaListComponent implements OnInit {
+  public marcas$ = new Observable<Marca[]>();
+  public readonly refresh$ = new BehaviorSubject<void>(null);
+  public readonly loading$ = new BehaviorSubject<boolean>(false);
+
+  constructor(private readonly marcaQueryService: MarcaQueryService) {}
+
+  ngOnInit() {
+    this.loadData();
+  }
+
+  private loadData(formValue: any = null) {
+    this.loading$.next(true);
+    this.marcas$ = this.refresh$.pipe(
+      startWith(undefined),
+      //Impede que as ações sejam realizadas caso o refresh$ seja emitido mais de uma vez seguida em menos de 50ms
+      auditTime(50),
+      switchMap(() => {
+        return this.marcaQueryService
+          .searchByTermAndStatus(this.getParams(formValue))
+          .pipe(
+            take(1),
+            finalize(() => this.loading$.next(false))
+          );
+      })
+    );
+  }
+
+  onFilter(event) {
+    this.loadData(event);
+  }
+
+  getParams(values) {
+    let params = new URLSearchParams();
+    if (values) {
+      if (values.nome) {
+        params.append('term', values.nome);
+      }
+      if (values.status) {
+        params.append('status', values.status.key);
+      }
+      return params;
+    }
+    return null;
+  }
+}
