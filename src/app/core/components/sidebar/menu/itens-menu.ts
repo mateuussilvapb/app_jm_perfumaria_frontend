@@ -46,7 +46,7 @@ export const ItensMenu: ItemMenu[] = [
       {
         label: 'Listar Marcas',
         separator: false,
-        icon: PrimeIcons.BOOKMARK,
+        icon: PrimeIcons.BOOKMARK_FILL,
         route: '/marca',
       },
       {
@@ -54,6 +54,24 @@ export const ItensMenu: ItemMenu[] = [
         separator: false,
         icon: PrimeIcons.PLUS_CIRCLE,
         route: '/marca/adicionar',
+      },
+    ],
+  },
+  {
+    label: 'PRODUTO',
+    separator: true,
+    children: [
+      {
+        label: 'Listar Produtos',
+        separator: false,
+        icon: PrimeIcons.BOX,
+        route: '/produto',
+      },
+      {
+        label: 'Adicionar Produtos',
+        separator: false,
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/produto/adicionar',
       },
     ],
   },
