@@ -17,34 +17,6 @@
         <app-form-control-errors [control]="getControlForm('nome')"></app-form-control-errors>
       </div>
 
-      <!-- Código -->
-      <div class="col-12 lg:col-3">
-        <label for="codigo-produto">Código</label>
-        <input
-          pInputText
-          type="number"
-          class="w-full mt-1"
-          id="codigo-produto"
-          formControlName="codigo"
-          placeholder="Informe o código..."
-        />
-        <app-form-control-errors [control]="getControlForm('codigo')"></app-form-control-errors>
-      </div>
-
-      <!-- Quantidade em Estoque -->
-      <div class="col-12 lg:col-3">
-        <label for="estoque-produto">Estoque</label>
-        <input
-          pInputText
-          type="number"
-          class="w-full mt-1"
-          id="estoque-produto"
-          formControlName="quantidadeEmEstoque"
-          placeholder="Qtd. em estoque"
-        />
-        <app-form-control-errors [control]="getControlForm('quantidadeEmEstoque')"></app-form-control-errors>
-      </div>
-
       <!-- Preço de Custo -->
       <div class="col-12 lg:col-3">
         <label for="preco-custo">Preço de Custo</label>
@@ -119,6 +91,40 @@
             readonly
           />
         }
+      </div>
+
+      <!-- Marca -->
+      <div class="col-12 lg:col-3">
+      <label for="marca-produto">Marca</label>
+        <p-dropdown
+          id="marca-produto"
+          formControlName="marcaId"
+          [options]="marcaOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecione a marca"
+          [filter]="true"
+          filterPlaceholder="Busca..."
+          class="w-full mt-1"
+        ></p-dropdown>
+        <app-form-control-errors [control]="getControlForm('marcaId')"></app-form-control-errors>
+      </div>
+
+      <!-- Categoria -->
+      <div class="col-12 lg:col-3">
+      <label for="categoria-produto">Categoria</label>
+        <p-dropdown
+          id="categoria-produto"
+          formControlName="categoriaId"
+          [options]="categoriaOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecione a categoria"
+          [filter]="true"
+          filterPlaceholder="Busca..."
+          class="w-full mt-1"
+        ></p-dropdown>
+        <app-form-control-errors [control]="getControlForm('categoriaId')"></app-form-control-errors>
       </div>
 
       <!-- Descrição -->

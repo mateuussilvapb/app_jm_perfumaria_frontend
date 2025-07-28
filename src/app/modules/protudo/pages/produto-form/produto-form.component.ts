@@ -25,6 +25,8 @@ import { ProdutoQueryService } from '../../service/produto-query.service';
 import { ProdutoCommandService } from '../../service/produto-command.service';
 import { ProdutoUpdateDTO } from '../../interfaces/produto-update-dto';
 import { DropdownModule } from 'primeng/dropdown';
+import { MarcaQueryService } from 'app/modules/marca/service/marca-query.service';
+import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
 
 @Component({
   selector: 'app-produto-form',
@@ -50,14 +52,16 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
   public titleCard: string = '';
   public responseProduto: Produto;
+  public marcaOptions: { label: string; value: number }[] = [];
+  public categoriaOptions: { label: string; value: number }[] = [];
   public statusOptions = [
     { label: 'Ativo', value: 'ATIVO' },
-    { label: 'Inativo', value: 'INATIVO' }
+    { label: 'Inativo', value: 'INATIVO' },
   ];
 
   public situacaoOptions = [
     { label: 'Em cadastramento', value: 'EM_CADASTRAMENTO' },
-    { label: 'Cadastrado', value: 'CADASTRO_FINALIZADO' }
+    { label: 'Cadastrado', value: 'CADASTRO_FINALIZADO' },
   ];
 
   constructor(
@@ -67,9 +71,16 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly produtoQueryService: ProdutoQueryService,
+    private readonly marcaQueryService: MarcaQueryService,
+    private readonly categoriaQueryService: CategoriaQueryService,
     private readonly produtoCommandService: ProdutoCommandService
   ) {
     super(activatedRoute);
+  }
+
+  override afterBuildForm(): void {
+    this.getMarcaData();
+    this.getCategoriaData();
   }
 
   buildForm(): void {
@@ -79,9 +90,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       precoCusto: [null, Validators.required],
       precoVenda: [null, Validators.required],
       status: ['ATIVO', Validators.required],
-      situacao: ['EM_CADASTRAMENTO', Validators.required],
-      codigo: [null],
-      quantidadeEmEstoque: [0],
+      situacao: ['EM_CADASTRAMENTO', Validators.required]
     });
   }
 
@@ -106,12 +115,12 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   }
 
   getStatusLabel(status: string): string {
-    const found = this.statusOptions.find(opt => opt.value === status);
+    const found = this.statusOptions.find((opt) => opt.value === status);
     return found ? found.label : '';
   }
 
   getSituacaoLabel(situacao: string): string {
-    const found = this.situacaoOptions.find(opt => opt.value === situacao);
+    const found = this.situacaoOptions.find((opt) => opt.value === situacao);
     return found ? found.label : '';
   }
 
@@ -123,6 +132,32 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .subscribe((res) => {
         this.responseProduto = res;
         this.form.patchValue(res);
+      });
+  }
+
+  getMarcaData() {
+    this.loading$.next(true);
+    this.marcaQueryService
+      .all()
+      .pipe(finalize(() => this.loading$.next(false)))
+      .subscribe(marcas => {
+        this.marcaOptions = marcas.map((m) => ({
+          label: m.nome,
+          value: m.id,
+        }));
+      });
+  }
+
+  getCategoriaData() {
+    this.loading$.next(true);
+    this.categoriaQueryService
+      .all()
+      .pipe(finalize(() => this.loading$.next(false)))
+      .subscribe((categorias) => {
+        this.categoriaOptions = categorias.map((m) => ({
+          label: m.nome,
+          value: m.id,
+        }));
       });
   }
 
@@ -182,4 +217,3 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     }
   }
 }
-
