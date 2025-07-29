@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MenuModule } from 'primeng/menu';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -20,6 +20,8 @@ import { LayoutService } from '@core/services/layout.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { ProdutoCommandService } from '../../service/produto-command.service';
 import { ContextMenuProduto } from '../context-menu-produto/context-menu-produto.component';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
 
 @Component({
   selector: 'app-produto-table',
@@ -33,6 +35,8 @@ import { ContextMenuProduto } from '../context-menu-produto/context-menu-produto
     MenuModule,
     TableModule,
     ButtonModule,
+    IconField,
+    InputIcon,
 
     //Internos
     SemDadosComponent,
@@ -76,5 +80,9 @@ export class ProdutoTableComponent implements AfterViewInit {
 
   getStatusNormalized(status: STATUS) {
     return Utils.getStatusNormalized(status);
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

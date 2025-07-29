@@ -51,7 +51,7 @@
       <div class="col-12 lg:col-3">
         <label for="status-produto">Status</label>
         @if (!isView) {
-          <p-dropdown
+          <p-select
             id="status-produto"
             class="w-full mt-1"
             formControlName="status"
@@ -59,7 +59,7 @@
             optionLabel="label"
             optionValue="value"
             placeholder="Selecione o status"
-          ></p-dropdown>
+          ></p-select>
         } @else {
           <input
             pInputText
@@ -70,33 +70,10 @@
         }
       </div>
 
-      <!-- Situação -->
-      <div class="col-12 lg:col-3">
-        <label for="situacao-produto">Situação</label>
-        @if (!isView) {
-          <p-dropdown
-            id="situacao-produto"
-            class="w-full mt-1"
-            formControlName="situacao"
-            [options]="situacaoOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione a situação"
-          ></p-dropdown>
-        } @else {
-          <input
-            pInputText
-            class="w-full mt-1"
-            [value]="getSituacaoLabel(responseProduto?.situacao)"
-            readonly
-          />
-        }
-      </div>
-
       <!-- Marca -->
-      <div class="col-12 lg:col-3">
+      <div class="col-12 lg:col-4">
       <label for="marca-produto">Marca</label>
-        <p-dropdown
+        <p-select
           id="marca-produto"
           formControlName="marcaId"
           [options]="marcaOptions"
@@ -106,14 +83,14 @@
           [filter]="true"
           filterPlaceholder="Busca..."
           class="w-full mt-1"
-        ></p-dropdown>
+        ></p-select>
         <app-form-control-errors [control]="getControlForm('marcaId')"></app-form-control-errors>
       </div>
 
       <!-- Categoria -->
-      <div class="col-12 lg:col-3">
+      <div class="col-12 lg:col-5">
       <label for="categoria-produto">Categoria</label>
-        <p-dropdown
+        <p-select
           id="categoria-produto"
           formControlName="categoriaId"
           [options]="categoriaOptions"
@@ -123,7 +100,7 @@
           [filter]="true"
           filterPlaceholder="Busca..."
           class="w-full mt-1"
-        ></p-dropdown>
+        ></p-select>
         <app-form-control-errors [control]="getControlForm('categoriaId')"></app-form-control-errors>
       </div>
 

@@ -1,26 +1,110 @@
 <p-card>
   <ng-container *ngIf="data.length > 0; else noData">
     <p-table
+      #dt1
       [value]="data"
+      [globalFilterFields]="[
+        'nome',
+        'descricao',
+        'custo',
+        'venda',
+        'status',
+        'situacao',
+        'codigo',
+        'quantidadeEmEstoque',
+        'marca.nome',
+        'categoria.nome'
+      ]"
       [paginator]="true"
       [rows]="10"
+      dataKey="id"
+      stateStorage="session"
       [rowsPerPageOptions]="[5, 10, 20]"
       class="table-custom p-datatable-gridlines"
       [tableStyle]="{ 'min-width': '60rem' }"
     >
+      <ng-template #caption>
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            [value]="$any(dt1).filters['global']?.value"
+            (input)="onGlobalFilter(dt1, $event)"
+            placeholder="Search..."
+          />
+        </p-iconfield>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pFrozenColumn class="text-center">Nome</th>
-          <th class="text-center">Descrição</th>
-          <th class="text-center">Custo (R$)</th>
-          <th class="text-center">Venda (R$)</th>
-          <th class="text-center">Status</th>
-          <th class="text-center">Situação</th>
-          <th class="text-center">Código</th>
-          <th class="text-center">Em Estoque</th>
-          <th class="text-center">Marca</th>
-          <th class="text-center">Categoria</th>
-          <th class="text-center">Criado Em</th>
+          <th pSortableColumn="nome" class="text-center">
+            <div class="flex items-center gap-2">
+              Nome
+              <p-sortIcon field="nome" />
+            </div>
+          </th>
+          <th pSortableColumn="descricao" class="text-center">
+            <div class="flex items-center gap-2">
+              Descrição
+              <p-sortIcon field="descricao" />
+            </div>
+          </th>
+          <th pSortableColumn="precoCusto" class="text-center">
+            <div class="flex items-center gap-2">
+              Custo (R$)
+              <p-sortIcon field="precoCusto" />
+            </div>
+          </th>
+          <th pSortableColumn="precoVenda" class="text-center">
+            <div class="flex items-center gap-2">
+              Venda (R$)
+              <p-sortIcon field="precoVenda" />
+            </div>
+          </th>
+          <th pSortableColumn="status" class="text-center">
+            <div class="flex items-center gap-2">
+              Status
+              <p-sortIcon field="status" />
+            </div>
+          </th>
+          <th pSortableColumn="situacao" class="text-center">
+            <div class="flex items-center gap-2">
+              Situação
+              <p-sortIcon field="situacao" />
+            </div>
+          </th>
+          <th pSortableColumn="codigo" class="text-center">
+            <div class="flex items-center gap-2">
+              Código
+              <p-sortIcon field="codigo" />
+            </div>
+          </th>
+          <th pSortableColumn="quantidadeEmEstoque" class="text-center">
+            <div class="flex items-center gap-2">
+              Em Estoque
+              <p-sortIcon field="quantidadeEmEstoque" />
+            </div>
+          </th>
+          <th pSortableColumn="marca.nome" class="text-center">
+            <div class="flex items-center gap-2">
+              Marca
+              <p-sortIcon field="marca.nome" />
+            </div>
+          </th>
+          <th pSortableColumn="categoria.nome" class="text-center">
+            <div class="flex items-center gap-2">
+              Categoria
+              <p-sortIcon field="categoria.nome" />
+            </div>
+          </th>
+          <th pSortableColumn="createdAt" class="text-center">
+            <div class="flex items-center gap-2">
+              Criado Em
+              <p-sortIcon field="createdAt" />
+            </div>
+          </th>
           <th class="text-center">Opções</th>
         </tr>
       </ng-template>
@@ -29,31 +113,37 @@
         <tr>
           <!-- Frozen Nome -->
           <td pFrozenColumn class="text-center" style="min-width: 6rem">
-            {{ produto.nome || '–' }}
+            {{ produto.nome || "–" }}
           </td>
           <!-- Descrição -->
           <td class="text-center" style="min-width: 8rem">
-            {{ produto.descricao || '–' }}
+            {{ produto.descricao || "–" }}
           </td>
           <!-- Preço de Custo -->
           <td class="text-center">
-            {{ produto.precoCusto | number:'1.2-2' }}
+            {{ produto.precoCusto | number : "1.2-2" }}
           </td>
           <!-- Preço de Venda -->
           <td class="text-center">
-            {{ produto.precoVenda | number:'1.2-2' }}
+            {{ produto.precoVenda | number : "1.2-2" }}
           </td>
           <!-- Status Tag -->
           <td class="text-center">
             <p-tag
-              [severity]="produto.status === STATUS.ATIVO ? 'success' : 'danger'"
+              [severity]="
+                produto.status === STATUS.ATIVO ? 'success' : 'danger'
+              "
               [value]="getStatusNormalized(produto.status)"
             ></p-tag>
           </td>
           <!-- Situação Tag -->
           <td class="text-center">
             <p-tag
-              [severity]="produto.situacao === 'CADASTRO_FINALIZADO' ? 'success' : 'warning'"
+              [severity]="
+                produto.situacao === 'CADASTRO_FINALIZADO'
+                  ? 'success'
+                  : 'warning'
+              "
               [value]="produto.situacao.replace('_', ' ')"
             ></p-tag>
           </td>
@@ -67,15 +157,15 @@
           </td>
           <!-- Marca Nome -->
           <td class="text-center">
-            {{ produto.marca?.nome || '–' }}
+            {{ produto.marca?.nome || "–" }}
           </td>
           <!-- Categoria Nome -->
           <td class="text-center">
-            {{ produto.categoria?.nome || '–' }}
+            {{ produto.categoria?.nome || "–" }}
           </td>
           <!-- CreatedAt -->
           <td class="text-center">
-            {{ produto.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            {{ produto.createdAt | date : "dd/MM/yyyy HH:mm" }}
           </td>
           <!-- Opções -->
           <td class="text-center" style="min-width: 4rem">

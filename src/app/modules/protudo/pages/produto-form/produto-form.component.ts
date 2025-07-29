@@ -27,6 +27,7 @@ import { ProdutoUpdateDTO } from '../../interfaces/produto-update-dto';
 import { DropdownModule } from 'primeng/dropdown';
 import { MarcaQueryService } from 'app/modules/marca/service/marca-query.service';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-produto-form',
@@ -41,7 +42,7 @@ import { CategoriaQueryService } from '@categoria/service/categoria-query.servic
     ButtonModule,
     TextareaModule,
     InputTextModule,
-    DropdownModule,
+    SelectModule,
 
     //Internos
     FormControlErrorsComponent,
@@ -57,11 +58,6 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   public statusOptions = [
     { label: 'Ativo', value: 'ATIVO' },
     { label: 'Inativo', value: 'INATIVO' },
-  ];
-
-  public situacaoOptions = [
-    { label: 'Em cadastramento', value: 'EM_CADASTRAMENTO' },
-    { label: 'Cadastrado', value: 'CADASTRO_FINALIZADO' },
   ];
 
   constructor(
@@ -90,7 +86,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       precoCusto: [null, Validators.required],
       precoVenda: [null, Validators.required],
       status: ['ATIVO', Validators.required],
-      situacao: ['EM_CADASTRAMENTO', Validators.required]
+      marcaId: [null, [Validators.required]],
+      categoriaId: [null, [Validators.required]],
     });
   }
 
@@ -116,11 +113,6 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
 
   getStatusLabel(status: string): string {
     const found = this.statusOptions.find((opt) => opt.value === status);
-    return found ? found.label : '';
-  }
-
-  getSituacaoLabel(situacao: string): string {
-    const found = this.situacaoOptions.find((opt) => opt.value === situacao);
     return found ? found.label : '';
   }
 
