@@ -22,6 +22,7 @@ import { ProdutoCommandService } from '../../service/produto-command.service';
 import { ContextMenuProduto } from '../context-menu-produto/context-menu-produto.component';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-produto-table',
@@ -37,6 +38,7 @@ import { InputIcon } from 'primeng/inputicon';
     ButtonModule,
     IconField,
     InputIcon,
+    InputTextModule,
 
     //Internos
     SemDadosComponent,
