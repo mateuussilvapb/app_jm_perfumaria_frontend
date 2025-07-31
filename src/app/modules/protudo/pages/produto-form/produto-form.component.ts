@@ -53,8 +53,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
   public titleCard: string = '';
   public responseProduto: Produto;
-  public marcaOptions: { label: string; value: number }[] = [];
-  public categoriaOptions: { label: string; value: number }[] = [];
+  public marcaOptions: { label: string; value: string }[] = [];
+  public categoriaOptions: { label: string; value: string }[] = [];
   public statusOptions = [
     { label: 'Ativo', value: 'ATIVO' },
     { label: 'Inativo', value: 'INATIVO' },
@@ -85,9 +85,9 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       descricao: [''],
       precoCusto: [null, Validators.required],
       precoVenda: [null, Validators.required],
-      status: ['ATIVO', Validators.required],
-      marcaId: [null, [Validators.required]],
-      categoriaId: [null, [Validators.required]],
+      status: ['INATIVO', Validators.required],
+      idMarca: [null, [Validators.required]],
+      idCategoria: [null, [Validators.required]],
     });
   }
 
@@ -135,7 +135,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .subscribe(marcas => {
         this.marcaOptions = marcas.map((m) => ({
           label: m.nome,
-          value: m.id,
+          value: m.idString,
         }));
       });
   }
@@ -148,7 +148,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .subscribe((categorias) => {
         this.categoriaOptions = categorias.map((m) => ({
           label: m.nome,
-          value: m.id,
+          value: m.idString,
         }));
       });
   }
@@ -156,6 +156,28 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   onSubmit(event) {
     event.preventDefault();
     if (this.isCreate) {
+      if (this.form.invalid) {
+        if (!this.form.value.descricao) {
+          this.form.patchValue({ descricao: 'Sem descrição' });
+        }
+        if (!this.form.value.precoCusto) {
+          this.form.patchValue({ precoCusto: 0.00 });
+        }
+        if (!this.form.value.precoVenda) {
+          this.form.patchValue({ precoVenda: 0.00 });
+        }
+        if (!this.form.value.idMarca) {
+          this.form.patchValue({ idMarca: "738732440068063458" });
+        }
+        if (!this.form.value.idCategoria) {
+          this.form.patchValue({ idCategoria: "738732659782418506" });
+        }
+        console.log('Formulário inválido, verifique os campos.');
+        this.form.value.situacao = 'EM_CADASTRAMENTO';
+      } else {
+        this.form.value.situacao = 'CADASTRO_FINALIZADO';
+      }
+      this.form.value.quantidade_estoque = 0;
       this.createProduto();
     } else if (this.isUpdate) {
       this.updateProduto();
