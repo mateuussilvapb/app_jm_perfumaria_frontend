@@ -37,4 +37,6 @@ export const errorMessagesDictionary = {
     `A data mínima para este período aquisitivo é: ${value}`,
   min: (value) => `O valor mínimo é: ${value}`,
   max: (value) => `O valor máximo é: ${value}`,
+  lettersAndNumbers: () => 'A senha deve possuir letras e números',
+  passwordMismatch: () => 'As senhas não conferem',
 };

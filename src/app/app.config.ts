@@ -9,6 +9,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 //Externos
+import { DialogService } from 'primeng/dynamicdialog';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     ...INTERCEPTORS_PROVIDERS,
     PRIMENG_PROVIDER,
     ...KEYCLOAK_PROVIDERS,
+    DialogService,
     MessageService,
     ConfirmationService,
   ],

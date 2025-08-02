@@ -1,0 +1,16 @@
+<p-popover #popOverUsuario>
+  <div class="p-2 flex flex-column">
+    <small class="mb-2">
+      <strong>Nome de usuário:</strong> {{ userDetails?.username || '-' }}
+    </small>
+    <small class="mb-2">
+      <strong>E-mail:</strong> {{ userDetails?.email || '-' }}
+    </small>
+    <small>
+      <strong>Nome:</strong> {{ userDetails?.firstName || '' }} {{ userDetails?.lastName || '' }}
+    </small>
+  </div>
+  <div>
+    <p-button size="small" label="Alterar Senha" class="flex text-xs w-full" styleClass="w-full" (onClick)="onChangePassword()" />
+  </div>
+</p-popover>

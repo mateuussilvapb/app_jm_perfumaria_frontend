@@ -24,6 +24,7 @@
       "@home/*": ["app/modules/home/*"],
       "@shared/*": ["app/shared/*"],
       "@categoria/*": ["app/modules/categoria/*"],
+      "@usuario/*": ["app/modules/usuario/*"],
       "@utils/*": ["app/utils/*"]
     }
   },
