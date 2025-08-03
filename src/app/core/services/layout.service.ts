@@ -44,7 +44,7 @@ export class LayoutService {
   private screenResize() {
     this.screenSizeService.width$.subscribe((width) => {
       if (width > 991) {
-        this.state.mainMenuVisible = true;
+        this.state.mainMenuVisible = false;
       } else {
         this.state.mainMenuVisible = false;
       }

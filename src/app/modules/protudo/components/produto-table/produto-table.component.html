@@ -9,7 +9,6 @@
         'custo',
         'venda',
         'status',
-        'situacao',
         'codigo',
         'quantidadeEmEstoque',
         'marca.nome',
@@ -71,12 +70,6 @@
               <p-sortIcon field="status" />
             </div>
           </th>
-          <th pSortableColumn="situacao" class="text-center">
-            <div class="flex items-center gap-2">
-              Situação
-              <p-sortIcon field="situacao" />
-            </div>
-          </th>
           <th pSortableColumn="codigo" class="text-center">
             <div class="flex items-center gap-2">
               Código
@@ -136,17 +129,6 @@
                 produto.status === STATUS.ATIVO ? 'success' : 'danger'
               "
               [value]="getStatusNormalized(produto.status)"
-            ></p-tag>
-          </td>
-          <!-- Situação Tag -->
-          <td class="text-center">
-            <p-tag
-              [severity]="
-                produto.situacao === 'CADASTRO_FINALIZADO'
-                  ? 'success'
-                  : 'warning'
-              "
-              [value]="produto.situacao.replace('_', ' ')"
             ></p-tag>
           </td>
           <!-- Código -->

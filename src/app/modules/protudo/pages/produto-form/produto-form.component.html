@@ -79,6 +79,7 @@
           [options]="marcaOptions"
           optionLabel="label"
           optionValue="value"
+          [showClear]="true"
           placeholder="Selecione a marca"
           [filter]="true"
           filterPlaceholder="Busca..."
@@ -95,6 +96,7 @@
           formControlName="idCategoria"
           [options]="categoriaOptions"
           optionLabel="label"
+          [showClear]="true"
           optionValue="value"
           placeholder="Selecione a categoria"
           [filter]="true"
@@ -168,11 +170,11 @@
             class="flex-1 md:flex-none"
             label="Salvar Progresso"
             [disabled]="!(
-              form.get('nome')?.valid ||
+              (form.get('nome')?.valid ||
               form.get('precoCusto')?.valid ||
               form.get('precoVenda')?.valid ||
               form.get('idMarca')?.valid ||
-              form.get('idCategoria')?.valid
+              form.get('idCategoria')?.valid) && form.invalid
             )"
           ></p-button>
           <p-button

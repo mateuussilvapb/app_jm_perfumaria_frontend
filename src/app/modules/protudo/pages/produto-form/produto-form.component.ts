@@ -132,11 +132,15 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     this.marcaQueryService
       .all()
       .pipe(finalize(() => this.loading$.next(false)))
-      .subscribe(marcas => {
-        this.marcaOptions = marcas.map((m) => ({
-          label: m.nome,
-          value: m.idString,
-        }));
+      .subscribe((marcas) => {
+        marcas.forEach((m) => {
+          if (m.nome !== 'Sem marca') {
+            this.marcaOptions.push({
+              label: m.nome,
+              value: m.idString,
+            });
+          }
+        });
       });
   }
 
@@ -146,10 +150,14 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .all()
       .pipe(finalize(() => this.loading$.next(false)))
       .subscribe((categorias) => {
-        this.categoriaOptions = categorias.map((m) => ({
-          label: m.nome,
-          value: m.idString,
-        }));
+        categorias.forEach((m) => {
+          if (m.nome !== 'Sem categoria') {
+            this.categoriaOptions.push({
+              label: m.nome,
+              value: m.idString,
+            });
+          }
+        });
       });
   }
 
@@ -161,16 +169,16 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
           this.form.patchValue({ descricao: 'Sem descrição' });
         }
         if (!this.form.value.precoCusto) {
-          this.form.patchValue({ precoCusto: 0.00 });
+          this.form.patchValue({ precoCusto: 0.0 });
         }
         if (!this.form.value.precoVenda) {
-          this.form.patchValue({ precoVenda: 0.00 });
+          this.form.patchValue({ precoVenda: 0.0 });
         }
         if (!this.form.value.idMarca) {
-          this.form.patchValue({ idMarca: "738732440068063458" });
+          this.form.patchValue({ idMarca: '738732440068063458' });
         }
         if (!this.form.value.idCategoria) {
-          this.form.patchValue({ idCategoria: "738732659782418506" });
+          this.form.patchValue({ idCategoria: '738732659782418506' });
         }
         console.log('Formulário inválido, verifique os campos.');
         this.form.value.situacao = 'EM_CADASTRAMENTO';
