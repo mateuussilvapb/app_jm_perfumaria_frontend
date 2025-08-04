@@ -74,11 +74,6 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     super(activatedRoute);
   }
 
-  override afterBuildForm(): void {
-    this.getMarcaData();
-    this.getCategoriaData();
-  }
-
   buildForm(): void {
     this.form = this.fb.group({
       nome: ['', Validators.required],
@@ -106,6 +101,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   }
 
   protected override afterObterIdDaRota(): void {
+    this.getMarcaData();
+    this.getCategoriaData();
     if (this.isView || this.isUpdate) {
       this.getData();
     }
@@ -124,6 +121,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .subscribe((res) => {
         this.responseProduto = res;
         this.form.patchValue(res);
+        this.form.patchValue({ idMarca: res.marca.idString })
+        this.form.patchValue({ idCategoria: res.categoria.idString })
       });
   }
 
@@ -201,11 +200,22 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   }
 
   updateProduto() {
+    if (this.form.invalid) {
+      this.form.value.situacao = 'EM_CADASTRAMENTO';
+    } else {
+      this.form.value.situacao = 'CADASTRO_FINALIZADO';
+    }
+    
     const produtoDTO: ProdutoUpdateDTO = {
       id: this.responseProduto.idString,
       nome: this.form.value.nome,
       descricao: this.form.value.descricao,
-      status: this.responseProduto.status,
+      precoCusto: this.form.value.precoCusto,
+      precoVenda: this.form.value.precoVenda,
+      status: this.form.value.status,
+      situacao: this.form.value.situacao,
+      idCategoria: this.form.value.idCategoria,
+      idMarca: this.form.value.idMarca,
     };
     this.produtoCommandService
       .update(this.responseProduto.idString, produtoDTO)
