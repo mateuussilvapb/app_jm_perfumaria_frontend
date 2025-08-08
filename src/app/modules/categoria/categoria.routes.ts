@@ -14,7 +14,7 @@ export const CATEGORIA_ROUTES: Routes = [
     canActivate: [AuthGuard],
     component: CategoriaListComponent,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
   {
@@ -30,7 +30,7 @@ export const CATEGORIA_ROUTES: Routes = [
     canActivate: [AuthGuard],
     component: CategoriaFormComponent,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
   {

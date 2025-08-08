@@ -19,6 +19,6 @@ export class CategoriaCommandService extends AbstractCommandService<Categoria> {
     super(http);
   }
 
-  toogleStatus = (id: string): Observable<Categoria> =>
+  toggleStatus = (id: string): Observable<Categoria> =>
     this.http.patch<Categoria>(`${this.baseURL}/command/toogleStatus/${id}`, null);
 }

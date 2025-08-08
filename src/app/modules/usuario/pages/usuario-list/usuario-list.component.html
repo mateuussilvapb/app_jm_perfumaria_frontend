@@ -1,0 +1,33 @@
+<p-card header="Categorias">
+  <div>
+    <app-usuario-filters
+      [refresh$]="refresh$"
+      (onFilter)="onFilter($event)"
+    ></app-usuario-filters>
+  </div>
+  <p-divider />
+  <div class="grid justify-content-end">
+    <div class="col-12 lg:col-3">
+      <a [routerLink]="['adicionar']" class="btn-primary-outlined-link">
+        Cadastrar Usuário
+      </a>
+    </div>
+  </div>
+  @if (loading$ | async) {
+    <app-loading></app-loading>
+  }
+  @if (loadingActionsTable$ | async) {
+    <app-loading></app-loading>
+  }
+  @if (usuarios$ | async; as usuarios) {
+    @if (!(loadingActionsTable$ | async)) {
+      <div>
+        <app-usuario-table
+          [data]="usuarios"
+          [refresh$]="refresh$"
+          [loading$]="loadingActionsTable$"
+        ></app-usuario-table>
+      </div>
+    }
+  }
+</p-card>

@@ -2,11 +2,11 @@
 import { Routes } from '@angular/router';
 
 //Internos
-import { AuthGuard } from 'app/core/guards/auth.guard';
-import { ALL_ROLES, ROLES } from 'app/shared/models/roles';
+import { AuthGuard } from '@core/guards/auth.guard';
+import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { MarcaListComponent } from './pages/marca-list/marca-list.component';
-import { MarcaFormComponent } from './pages/marca-form/marca-form.component';
+import { MarcaListComponent } from '@marca/pages/marca-list/marca-list.component';
+import { MarcaFormComponent } from '@marca/pages/marca-form/marca-form.component';
 
 export const MARCA_ROUTES: Routes = [
   {
@@ -14,7 +14,7 @@ export const MARCA_ROUTES: Routes = [
     canActivate: [AuthGuard],
     component: MarcaListComponent,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
   {
@@ -30,7 +30,7 @@ export const MARCA_ROUTES: Routes = [
     canActivate: [AuthGuard],
     component: MarcaFormComponent,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
   {

@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 //Internos
-import { Marca } from 'app/modules/marca/interfaces/marca';
-import { AbstractCommandService } from 'app/shared/services/abstract-command.service';
+import { Marca } from '@marca/interfaces/marca';
+import { AbstractCommandService } from '@shared/services/abstract-command.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +19,6 @@ export class MarcaCommandService extends AbstractCommandService<Marca> {
     super(http);
   }
 
-  toogleStatus = (id: string): Observable<Marca> =>
+  toggleStatus = (id: string): Observable<Marca> =>
     this.http.patch<Marca>(`${this.baseURL}/command/toogleStatus/${id}`, null);
 }
