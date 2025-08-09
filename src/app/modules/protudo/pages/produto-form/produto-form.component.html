@@ -65,6 +65,7 @@
             pInputText
             class="w-full mt-1"
             [value]="getStatusLabel(responseProduto?.status)"
+            disabled="true"
             readonly
           />
         }
@@ -73,37 +74,45 @@
       <!-- Marca -->
       <div class="col-12 lg:col-4">
       <label for="marca-produto">Marca</label>
-        <p-select
-          id="marca-produto"
-          formControlName="idMarca"
-          [options]="marcaOptions"
-          optionLabel="label"
-          optionValue="value"
-          [showClear]="true"
-          [placeholder]="isView || isEditable ? '' : 'Selecione a marca'"
-          [filter]="true"
-          filterPlaceholder="Busca..."
-          class="w-full mt-1"
-        ></p-select>
-        <app-form-control-errors [control]="getControlForm('idMarca')"></app-form-control-errors>
+        @if (!isView) {
+          <p-select
+            id="marca-produto"
+            formControlName="idMarca"
+            [options]="marcaOptions"
+            optionLabel="label"
+            optionValue="value"
+            [showClear]="true"
+            [placeholder]="isView || isEditable ? '' : 'Selecione a marca'"
+            [filter]="true"
+            filterPlaceholder="Busca..."
+            class="w-full mt-1"
+          ></p-select>
+          <app-form-control-errors [control]="getControlForm('idMarca')"></app-form-control-errors>
+        } @else {
+          <input pInputText class="w-full" disabled="true" [value]="responseProduto?.marca?.nome" readonly />
+        }
       </div>
 
       <!-- Categoria -->
       <div class="col-12 lg:col-5">
       <label for="categoria-produto">Categoria</label>
-        <p-select
-          id="categoria-produto"
-          formControlName="idCategoria"
-          [options]="categoriaOptions"
-          optionLabel="label"
-          [showClear]="true"
-          optionValue="value"
-          [placeholder]="isView || isEditable ? '' : 'Selecione a categoria'"
-          [filter]="true"
-          filterPlaceholder="Busca..."
-          class="w-full mt-1"
-        ></p-select>
-        <app-form-control-errors [control]="getControlForm('idCategoria')"></app-form-control-errors>
+        @if (!isView) { 
+          <p-select
+            id="categoria-produto"
+            formControlName="idCategoria"
+            [options]="categoriaOptions"
+            optionLabel="label"
+            [showClear]="true"
+            optionValue="value"
+            [placeholder]="isView || isEditable ? '' : 'Selecione a categoria'"
+            [filter]="true"
+            filterPlaceholder="Busca..."
+            class="w-full mt-1"
+          ></p-select>
+          <app-form-control-errors [control]="getControlForm('idCategoria')"></app-form-control-errors>
+        } @else {
+          <input pInputText class="w-full" disabled="true" [value]="responseProduto?.categoria?.nome" readonly />
+        }
       </div>
 
       <!-- Descrição -->
@@ -121,22 +130,6 @@
         <app-form-control-errors [control]="getControlForm('descricao')"></app-form-control-errors>
       </div>
     </div>
-
-    <!-- INFORMAÇÕES RELACIONADAS -->
-    @if (isView) {
-      <div class="grid mt-3">
-        <!-- Marca -->
-        <div class="col-12 md:col-6">
-          <label>Marca</label>
-          <input pInputText class="w-full" [value]="responseProduto?.marca?.nome" readonly />
-        </div>
-        <!-- Categoria -->
-        <div class="col-12 md:col-6">
-          <label>Categoria</label>
-          <input pInputText class="w-full" [value]="responseProduto?.categoria?.nome" readonly />
-        </div>
-      </div>
-    }
 
     <!-- INFORMAÇÕES COMPLEMENTARES -->
     @if (isView) {
@@ -165,18 +158,20 @@
       <!-- botões Salvar Progresso + Adicionar/Atualizar -->
       <ng-container *ngIf="!isView">
         <div class="flex flex-row gap-2 flex-shrink-0">
-          <p-button
-            type="submit"
-            class="flex-1 md:flex-none"
-            label="Salvar Progresso"
-            [disabled]="!(
-              (form.get('nome')?.valid ||
-              form.get('precoCusto')?.valid ||
-              form.get('precoVenda')?.valid ||
-              form.get('idMarca')?.valid ||
-              form.get('idCategoria')?.valid) && form.invalid
-            )"
-          ></p-button>
+          @if (isCreate) {
+            <p-button
+              type="submit"
+              class="flex-1 md:flex-none"
+              label="Salvar Progresso"
+              [disabled]="!(
+                (form.get('nome')?.valid ||
+                form.get('precoCusto')?.valid ||
+                form.get('precoVenda')?.valid ||
+                form.get('idMarca')?.valid ||
+                form.get('idCategoria')?.valid) && form.invalid
+              )"
+            ></p-button>
+          }
           <p-button
             type="submit"
             class="flex-1 md:flex-none"

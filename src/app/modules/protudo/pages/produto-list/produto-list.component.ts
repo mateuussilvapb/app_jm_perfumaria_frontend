@@ -65,7 +65,6 @@ export class ProdutoListComponent implements OnInit {
           .searchByTermAndStatus(this.getParams(formValue))
           .pipe(
             map((res: any) => res.content),
-            tap((result) => console.log('Resultado da busca:', result)),
             take(1),
             finalize(() => this.loading$.next(false))
           );
