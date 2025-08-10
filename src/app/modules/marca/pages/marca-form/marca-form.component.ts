@@ -18,12 +18,12 @@ import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
 
 //Internos
+import { Marca } from '@marca/interfaces/marca';
 import { FormBase } from '@shared/directives/form-base';
-import { Marca } from '../../interfaces/marca';
+import { MarcaUpdateDTO } from '@marca/interfaces/marca-update-dto';
+import { MarcaQueryService } from '@marca/service/marca-query.service';
+import { MarcaCommandService } from '@marca/service/marca-command.service';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
-import { MarcaQueryService } from '../../service/marca-query.service';
-import { MarcaCommandService } from '../../service/marca-command.service';
-import { MarcaUpdateDTO } from '../../interfaces/marca-update-dto';
 
 @Component({
   selector: 'app-marca-form',

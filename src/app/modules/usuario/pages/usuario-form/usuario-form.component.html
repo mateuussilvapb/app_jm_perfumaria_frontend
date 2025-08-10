@@ -1,0 +1,132 @@
+@if (this.loading$ | async) {
+  <app-loading></app-loading>
+}
+@if (!(this.loading$ | async)) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+    <p-card [header]="titleCard">
+      <!-- CAMPOS -->
+      @if (isView) {
+        <div class="w-full flex flex-row justify-content-end">
+          <p-tag [severity]="responseUsuario.enabled ? 'success' : 'danger'" [value]="responseUsuario.enabled ? 'Usuário ativo' : 'Usuário inativo'" />
+        </div>
+      }
+      <div class="grid" [ngClass]="!isView ? 'mt-2': ''">
+        <div class="col-12 lg:col-4">
+          <label for="first-name-usuario">Primeiro Nome</label>
+          <input
+            pInputText
+            type="text"
+            maxlength="100"
+            class="w-full mt-1"
+            id="first-name-usuario"
+            formControlName="firstName"
+            placeholder="Informe o primeiro nome..."
+          />
+          <app-form-control-errors [control]="getControlForm('firstName')"></app-form-control-errors>
+        </div>
+        <div class="col-12 lg:col-4">
+          <label for="last-name-usuario">Sobrenome</label>
+          <input
+            pInputText
+            type="text"
+            maxlength="100"
+            class="w-full mt-1"
+            id="last-name-usuario"
+            formControlName="lastName"
+            placeholder="Informe o sobrenome..."
+          />
+          <app-form-control-errors [control]="getControlForm('lastName')"></app-form-control-errors>
+        </div>
+        <div class="col-12 lg:col-4">
+          <label for="roles-usuario">Permissões</label>
+          <p-multiselect
+            [fluid]="true"
+            [options]="roles"
+            optionLabel="name"
+            id="roles-usuario"
+            [maxSelectedLabels]="3"
+            formControlName="roles"
+            styleClass="mt-1"
+            placeholder="Selecione uma permissão"
+          />
+          <app-form-control-errors [control]="getControlForm('roles')"></app-form-control-errors>
+        </div>
+        @if (!isUpdate) {
+          <div class="col-12 lg:col-4">
+            <label for="username-usuario">Nome de Usuário</label>
+            <input
+              pInputText
+              type="text"
+              maxlength="100"
+              class="w-full mt-1"
+              id="username-usuario"
+              formControlName="username"
+              placeholder="Informe o username..."
+            />
+            <app-form-control-errors [control]="getControlForm('username')"></app-form-control-errors>
+          </div>
+        }
+        <div class="col-12 lg:col-4">
+          <label for="email-usuario">E-mail</label>
+          <input
+            pInputText
+            type="text"
+            maxlength="100"
+            class="w-full mt-1"
+            id="email-usuario"
+            formControlName="email"
+            placeholder="Informe o e-mail..."
+          />
+          <app-form-control-errors [control]="getControlForm('email')"></app-form-control-errors>
+        </div>
+        @if (isCreate) {
+          <div class="col-12 lg:col-4 flex flex-column">
+            <label for="password-usuario">Senha</label>
+            <p-password
+              [required]="true"
+              autocomplete="off"
+              [feedback]="false"
+              [toggleMask]="true"
+              id="password-usuario"
+              formControlName="password"
+              inputStyleClass="w-full mt-1"
+              class="w-full input-password-custom"
+            />
+            <app-form-control-errors
+              [control]="getControlForm('password')"
+            ></app-form-control-errors>
+          </div>
+        }
+      </div>
+
+      <!-- BOTÕES -->
+      <div [ngClass]="[isView ? 'justify-content-start' : 'justify-content-between']" class="pt-2 flex flex-wrap flex-column-reverse md:flex-row">
+        <div class="col-12 p-0 md:col-2 mt-2 md:mt-0">
+          <p-button
+            label="Voltar"
+            class="w-full"
+            variant="outlined"
+            styleClass="w-full"
+            severity="secondary"
+            (onClick)="onVoltar()"
+            [disabled]="onCreateUpdate$ | async"
+          />
+        </div>
+        @if (!isView && !(onCreateUpdate$ | async)) {
+          <div class="col-12 mt-2 p-0 md:col-2 md:mt-0">
+            <p-button
+              type="submit"
+              class="w-full"
+              styleClass="w-full"
+              [label]="isCreate ? 'Adicionar' : 'Atualizar'"
+              [disabled]="form.invalid || (onCreateUpdate$ | async)"
+            />
+          </div>
+        }
+        @if (onCreateUpdate$ | async) {
+          <app-loading></app-loading>
+        }
+      </div>
+    </p-card>
+  </form>
+}

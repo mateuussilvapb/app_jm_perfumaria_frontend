@@ -69,6 +69,7 @@ export class DialogAlterarSenhaComponent implements OnInit {
         null,
         [
           Validators.required,
+          Validators.minLength(8),
           CustomValidators.lettersAndNumbersPasswordValidator(),
         ],
       ],

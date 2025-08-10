@@ -78,6 +78,12 @@ export const ItensMenu: ItemMenu[] = [
         icon: PrimeIcons.USER,
         route: '/usuario',
       },
+      {
+        label: 'Adicionar Usuário',
+        separator: false,
+        icon: PrimeIcons.USER_PLUS,
+        route: '/usuario/adicionar',
+      },
     ],
   },
 ];

@@ -23,7 +23,7 @@
       <p-button label="Limpar" class="w-full" styleClass="w-full" variant="outlined" severity="secondary" (onClick)="limparCampos()" />
     </div>
     <div class="col-12 lg:col-2 lg:pl-1">
-      <p-button label="Buscar" class="w-full" styleClass="w-full" type="submit" [disabled]="disableButtonBuscar()" />
+      <p-button label="Buscar" class="w-full" styleClass="w-full" type="submit" [disabled]="disableButtonBuscar()" (onClick)="onSubmit()" />
     </div>
   </div>
 </p-card>

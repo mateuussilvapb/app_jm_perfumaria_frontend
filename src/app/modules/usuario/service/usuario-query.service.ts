@@ -2,6 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+//Externos
+import { Observable } from 'rxjs';
+
 //Internos
 import { Utils } from '@utils/utils';
 import { UsuarioResponseDto } from '@usuario/interfaces/usuario-response-dto';
@@ -22,4 +25,7 @@ export class UsuarioQueryService extends AbstractQueryService<UsuarioResponseDto
       `${this.baseURL}/searchByParam${Utils.searchParamsToString(filters)}`
     );
   };
+
+  override byID = (id: string): Observable<UsuarioResponseDto> =>
+    this.http.get<UsuarioResponseDto>(`${this.baseURL}/${id}`);
 }
