@@ -1,0 +1,80 @@
+.ticket-card {
+  position: relative;
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .main-metric {
+    h6 {
+      margin: 0 0 0.25rem 0;
+      color: #6b6b6b;
+      font-weight: 600;
+    }
+    .value {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+    .currency {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+    .delta {
+      margin-left: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .delta.up {
+      color: #2e7d32;
+    } // verde
+    .delta.down {
+      color: #c62828;
+    } // vermelho
+
+    .sub {
+      color: #777;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .sparkline {
+    width: 220px;
+    height: 70px;
+  }
+
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+
+    .volume {
+      h6 {
+        margin: 0;
+      }
+      .volume-value {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        .qty {
+          font-weight: 700;
+          font-size: 1.4rem;
+        }
+      }
+    }
+    .actions button {
+      min-width: 120px;
+    }
+  }
+
+  .overlay-spinner {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+}

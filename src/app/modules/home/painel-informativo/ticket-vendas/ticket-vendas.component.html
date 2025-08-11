@@ -1,0 +1,65 @@
+<p-card class="ticket-card">
+  <div class="card-top">
+    <div class="main-metric">
+      <h6>Ticket Médio</h6>
+      <div class="value">
+        <span class="currency">{{ formatCurrency(ticketMedio) }}</span>
+        <small class="delta" [ngClass]="ticketMedioDelta >= 0 ? 'up' : 'down'">
+          <i
+            class="pi"
+            [ngClass]="
+              ticketMedioDelta >= 0 ? 'pi-chevron-up' : 'pi-chevron-down'
+            "
+          ></i>
+          {{ ticketMedioDelta !== 0 ? ticketMedioDelta + "%" : "—" }}
+        </small>
+      </div>
+      <div class="sub">
+        Total Vendas: {{ totalTransactions }} | Receita:
+        {{ formatCurrency(totalRevenue) }}
+      </div>
+    </div>
+
+    <div class="sparkline">
+      <p-chart
+        *ngIf="sparkData"
+        type="line"
+        [data]="sparkData"
+        [options]="sparkOptions"
+        style="height: 70px"
+      ></p-chart>
+    </div>
+  </div>
+
+  <div class="card-bottom">
+    <div class="volume">
+      <h6>Volume de Vendas (último período)</h6>
+      <div class="volume-value">
+        <span class="qty">{{ volumeVendas }}</span>
+        <small class="delta" [ngClass]="volumeDelta >= 0 ? 'up' : 'down'">
+          <i
+            class="pi"
+            [ngClass]="volumeDelta >= 0 ? 'pi-chevron-up' : 'pi-chevron-down'"
+          ></i>
+          {{ volumeDelta !== 0 ? volumeDelta + "%" : "—" }}
+        </small>
+      </div>
+      <small class="note">Clique em Atualizar para recarregar</small>
+    </div>
+
+    <div class="actions">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-refresh"
+        label="Atualizar"
+        (click)="refresh()"
+      ></button>
+    </div>
+  </div>
+
+  <p-progressSpinner
+    *ngIf="loading"
+    styleClass="overlay-spinner"
+  ></p-progressSpinner>
+</p-card>
