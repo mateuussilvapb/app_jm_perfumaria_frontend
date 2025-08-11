@@ -109,13 +109,13 @@ export class UsuarioFormComponent extends FormBase implements OnInit {
       ],
       password: [
         null,
-        ...(this.isCreate
+        this.isCreate
           ? [
               Validators.required,
               Validators.minLength(8),
               CustomValidators.lettersAndNumbersPasswordValidator(),
             ]
-          : []),
+          : [],
       ],
       roles: [null, [Validators.required]],
     });
