@@ -19,8 +19,8 @@
       </ng-template>
       <ng-template pTemplate="body" let-marca>
         <tr>
-          <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ marca.nome ? marca.nome : '-' }}</td>
-          <td class="text-center" style="width: 19%; min-width: 5rem">{{ marca.descricao ? marca.descricao : '-'}}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ marca.nome ?? '-' }}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">{{ marca.descricao ?? '-'}}</td>
           <td class="text-center" style="width: 19%; min-width: 5rem">
             <p-tag [severity]="marca.status === STATUS.ATIVO ? 'success' : 'danger'" [value]="getStatusNormalized(marca.status)" />
           </td>

@@ -1,0 +1,80 @@
+<section>
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+    <div class="grid">
+      <div class="col-12 flex flex-column">
+        <label for="current-password">Senha Atual</label>
+        <p-password
+          [required]="true"
+          autocomplete="off"
+          [feedback]="false"
+          [toggleMask]="true"
+          id="current-password"
+          inputStyleClass="w-full"
+          formControlName="currentPassword"
+          class="w-full input-password-custom"
+          [disabled]="whileChangePassword$ | async"
+        />
+        <app-form-control-errors
+          [control]="getControlCurrentPassword()"
+        ></app-form-control-errors>
+      </div>
+      <div class="col-12 flex flex-column">
+        <label for="new-password">Nova Senha</label>
+        <p-password
+          [required]="true"
+          autocomplete="off"
+          [feedback]="false"
+          [toggleMask]="true"
+          id="new-password"
+          inputStyleClass="w-full"
+          formControlName="newPassword"
+          class="w-full input-password-custom"
+          [disabled]="whileChangePassword$ | async"
+        />
+        <app-form-control-errors
+          [control]="getControlNewPassword()"
+        ></app-form-control-errors>
+      </div>
+      <div class="col-12 flex flex-column">
+        <label for="confirm-new-password">Confirmar Nova Senha</label>
+        <p-password
+          [required]="true"
+          autocomplete="off"
+          [feedback]="false"
+          [toggleMask]="true"
+          inputStyleClass="w-full"
+          id="confirm-new-password"
+          formControlName="confirmNewPassword"
+          class="w-full input-password-custom"
+          [disabled]="whileChangePassword$ | async"
+        />
+        <app-form-control-errors
+          [control]="getControlConfirmPassword()"
+        ></app-form-control-errors>
+      </div>
+      <div class="col-12 flex flex-column">
+        <p-button
+          type="submit"
+          label="Confirmar"
+          styleClass="w-full"
+          class="flex text-xs w-full"
+          [disabled]="form.invalid || (whileChangePassword$ | async)"
+        />
+      </div>
+      <div class="col-12">
+        <p-button
+          label="Voltar"
+          class="w-full"
+          variant="outlined"
+          styleClass="w-full"
+          severity="secondary"
+          (onClick)="onVoltar()"
+          [disabled]="whileChangePassword$ | async"
+        />
+      </div>
+    </div>
+  </form>
+  <div class="mt-3">
+    <app-loading *ngIf="whileChangePassword$ | async"></app-loading>
+  </div>
+</section>

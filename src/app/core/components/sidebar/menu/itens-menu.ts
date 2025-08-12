@@ -1,10 +1,15 @@
+//Externos
 import { PrimeIcons } from 'primeng/api';
 
-interface ItemMenu {
+//Internos
+import { ALL_ROLES, ROLES } from '@shared/models/roles';
+
+export interface ItemMenu {
   label: string;
   separator: boolean;
   route?: string;
   icon?: string;
+  roles?: ROLES[];
   children?: ItemMenu[];
 }
 
@@ -12,6 +17,7 @@ export const ItensMenu: ItemMenu[] = [
   {
     label: 'HOME',
     separator: true,
+    roles: ALL_ROLES,
     children: [
       {
         label: 'Painel Informativo',
@@ -24,6 +30,7 @@ export const ItensMenu: ItemMenu[] = [
   {
     label: 'CATEGORIA',
     separator: true,
+    roles: ALL_ROLES,
     children: [
       {
         label: 'Listar Categorias',
@@ -34,6 +41,7 @@ export const ItensMenu: ItemMenu[] = [
       {
         label: 'Adicionar Categoria',
         separator: false,
+        roles: [ROLES.ADMIN, ROLES.MANAGER],
         icon: PrimeIcons.PLUS_CIRCLE,
         route: '/categoria/adicionar',
       },
@@ -42,6 +50,7 @@ export const ItensMenu: ItemMenu[] = [
   {
     label: 'MARCA',
     separator: true,
+    roles: ALL_ROLES,
     children: [
       {
         label: 'Listar Marcas',
@@ -52,6 +61,7 @@ export const ItensMenu: ItemMenu[] = [
       {
         label: 'Adicionar Marca',
         separator: false,
+        roles: [ROLES.ADMIN, ROLES.MANAGER],
         icon: PrimeIcons.PLUS_CIRCLE,
         route: '/marca/adicionar',
       },
@@ -60,6 +70,7 @@ export const ItensMenu: ItemMenu[] = [
   {
     label: 'PRODUTO',
     separator: true,
+    roles: ALL_ROLES,
     children: [
       {
         label: 'Listar Produtos',
@@ -75,4 +86,24 @@ export const ItensMenu: ItemMenu[] = [
       },
     ],
   },
+  {
+    label: 'USUÁRIO',
+    separator: true,
+    roles: [ROLES.ADMIN],
+    children: [
+      {
+        label: 'Listar Usuários',
+        separator: false,
+        icon: PrimeIcons.USER,
+        route: '/usuario',
+      },
+      {
+        label: 'Adicionar Usuário',
+        separator: false,
+        icon: PrimeIcons.USER_PLUS,
+        route: '/usuario/adicionar',
+      },
+    ],
+  },
+
 ];

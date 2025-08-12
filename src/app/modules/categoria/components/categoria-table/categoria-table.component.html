@@ -19,8 +19,8 @@
       </ng-template>
       <ng-template pTemplate="body" let-categoria>
         <tr>
-          <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ categoria.nome ? categoria.nome : '-' }}</td>
-          <td class="text-center" style="width: 19%; min-width: 5rem">{{ categoria.descricao ? categoria.descricao : '-'}}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ categoria.nome ?? '-' }}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">{{ categoria.descricao ?? '-'}}</td>
           <td class="text-center" style="width: 19%; min-width: 5rem">
             <p-tag [severity]="categoria.status === STATUS.ATIVO ? 'success' : 'danger'" [value]="getStatusNormalized(categoria.status)" />
           </td>

@@ -1,6 +1,6 @@
 //Angular
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, ViewChild } from '@angular/core';
 
 //Externos
 import Keycloak from 'keycloak-js';
@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 
 //Internos
 import { LayoutService } from 'app/core/services/layout.service';
+import { PopOverUsuarioComponent } from './pop-over-usuario/pop-over-usuario.component';
+
 
 @Component({
   selector: 'app-topbar-menu-options',
@@ -17,6 +19,9 @@ import { LayoutService } from 'app/core/services/layout.service';
 
     //Externos
     ButtonModule,
+
+    //Internos
+    PopOverUsuarioComponent,
   ],
   template: `
     <button
@@ -40,6 +45,7 @@ import { LayoutService } from 'app/core/services/layout.service';
         'ml-2': this.layoutService.isDesktop,
         'mt-2': !this.layoutService.isDesktop,
       }"
+      (click)="togglePopOverUsuario($event)"
     ></button>
 
     <button
@@ -55,11 +61,15 @@ import { LayoutService } from 'app/core/services/layout.service';
       }"
       (click)="this.logout()"
     ></button>
+
+    <app-pop-over-usuario></app-pop-over-usuario>
   `,
 })
 export class TopbarMenuOptionsComponent {
-
   private readonly keycloak = inject(Keycloak);
+
+  @ViewChild(PopOverUsuarioComponent)
+  popOverUsuarioComponent!: PopOverUsuarioComponent;
 
   constructor(public readonly layoutService: LayoutService) {}
 
@@ -78,6 +88,10 @@ export class TopbarMenuOptionsComponent {
       return 'pi pi-moon';
     }
     return 'pi pi-sun';
+  }
+
+  togglePopOverUsuario(event: MouseEvent) {
+    this.popOverUsuarioComponent.show(event);
   }
 
   logout() {

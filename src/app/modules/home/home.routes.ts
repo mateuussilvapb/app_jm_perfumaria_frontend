@@ -12,7 +12,7 @@ export const HOME_ROUTES: Routes = [
     component: PainelInformativoComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
 ];

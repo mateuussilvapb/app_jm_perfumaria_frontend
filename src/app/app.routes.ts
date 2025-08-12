@@ -14,7 +14,7 @@ export const routes: Routes = [
       import('./core/layout/layout.component').then((c) => c.LayoutComponent),
     children: CORE_ROUTES,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
 ];
