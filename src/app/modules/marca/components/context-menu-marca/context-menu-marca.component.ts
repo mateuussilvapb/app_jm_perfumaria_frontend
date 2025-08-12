@@ -8,11 +8,11 @@ import {
   ContextMenu,
   MenuItensWithPermissions,
 } from '@shared/context-menu/context-menu';
+import { Marca } from '@marca/interfaces/marca';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
-import { Marca } from '../../interfaces/marca';
-import { MarcaCommandService } from '../../service/marca-command.service';
+import { MarcaCommandService } from '@marca/service/marca-command.service';
 
 export interface ContextMenuMarcaData {
   marca: Marca;
@@ -123,7 +123,7 @@ export class ContextMenuMarca extends ContextMenu<ContextMenuMarcaData> {
   }
 
   private toggleSituacao(idString: string) {
-    this.marcaCommandService.toogleStatus(idString).subscribe(() => {
+    this.marcaCommandService.toggleStatus(idString).subscribe(() => {
       this.messageService.add({
         severity: 'success',
         summary: 'Sucesso',

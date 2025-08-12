@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { environment } from 'environments/environment';
 
 export abstract class AbstractQueryService<T> {
@@ -23,10 +24,11 @@ export abstract class AbstractQueryService<T> {
   all = (): Observable<T[]> => this.http.get<T[]>(`${this.baseURL}/query`);
 
   find = (filters?: URLSearchParams): Observable<T[]> => {
-    let params = filters ? `?${filters.toString()}` : '';
-    return this.http.get<T[]>(`${this.baseURL}/query${params}`);
-  }
+    return this.http.get<T[]>(
+      `${this.baseURL}/query${Utils.searchParamsToString(filters)}`
+    );
+  };
 
   findOne = (id: string): Observable<T> =>
-    this.http.get<T>(`${this.baseURL}/query/${id}`,);
+    this.http.get<T>(`${this.baseURL}/query/${id}`);
 }

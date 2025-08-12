@@ -1,0 +1,46 @@
+<p-card>
+  @if (data.length > 0) {
+    <p-table
+      [rows]="10"
+      [value]="data"
+      [paginator]="true"
+      class="table-custom"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-gridlines"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="text-50 text-center surface-100 text-color" pFrozenColumn>Username</th>
+          <th class="text-50 text-center surface-100 text-color">Nome</th>
+          <th class="text-50 text-center surface-100 text-color">E-mail</th>
+          <th class="text-50 text-center surface-100 text-color">Roles</th>
+          <th class="text-50 text-center surface-100 text-color">Status</th>
+          <th class="text-50 text-center surface-100 text-color">Ações</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-usuario>
+        <tr>
+          <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ usuario.username ?? '-' }}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">{{ usuario.firstName && usuario.lastName ? usuario.firstName + ' ' + usuario.lastName  : '-'}}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">{{ usuario.email ?? '-'}}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">{{ usuario.roles ? getRolesNormalized(usuario.roles) : '-'}}</td>
+          <td class="text-center" style="width: 19%; min-width: 5rem">
+            <p-tag [severity]="usuario.enabled ? 'success' : 'danger'" [value]="getStatusNormalized(usuario.enabled)" />
+          </td>
+          <td class="text-center" style="width: 4%; min-width: 5rem">
+            <p-button
+              [text]="true"
+              icon="pi pi-ellipsis-v"
+              styleClass="text-color"
+              (onClick)="onToggleMenu($event, usuario)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+  <sem-dados [data]="data"></sem-dados>
+</p-card>
+
+<p-menu #actionMenu [popup]="true" />

@@ -14,7 +14,7 @@
     </div>
   </div>
   @if (loading$ |async) {
-  <app-loading></app-loading>
+    <app-loading></app-loading>
   } @if (categorias$ | async; as categorias) {
   <div>
     <app-categoria-table

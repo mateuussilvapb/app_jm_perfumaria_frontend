@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 //Internos
-import { Marca } from 'app/modules/marca/interfaces/marca';
-import { AbstractQueryService } from 'app/shared/services/abstract-query.service';
+import { Utils } from '@utils/utils';
+import { Marca } from '@marca/interfaces/marca';
+import { AbstractQueryService } from '@shared/services/abstract-query.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,10 @@ export class MarcaQueryService extends AbstractQueryService<Marca> {
   }
 
   searchByTermAndStatus = (filters?: URLSearchParams) => {
-    let params = filters ? `?${filters.toString()}` : '';
-    return this.http.get<Marca[]>(`${this.baseURL}/query/searchByTermAndStatus${params}`);
+    return this.http.get<Marca[]>(
+      `${this.baseURL}/query/searchByTermAndStatus${Utils.searchParamsToString(
+        filters
+      )}`
+    );
   };
 }

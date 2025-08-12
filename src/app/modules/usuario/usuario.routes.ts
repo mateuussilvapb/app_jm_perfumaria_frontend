@@ -2,43 +2,43 @@
 import { Routes } from '@angular/router';
 
 //Internos
+import { ROLES } from '@shared/models/roles';
 import { AuthGuard } from '@core/guards/auth.guard';
-import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { MarcaListComponent } from '@marca/pages/marca-list/marca-list.component';
-import { MarcaFormComponent } from '@marca/pages/marca-form/marca-form.component';
+import { UsuarioFormComponent } from '@usuario/pages/usuario-form/usuario-form.component';
+import { UsuarioListComponent } from '@usuario/pages/usuario-list/usuario-list.component';
 
-export const MARCA_ROUTES: Routes = [
+export const USUARIO_ROUTES: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    component: MarcaListComponent,
+    component: UsuarioListComponent,
     data: {
-      roles: ALL_ROLES,
+      roles: [ROLES.ADMIN],
     },
   },
   {
     path: `${ROTAS_FORM.ADICIONAR}`,
     canActivate: [AuthGuard],
-    component: MarcaFormComponent,
+    component: UsuarioFormComponent,
     data: {
-      roles: [ROLES.ADMIN, ROLES.MANAGER],
+      roles: [ROLES.ADMIN],
     },
   },
   {
     path: `:id/${ROTAS_FORM.VISUALIZAR}`,
     canActivate: [AuthGuard],
-    component: MarcaFormComponent,
+    component: UsuarioFormComponent,
     data: {
-      roles: ALL_ROLES,
+      roles: [ROLES.ADMIN],
     },
   },
   {
     path: `:id/${ROTAS_FORM.EDITAR}`,
     canActivate: [AuthGuard],
-    component: MarcaFormComponent,
+    component: UsuarioFormComponent,
     data: {
-      roles: [ROLES.ADMIN, ROLES.MANAGER],
+      roles: [ROLES.ADMIN],
     },
   },
 ];

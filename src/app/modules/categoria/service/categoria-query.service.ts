@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { Categoria } from '@categoria/interfaces/categoria';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
 
@@ -17,7 +18,10 @@ export class CategoriaQueryService extends AbstractQueryService<Categoria> {
   }
 
   searchByTermAndStatus = (filters?: URLSearchParams) => {
-    let params = filters ? `?${filters.toString()}` : '';
-    return this.http.get<Categoria[]>(`${this.baseURL}/query/searchByTermAndStatus${params}`);
+    return this.http.get<Categoria[]>(
+      `${this.baseURL}/query/searchByTermAndStatus${Utils.searchParamsToString(
+        filters
+      )}`
+    );
   };
 }

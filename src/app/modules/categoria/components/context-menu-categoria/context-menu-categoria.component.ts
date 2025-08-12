@@ -123,7 +123,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
   }
 
   private toggleSituacao(idString: string) {
-    this.categoriaCommandService.toogleStatus(idString).subscribe(() => {
+    this.categoriaCommandService.toggleStatus(idString).subscribe(() => {
       this.messageService.add({
         severity: 'success',
         summary: 'Sucesso',
