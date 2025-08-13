@@ -1,8 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
   <p-card [header]="titleCard">
+    @if (isView) {
+      <div class="w-full flex flex-row justify-content-end">
+        <p-tag [severity]="responseCategoria?.status ? 'success' : 'danger'" [value]="responseCategoria?.status ? 'Ativo' : 'Inativo'" />
+      </div>
+    }
     <!-- CAMPOS -->
     <div class="grid mt-2">
-      <div class="col-12" [ngClass]="['col-12', isView ? 'lg:col-8' : '']">
+      <div class="col-12">
         <label for="nome-categoria">Nome</label>
         <input
           pInputText
@@ -15,18 +20,6 @@
         />
         <app-form-control-errors [control]="getControlForm('nome')"></app-form-control-errors>
       </div>
-      @if (isView) {
-        <div class="col-12 lg:col-4">
-          <label for="status-categoria">Status</label>
-          <input
-            pInputText
-            type="text"
-            class="w-full mt-1"
-            id="status-categoria"
-            formControlName="status"
-          />
-        </div>
-      }
       <div class="m-1 align-items-center grid grid-nogutter w-full py-1">
         <label for="descricao-categoria" class="col-12 mb-1">Descrição</label>
         <textarea
@@ -45,8 +38,8 @@
     <!-- INFORMAÇÕES COMPLEMENTARES -->
      @if (isView) {
       <div class="flex flex-row justify-content-between p-0 m-0">
-        <small><strong>Usuário: </strong> {{responseCategoria.createdBy}}</small>
-        <small><strong>Data: </strong> {{responseCategoria.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
+        <small><strong>Usuário: </strong> {{responseCategoria?.createdBy}}</small>
+        <small><strong>Data: </strong> {{responseCategoria?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
       </div>
      }
 

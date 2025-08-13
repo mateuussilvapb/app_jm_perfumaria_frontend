@@ -1,3 +1,6 @@
+//Angular
+import { Router } from '@angular/router';
+
 //Externos
 import { Subject } from 'rxjs';
 import { Menu } from 'primeng/menu';
@@ -10,9 +13,10 @@ import {
 } from '@shared/context-menu/context-menu';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
+import { Produto } from '@produto/interfaces/produto';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
-import { Produto } from '../../interfaces/produto';
-import { ProdutoCommandService } from '../../service/produto-command.service';
+import { ProdutoCommandService } from '@produto/service/produto-command.service';
+
 
 export interface ContextMenuProdutoData {
   produto: Produto;
@@ -20,6 +24,7 @@ export interface ContextMenuProdutoData {
 
 export class ContextMenuProduto extends ContextMenu<ContextMenuProdutoData> {
   constructor(
+    router: Router,
     actionMenu: Menu,
     utilsService: UtilsService,
     private readonly refresh$: Subject<void>,
@@ -27,7 +32,7 @@ export class ContextMenuProduto extends ContextMenu<ContextMenuProdutoData> {
     private readonly confirmationService: ConfirmationService,
     private readonly produtoCommandService: ProdutoCommandService
   ) {
-    super(actionMenu, utilsService);
+    super(router, actionMenu, utilsService);
   }
 
   protected override menuItems = (
@@ -37,14 +42,18 @@ export class ContextMenuProduto extends ContextMenu<ContextMenuProdutoData> {
       id: 'visualizar',
       label: 'Visualizar',
       icon: 'pi pi-search',
-      url: `${this.baseHref}/produto/${data.produto.idString}/visualizar`,
+      command: () => {
+        this.onNavigate(`/produto/${data.produto.idString}/visualizar`);
+      },
       rolesAllowed: [...ALL_ROLES],
     },
     {
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/produto/${data.produto.idString}/editar`,
+      command: () => {
+        this.onNavigate(`/produto/${data.produto.idString}/editar`);
+      },
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
     },
     ...(data.produto.status === STATUS.ATIVO
@@ -133,5 +142,6 @@ export class ContextMenuProduto extends ContextMenu<ContextMenuProdutoData> {
       this.refresh$.next();
     });
   }
+
 }
 

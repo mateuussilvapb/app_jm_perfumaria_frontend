@@ -1,7 +1,7 @@
-import { Categoria } from "@categoria/interfaces/categoria";
-import { SITUACAO } from "@shared/enums/situacao.enum";
+//Internos
+import { Marca } from "@marca/interfaces/marca";
 import { STATUS } from "@shared/enums/status.enum";
-import { Marca } from "app/modules/marca/interfaces/marca";
+import { Categoria } from "@categoria/interfaces/categoria";
 
 export interface Produto {
   id: string;
@@ -12,7 +12,6 @@ export interface Produto {
   precoCusto: number;
   precoVenda: number;
   status: STATUS;
-  situacao: SITUACAO;
   codigo: number;
   quantidadeEmEstoque: number;
   marca: Marca;

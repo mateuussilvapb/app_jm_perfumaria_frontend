@@ -1,3 +1,6 @@
+//Angular
+import { Router } from '@angular/router';
+
 //Externos
 import { Menu } from 'primeng/menu';
 import { BehaviorSubject, finalize, Subject } from 'rxjs';
@@ -19,6 +22,7 @@ export interface ContextMenuUsuarioData {
 
 export class ContextMenuUsuario extends ContextMenu<ContextMenuUsuarioData> {
   constructor(
+    router: Router,
     actionMenu: Menu,
     utilsService: UtilsService,
     private readonly loading$: BehaviorSubject<boolean>,
@@ -27,7 +31,7 @@ export class ContextMenuUsuario extends ContextMenu<ContextMenuUsuarioData> {
     private readonly confirmationService: ConfirmationService,
     private readonly usuarioCommandService: UsuarioCommandService
   ) {
-    super(actionMenu, utilsService);
+    super(router, actionMenu, utilsService);
   }
 
   protected override menuItems = (
@@ -37,14 +41,18 @@ export class ContextMenuUsuario extends ContextMenu<ContextMenuUsuarioData> {
       id: 'visualizar',
       label: 'Visualizar',
       icon: 'pi pi-search',
-      url: `${this.baseHref}/usuario/${data.usuario.id}/visualizar`,
+      command: () => {
+        this.onNavigate(`/usuario/${data.usuario.id}/visualizar`);
+      },
       rolesAllowed: [ROLES.ADMIN],
     },
     {
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/usuario/${data.usuario.id}/editar`,
+      command: () => {
+        this.onNavigate(`/usuario/${data.usuario.id}/editar`);
+      },
       rolesAllowed: [ROLES.ADMIN],
     },
     ...(data.usuario.enabled

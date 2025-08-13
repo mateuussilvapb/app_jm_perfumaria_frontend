@@ -1,10 +1,12 @@
-import { $dt } from '@primeng/themes';
 //Angular
 import { Subject } from 'rxjs';
 import { computed, Injectable, signal } from '@angular/core';
 
+//Externos
+import { $dt } from '@primeng/themes';
+
 //Internos
-import { ScreenSizeService } from './screen-size.service';
+import { ScreenSizeService } from '@core/services/screen-size.service';
 
 interface LayoutConfig {
   // preset?: string;
@@ -44,7 +46,7 @@ export class LayoutService {
   private screenResize() {
     this.screenSizeService.width$.subscribe((width) => {
       if (width > 991) {
-        this.state.mainMenuVisible = false;
+        this.state.mainMenuVisible = true;
       } else {
         this.state.mainMenuVisible = false;
       }

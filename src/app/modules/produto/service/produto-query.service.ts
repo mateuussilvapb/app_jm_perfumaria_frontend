@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 //Internos
-import { AbstractQueryService } from 'app/shared/services/abstract-query.service';
-import { Produto } from '../interfaces/produto';
+import { Produto } from '@produto/interfaces/produto';
+import { AbstractQueryService } from '@shared/services/abstract-query.service';
 
 @Injectable({
   providedIn: 'root',

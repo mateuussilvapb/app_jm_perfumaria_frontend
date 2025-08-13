@@ -1,3 +1,6 @@
+//Angular
+import { Router } from '@angular/router';
+
 //Externos
 import { Subject } from 'rxjs';
 import { Menu } from 'primeng/menu';
@@ -20,6 +23,7 @@ export interface ContextMenuCategoriaData {
 
 export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> {
   constructor(
+    router: Router,
     actionMenu: Menu,
     utilsService: UtilsService,
     private readonly refresh$: Subject<void>,
@@ -27,7 +31,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
     private readonly confirmationService: ConfirmationService,
     private readonly categoriaCommandService: CategoriaCommandService
   ) {
-    super(actionMenu, utilsService);
+    super(router, actionMenu, utilsService);
   }
 
   protected override menuItems = (
@@ -37,14 +41,18 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
       id: 'visualizar',
       label: 'Visualizar',
       icon: 'pi pi-search',
-      url: `${this.baseHref}/categoria/${data.categoria.idString}/visualizar`,
+      command: () => {
+        this.onNavigate(`/categoria/${data.categoria.idString}/visualizar`);
+      },
       rolesAllowed: [...ALL_ROLES],
     },
     {
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/categoria/${data.categoria.idString}/editar`,
+      command: () => {
+        this.onNavigate(`/categoria/${data.categoria.idString}/editar`);
+      },
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
     },
     ...(data.categoria.status === STATUS.ATIVO

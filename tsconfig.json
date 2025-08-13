@@ -26,7 +26,9 @@
       "@categoria/*": ["app/modules/categoria/*"],
       "@marca/*": ["app/modules/marca/*"],
       "@usuario/*": ["app/modules/usuario/*"],
-      "@utils/*": ["app/utils/*"]
+      "@produto/*": ["app/modules/produto/*"],
+      "@utils/*": ["app/utils/*"],
+      "@config/*": ["app/config/*"]
     }
   },
   "angularCompilerOptions": {

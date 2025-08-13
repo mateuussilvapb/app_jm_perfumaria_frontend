@@ -1,4 +1,5 @@
 //Angular
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 
@@ -15,7 +16,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Utils } from '@utils/utils';
 import { ROLES } from '@shared/models/roles';
 import { UtilsService } from '@utils/utils.service';
-import { LayoutService } from '@core/services/layout.service';
 import { UsuarioResponseDto } from '@usuario/interfaces/usuario-response-dto';
 import { UsuarioCommandService } from '@usuario/service/usuario-command.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
@@ -47,8 +47,8 @@ export class UsuarioTableComponent {
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
   constructor(
+    private readonly router: Router,
     private readonly utilsService: UtilsService,
-    private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly usuarioCommandService: UsuarioCommandService
@@ -56,6 +56,7 @@ export class UsuarioTableComponent {
 
   ngAfterViewInit(): void {
     this.contextMenu = new ContextMenuUsuario(
+      this.router,
       this.actionMenu,
       this.utilsService,
       this.loading$,

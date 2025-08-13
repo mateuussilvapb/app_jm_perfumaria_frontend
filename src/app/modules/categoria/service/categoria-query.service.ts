@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 //Internos
 import { Utils } from '@utils/utils';
 import { Categoria } from '@categoria/interfaces/categoria';
+import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
 
 @Injectable({
@@ -22,6 +23,12 @@ export class CategoriaQueryService extends AbstractQueryService<Categoria> {
       `${this.baseURL}/query/searchByTermAndStatus${Utils.searchParamsToString(
         filters
       )}`
+    );
+  };
+
+  getAllAutocomplete = () => {
+    return this.http.get<AutocompleteDto[]>(
+      `${this.baseURL}/query/ativos/autocomplete`
     );
   };
 }

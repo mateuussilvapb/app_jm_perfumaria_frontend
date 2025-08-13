@@ -1,3 +1,6 @@
+//Angular
+import { Router } from '@angular/router';
+
 //Externos
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
@@ -17,6 +20,7 @@ export abstract class ContextMenu<T> {
   protected readonly baseHref: string;
 
   constructor(
+    private readonly router: Router,
     protected readonly actionMenu: Menu,
     private readonly utilsService: UtilsService
   ) {
@@ -49,5 +53,9 @@ export abstract class ContextMenu<T> {
         !Utils.isEmpty(item.rolesAllowed) &&
         item.rolesAllowed.some((rolesAllowed) => roles.includes(rolesAllowed))
     );
+  }
+
+  protected onNavigate(path: string) {
+    this.router.navigate([path]);
   }
 }

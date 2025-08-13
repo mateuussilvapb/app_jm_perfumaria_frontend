@@ -12,18 +12,17 @@ import {
   Observable,
   startWith,
   switchMap,
-  take,
-  tap,
+  take
 } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 
 //Internos
-import { LoadingComponent } from 'app/shared/components/loading/loading.component';
-import { ProdutoQueryService } from 'app/modules/protudo/service/produto-query.service';
-import { GenericFiltersComponent } from 'app/modules/protudo/components/generic-filters/generic-filters.component';
-import { Produto } from '../../interfaces/produto';
-import { ProdutoTableComponent } from '../../components/produto-table/produto-table.component';
+import { Produto } from '@produto/interfaces/produto';
+import { ProdutoQueryService } from '@produto/service/produto-query.service';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
+import { ProdutoTableComponent } from '@produto/components/produto-table/produto-table.component';
+import { ProdutoFiltersComponent } from '@produto/components/produto-filters/produto-filters.component';
 
 @Component({
   selector: 'app-produto-list',
@@ -39,7 +38,7 @@ import { ProdutoTableComponent } from '../../components/produto-table/produto-ta
     //Internos
     LoadingComponent,
     ProdutoTableComponent,
-    GenericFiltersComponent,
+    ProdutoFiltersComponent,
   ],
   templateUrl: './produto-list.component.html',
 })

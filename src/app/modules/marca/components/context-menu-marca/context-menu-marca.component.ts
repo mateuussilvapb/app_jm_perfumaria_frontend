@@ -1,3 +1,6 @@
+//Angular
+import { Router } from '@angular/router';
+
 //Externos
 import { Subject } from 'rxjs';
 import { Menu } from 'primeng/menu';
@@ -20,6 +23,7 @@ export interface ContextMenuMarcaData {
 
 export class ContextMenuMarca extends ContextMenu<ContextMenuMarcaData> {
   constructor(
+    router: Router,
     actionMenu: Menu,
     utilsService: UtilsService,
     private readonly refresh$: Subject<void>,
@@ -27,7 +31,7 @@ export class ContextMenuMarca extends ContextMenu<ContextMenuMarcaData> {
     private readonly confirmationService: ConfirmationService,
     private readonly marcaCommandService: MarcaCommandService
   ) {
-    super(actionMenu, utilsService);
+    super(router, actionMenu, utilsService);
   }
 
   protected override menuItems = (
@@ -37,14 +41,18 @@ export class ContextMenuMarca extends ContextMenu<ContextMenuMarcaData> {
       id: 'visualizar',
       label: 'Visualizar',
       icon: 'pi pi-search',
-      url: `${this.baseHref}/marca/${data.marca.idString}/visualizar`,
+      command: () => {
+        this.onNavigate(`/marca/${data.marca.idString}/visualizar`);
+      },
       rolesAllowed: [...ALL_ROLES],
     },
     {
       id: 'editar',
       label: 'Editar',
       icon: 'pi pi-user-edit',
-      url: `${this.baseHref}/marca/${data.marca.idString}/editar`,
+      command: () => {
+        this.onNavigate(`/marca/${data.marca.idString}/editar`);
+      },
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
     },
     ...(data.marca.status === STATUS.ATIVO

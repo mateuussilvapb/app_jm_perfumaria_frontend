@@ -1,4 +1,5 @@
 //Angular
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
@@ -13,13 +14,13 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
 import { Utils } from '@utils/utils';
+import { Marca } from '@marca/interfaces/marca';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
-import { Marca } from '../../interfaces/marca';
 import { LayoutService } from '@core/services/layout.service';
+import { MarcaCommandService } from '@marca/service/marca-command.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { MarcaCommandService } from '../../service/marca-command.service';
-import { ContextMenuMarca } from '../../components/context-menu-marca/context-menu-marca.component';
+import { ContextMenuMarca } from '@marca/components/context-menu-marca/context-menu-marca.component';
 
 @Component({
   selector: 'app-marca-table',
@@ -52,6 +53,7 @@ export class MarcaTableComponent implements AfterViewInit {
   readonly STATUS = STATUS;
 
   constructor(
+    private readonly router: Router,
     private readonly utilsService: UtilsService,
     private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
@@ -61,6 +63,7 @@ export class MarcaTableComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.contextMenu = new ContextMenuMarca(
+      this.router,
       this.actionMenu,
       this.utilsService,
       this.refresh$,

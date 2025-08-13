@@ -10,6 +10,7 @@ import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //Externos
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -34,6 +35,7 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     ReactiveFormsModule,
 
     //Externos
+    TagModule,
     CardModule,
     ButtonModule,
     TextareaModule,

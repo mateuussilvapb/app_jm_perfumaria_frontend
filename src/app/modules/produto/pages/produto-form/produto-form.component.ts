@@ -10,24 +10,27 @@ import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //Externos
+import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { BehaviorSubject, finalize, Observable } from 'rxjs';
 
 //Internos
+import { STATUS } from '@shared/enums/status.enum';
+import { Produto } from '@produto/interfaces/produto';
 import { FormBase } from '@shared/directives/form-base';
-import { Produto } from '../../interfaces/produto';
-import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
-import { ProdutoQueryService } from '../../service/produto-query.service';
-import { ProdutoCommandService } from '../../service/produto-command.service';
-import { ProdutoUpdateDTO } from '../../interfaces/produto-update-dto';
-import { DropdownModule } from 'primeng/dropdown';
-import { MarcaQueryService } from 'app/modules/marca/service/marca-query.service';
+import { ProdutoDto } from '@produto/interfaces/produto-dto';
+import { MarcaQueryService } from '@marca/service/marca-query.service';
+import { ProdutoUpdateDTO } from '@produto/interfaces/produto-update-dto';
+import { ProdutoQueryService } from '@produto/service/produto-query.service';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
+import { ProdutoCommandService } from '@produto/service/produto-command.service';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
-import { SelectModule } from 'primeng/select';
+import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({
   selector: 'app-produto-form',
@@ -43,22 +46,24 @@ import { SelectModule } from 'primeng/select';
     TextareaModule,
     InputTextModule,
     SelectModule,
+    TagModule,
 
     //Internos
+    LoadingComponent,
     FormControlErrorsComponent,
   ],
   templateUrl: './produto-form.component.html',
 })
 export class ProdutoFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
+  public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(false);
+  public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(false);
+  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
+
   public titleCard: string = '';
   public responseProduto: Produto;
   public marcaOptions: { label: string; value: string }[] = [];
   public categoriaOptions: { label: string; value: string }[] = [];
-  public statusOptions = [
-    { label: 'Ativo', value: 'ATIVO' },
-    { label: 'Inativo', value: 'INATIVO' },
-  ];
 
   constructor(
     private readonly router: Router,
@@ -80,7 +85,6 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       descricao: [''],
       precoCusto: [null, Validators.required],
       precoVenda: [null, Validators.required],
-      status: ['INATIVO', Validators.required],
       idMarca: [null, [Validators.required]],
       idCategoria: [null, [Validators.required]],
     });
@@ -101,16 +105,11 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   }
 
   protected override afterObterIdDaRota(): void {
-    this.getMarcaData();
-    this.getCategoriaData();
+    this.getAllMarcasAutocomplete();
+    this.getAllCategoriasAutocomplete();
     if (this.isView || this.isUpdate) {
       this.getData();
     }
-  }
-
-  getStatusLabel(status: string): string {
-    const found = this.statusOptions.find((opt) => opt.value === status);
-    return found ? found.label : '';
   }
 
   getData() {
@@ -126,34 +125,34 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       });
   }
 
-  getMarcaData() {
-    this.loading$.next(true);
+  getAllMarcasAutocomplete() {
+    this.loadingAutocompleteMarca$.next(true);
     this.marcaQueryService
-      .all()
-      .pipe(finalize(() => this.loading$.next(false)))
+      .getAllAutocomplete()
+      .pipe(finalize(() => this.loadingAutocompleteMarca$.next(false)))
       .subscribe((marcas) => {
         marcas.forEach((m) => {
           if (m.nome !== 'Sem marca') {
             this.marcaOptions.push({
               label: m.nome,
-              value: m.idString,
+              value: m.id,
             });
           }
         });
       });
   }
 
-  getCategoriaData() {
-    this.loading$.next(true);
+  getAllCategoriasAutocomplete() {
+    this.loadingAutocompleteCategoria$.next(true);
     this.categoriaQueryService
-      .all()
-      .pipe(finalize(() => this.loading$.next(false)))
+      .getAllAutocomplete()
+      .pipe(finalize(() => this.loadingAutocompleteCategoria$.next(false)))
       .subscribe((categorias) => {
         categorias.forEach((m) => {
           if (m.nome !== 'Sem categoria') {
             this.categoriaOptions.push({
               label: m.nome,
-              value: m.idString,
+              value: m.id,
             });
           }
         });
@@ -161,69 +160,54 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   }
 
   onSubmit(event) {
-    event.preventDefault();
-    if (this.isCreate) {
-      if (this.form.invalid) {
-        if (!this.form.value.descricao) {
-          this.form.patchValue({ descricao: 'Sem descrição' });
-        }
-        if (!this.form.value.precoCusto) {
-          this.form.patchValue({ precoCusto: 0.0 });
-        }
-        if (!this.form.value.precoVenda) {
-          this.form.patchValue({ precoVenda: 0.0 });
-        }
-        if (!this.form.value.idMarca) {
-          this.form.patchValue({ idMarca: '738732440068063458' });
-        }
-        if (!this.form.value.idCategoria) {
-          this.form.patchValue({ idCategoria: '738732659782418506' });
-        }
-        console.log('Formulário inválido, verifique os campos.');
-        this.form.value.situacao = 'EM_CADASTRAMENTO';
-      } else {
-        this.form.value.situacao = 'CADASTRO_FINALIZADO';
+    if (this.form.valid) {
+      this.onCreateUpdate$.next(true);
+      event.preventDefault();
+      let subscribe: Observable<any>;
+      if (this.isCreate) {
+        subscribe = this.createProduto();
+      } else if (this.isUpdate) {
+        subscribe = this.updateProduto();
       }
-      this.form.value.quantidade_estoque = 0;
-      this.createProduto();
-    } else if (this.isUpdate) {
-      this.updateProduto();
+      this.onSubscribe(subscribe);
     }
   }
 
   createProduto() {
-    this.produtoCommandService.create(this.form.value).subscribe((res) => {
-      if (res) {
-        this.messageSuccess();
-      }
-    });
+    const dto: ProdutoDto = {
+      nome: this.form?.value?.nome ?? '',
+      descricao: this.form?.value?.descricao ?? '',
+      idCategoria: this.form?.value?.idCategoria ?? '',
+      idMarca: this.form?.value?.idMarca ?? '',
+      precoCusto: this.form?.value?.precoCusto ?? '',
+      precoVenda: this.form?.value?.precoVenda ?? '',
+      status: STATUS.ATIVO,
+    }
+    return this.produtoCommandService.create(dto);
   }
 
   updateProduto() {
-    if (this.form.invalid) {
-      this.form.value.situacao = 'EM_CADASTRAMENTO';
-    } else {
-      this.form.value.situacao = 'CADASTRO_FINALIZADO';
-    }
-    
     const produtoDTO: ProdutoUpdateDTO = {
-      id: this.responseProduto.idString,
-      nome: this.form.value.nome,
-      descricao: this.form.value.descricao,
-      precoCusto: this.form.value.precoCusto,
-      precoVenda: this.form.value.precoVenda,
-      status: this.form.value.status,
-      situacao: this.form.value.situacao,
-      idCategoria: this.form.value.idCategoria,
-      idMarca: this.form.value.idMarca,
+      id: this.responseProduto?.idString,
+      nome: this.form?.value?.nome ?? '',
+      descricao: this.form?.value?.descricao ?? '',
+      precoCusto: this.form?.value?.precoCusto ?? '',
+      precoVenda: this.form?.value?.precoVenda ?? '',
+      idCategoria: this.form?.value?.idCategoria ?? '',
+      idMarca: this.form?.value?.idMarca ?? '',
+      status: this.responseProduto?.status ?? STATUS.ATIVO,
     };
-    this.produtoCommandService
-      .update(this.responseProduto.idString, produtoDTO)
-      .subscribe((res) => {
-        if (res) {
-          this.messageSuccess();
-        }
-      });
+    return this.produtoCommandService.update(this.responseProduto.idString, produtoDTO);
+  }
+
+  onSubscribe(subscribe: Observable<any>) {
+    subscribe.pipe(finalize(() => this.onCreateUpdate$.next(false)))
+    .subscribe({
+      next: () => this.messageSuccess(),
+      error: () => {
+        this.router.navigate(['/usuario']);
+      },
+    });
   }
 
   messageSuccess() {

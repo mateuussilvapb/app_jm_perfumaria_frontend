@@ -17,11 +17,11 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 
 //Internos
-import { Marca } from 'app/modules/marca/interfaces/marca';
-import { LoadingComponent } from 'app/shared/components/loading/loading.component';
-import { MarcaQueryService } from 'app/modules/marca/service/marca-query.service';
-import { GenericFiltersComponent } from 'app/modules/marca/components/generic-filters/generic-filters.component';
-import { MarcaTableComponent } from 'app/modules/marca/components/marca-table/marca-table.component';
+import { Marca } from '@marca/interfaces/marca';
+import { MarcaQueryService } from '@marca/service/marca-query.service';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
+import { MarcaTableComponent } from '@marca/components/marca-table/marca-table.component';
+import { MarcaFiltersComponent } from '@marca/components/marca-filters/marca-filters.component';
 
 @Component({
   selector: 'app-marca-list',
@@ -37,7 +37,7 @@ import { MarcaTableComponent } from 'app/modules/marca/components/marca-table/ma
     //Internos
     LoadingComponent,
     MarcaTableComponent,
-    GenericFiltersComponent,
+    MarcaFiltersComponent,
   ],
   templateUrl: './marca-list.component.html',
 })

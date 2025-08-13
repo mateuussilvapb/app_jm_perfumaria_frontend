@@ -1,4 +1,5 @@
 //Angular
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
@@ -52,6 +53,7 @@ export class CategoriaTableComponent implements AfterViewInit {
   readonly STATUS = STATUS;
 
   constructor(
+    private readonly router: Router,
     private readonly utilsService: UtilsService,
     private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
@@ -61,6 +63,7 @@ export class CategoriaTableComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.contextMenu = new ContextMenuCategoria(
+      this.router,
       this.actionMenu,
       this.utilsService,
       this.refresh$,

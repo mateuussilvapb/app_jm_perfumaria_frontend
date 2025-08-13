@@ -1,4 +1,5 @@
 //Angular
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
@@ -7,22 +8,22 @@ import { BehaviorSubject } from 'rxjs';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
 import { MenuModule } from 'primeng/menu';
-import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { IconField } from 'primeng/iconfield';
+import { InputIcon } from 'primeng/inputicon';
+import { Table, TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Internos
 import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
-import { Produto } from '../../interfaces/produto';
+import { Produto } from '@produto/interfaces/produto';
 import { LayoutService } from '@core/services/layout.service';
+import { ProdutoCommandService } from '@produto/service/produto-command.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { ProdutoCommandService } from '../../service/produto-command.service';
-import { ContextMenuProduto } from '../context-menu-produto/context-menu-produto.component';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
+import { ContextMenuProduto } from '@produto/components/context-menu-produto/context-menu-produto.component';
 
 @Component({
   selector: 'app-produto-table',
@@ -44,12 +45,25 @@ import { InputTextModule } from 'primeng/inputtext';
     SemDadosComponent,
   ],
   templateUrl: './produto-table.component.html',
+  styleUrls: ['./produto-table.component.scss']
 })
 export class ProdutoTableComponent implements AfterViewInit {
   @Input() data: Array<Produto> = [];
   @Input() refresh$: BehaviorSubject<void>;
   private contextMenu: ContextMenuProduto;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
+
+  globalFilterFieldsTable: string[] = [
+    'nome',
+    'descricao',
+    'precoCusto',
+    'precoVenda',
+    'status',
+    'codigo',
+    'quantidadeEmEstoque',
+    'marca.nome',
+    'categoria.nome',
+  ];
 
   get isDarkTheme() {
     return this.layoutService.isDarkTheme();
@@ -58,6 +72,7 @@ export class ProdutoTableComponent implements AfterViewInit {
   readonly STATUS = STATUS;
 
   constructor(
+    private readonly router: Router,
     private readonly utilsService: UtilsService,
     private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
@@ -67,6 +82,7 @@ export class ProdutoTableComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.contextMenu = new ContextMenuProduto(
+      this.router,
       this.actionMenu,
       this.utilsService,
       this.refresh$,

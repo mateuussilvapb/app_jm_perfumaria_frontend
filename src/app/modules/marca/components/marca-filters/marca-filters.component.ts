@@ -17,10 +17,10 @@ import { BehaviorSubject, map, startWith } from 'rxjs';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
 //Internos
-import { STATUS } from 'app/shared/enums/status.enum';
+import { STATUS } from '@shared/enums/status.enum';
 
 @Component({
-  selector: 'app-generic-filters',
+  selector: 'app-marca-filters',
   imports: [
     //Angular
     FormsModule,
@@ -34,9 +34,9 @@ import { STATUS } from 'app/shared/enums/status.enum';
     FloatLabelModule,
     RadioButtonModule,
   ],
-  templateUrl: './generic-filters.component.html',
+  templateUrl: './marca-filters.component.html',
 })
-export class GenericFiltersComponent implements OnInit {
+export class MarcaFiltersComponent implements OnInit {
   @Input() refresh$: BehaviorSubject<void>;
   @Output() onFilter = new EventEmitter<any>();
 

@@ -7,8 +7,8 @@ import { HOME_ROUTES } from '@home/home.routes';
 import { MARCA_ROUTES } from '@marca/marca.routes';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { USUARIO_ROUTES } from '@usuario/usuario.routes';
+import { PRODUTO_ROUTES } from '@produto/produto.routes';
 import { CATEGORIA_ROUTES } from '@categoria/categoria.routes';
-import { PRODUTO_ROUTES } from 'app/modules/protudo/produto.routes';
 
 export const CORE_ROUTES: Routes = [
   {

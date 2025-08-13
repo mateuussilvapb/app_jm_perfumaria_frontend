@@ -6,8 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 //Internos
-import { AbstractCommandService } from 'app/shared/services/abstract-command.service';
-import { Produto } from '../interfaces/produto';
+import { Produto } from '@produto/interfaces/produto';
+import { AbstractCommandService } from '@shared/services/abstract-command.service';
 
 @Injectable({
   providedIn: 'root',
