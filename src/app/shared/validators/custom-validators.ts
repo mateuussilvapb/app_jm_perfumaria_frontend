@@ -17,4 +17,18 @@ export class CustomValidators {
     };
   }
 
+  static noSpacesAndSpecialCharacters(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      if (!value) return null;
+
+      const hasSpaces = /\s/.test(value);
+      const hasInvalidChars = /[^a-zA-Z0-9_-]/.test(value);
+
+      const valid = !hasSpaces && !hasInvalidChars;
+
+      return valid ? null : { specialCharacters: true };
+    };
+  }
 }

@@ -88,6 +88,7 @@ export class UsuarioFormComponent extends FormBase implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(30),
+          CustomValidators.noSpacesAndSpecialCharacters(),
         ],
       ],
       email: [null, [Validators.required, Validators.email]],
