@@ -35,8 +35,8 @@ export const errorMessagesDictionary = {
   diasInsuficientesSolicitacao: () => `Dias insuficientes`,
   dataMinimaSolicitacao: (value) =>
     `A data mínima para este período aquisitivo é: ${value}`,
-  min: (value) => `O valor mínimo é: ${value}`,
-  max: (value) => `O valor máximo é: ${value}`,
+  min: (value) => `O valor mínimo é: ${value.min}`,
+  max: (value) => `O valor máximo é: ${value.max}`,
   specialCharacters: () => 'Usuário não pode conter espaços ou caracteres especiais',
   lettersAndNumbers: () => 'A senha deve possuir letras e números',
   passwordMismatch: () => 'As senhas não conferem',

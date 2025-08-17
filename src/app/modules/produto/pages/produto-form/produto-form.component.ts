@@ -56,8 +56,12 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
 })
 export class ProdutoFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(false);
-  public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(false);
+  public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(
+    false
+  );
+  public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(
+    false
+  );
   public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
@@ -81,10 +85,31 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
 
   buildForm(): void {
     this.form = this.fb.group({
-      nome: ['', Validators.required],
-      descricao: [''],
-      precoCusto: [null, Validators.required],
-      precoVenda: [null, Validators.required],
+      nome: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+        ],
+      ],
+      descricao: ['', [Validators.maxLength(1000)]],
+      precoCusto: [
+        null,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(9999999999.99),
+        ],
+      ],
+      precoVenda: [
+        null,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(9999999999.99),
+        ],
+      ],
       idMarca: [null, [Validators.required]],
       idCategoria: [null, [Validators.required]],
     });
@@ -120,8 +145,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .subscribe((res) => {
         this.responseProduto = res;
         this.form.patchValue(res);
-        this.form.patchValue({ idMarca: res.marca.idString })
-        this.form.patchValue({ idCategoria: res.categoria.idString })
+        this.form.patchValue({ idMarca: res.marca.idString });
+        this.form.patchValue({ idCategoria: res.categoria.idString });
       });
   }
 
@@ -182,7 +207,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       precoCusto: this.form?.value?.precoCusto ?? '',
       precoVenda: this.form?.value?.precoVenda ?? '',
       status: STATUS.ATIVO,
-    }
+    };
     return this.produtoCommandService.create(dto);
   }
 
@@ -197,12 +222,14 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       idMarca: this.form?.value?.idMarca ?? '',
       status: this.responseProduto?.status ?? STATUS.ATIVO,
     };
-    return this.produtoCommandService.update(this.responseProduto.idString, produtoDTO);
+    return this.produtoCommandService.update(
+      this.responseProduto.idString,
+      produtoDTO
+    );
   }
 
   onSubscribe(subscribe: Observable<any>) {
-    subscribe.pipe(finalize(() => this.onCreateUpdate$.next(false)))
-    .subscribe({
+    subscribe.pipe(finalize(() => this.onCreateUpdate$.next(false))).subscribe({
       next: () => this.messageSuccess(),
       error: () => {
         this.router.navigate(['/usuario']);
