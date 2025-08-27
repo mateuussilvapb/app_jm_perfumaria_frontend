@@ -22,7 +22,6 @@ import { Produto } from '@produto/interfaces/produto';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ProdutoTableComponent } from '@produto/components/produto-table/produto-table.component';
-import { ProdutoFiltersComponent } from '@produto/components/produto-filters/produto-filters.component';
 
 @Component({
   selector: 'app-produto-list',
@@ -38,7 +37,6 @@ import { ProdutoFiltersComponent } from '@produto/components/produto-filters/pro
     //Internos
     LoadingComponent,
     ProdutoTableComponent,
-    ProdutoFiltersComponent,
   ],
   templateUrl: './produto-list.component.html',
 })
