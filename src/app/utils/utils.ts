@@ -1,20 +1,22 @@
 //Internos
 import { STATUS } from '@shared/enums/status.enum';
+import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ROLES, ROLES_PT_BR } from '@shared/models/roles';
 
 export class Utils {
   static readonly getStatusNormalized = (status: STATUS) => {
-    if (status === STATUS.ATIVO) {
-      return 'Ativo';
-    }
+    if (status === STATUS.ATIVO) return 'Ativo';
     return 'Inativo';
   };
 
   static readonly getStatusUsuarioNormalized = (status: boolean) => {
-    if (status) {
-      return 'Ativo';
-    }
+    if (status) return 'Ativo';
     return 'Inativo';
+  };
+
+  static readonly getSituacaoNormalized = (situacao: SITUACAO) => {
+    if (situacao === SITUACAO.CADASTRO_FINALIZADO) return 'Finalizado';
+    return 'Em cadastramento';
   };
 
   static readonly isEmpty = (arr: any[]): boolean =>
