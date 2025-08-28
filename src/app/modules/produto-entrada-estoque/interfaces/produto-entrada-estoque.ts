@@ -1,5 +1,6 @@
-import { Produto } from '@produto/interfaces/produto';
+//Internos
 import { STATUS } from '@shared/enums/status.enum';
+import { Produto } from '@produto/interfaces/produto';
 
 export interface ProdutoEntradaEstoque {
   id: number;
