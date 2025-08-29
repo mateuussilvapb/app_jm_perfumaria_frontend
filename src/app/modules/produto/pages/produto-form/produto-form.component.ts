@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { BehaviorSubject, finalize, Observable } from 'rxjs';
 
 //Internos
@@ -38,15 +39,16 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     //Angular
     FormsModule,
     CommonModule,
+    CurrencyMaskModule,
     ReactiveFormsModule,
 
     //Externos
+    TagModule,
     CardModule,
+    SelectModule,
     ButtonModule,
     TextareaModule,
     InputTextModule,
-    SelectModule,
-    TagModule,
 
     //Internos
     LoadingComponent,
@@ -56,18 +58,15 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
 })
 export class ProdutoFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(
-    false
-  );
-  public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(
-    false
-  );
+  public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(false);
+  public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(false);
   public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
   public responseProduto: Produto;
   public marcaOptions: { label: string; value: string }[] = [];
   public categoriaOptions: { label: string; value: string }[] = [];
+  public optionsCurrencyMask = { prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left', allowNegative: false };
 
   constructor(
     private readonly router: Router,
@@ -232,7 +231,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     subscribe.pipe(finalize(() => this.onCreateUpdate$.next(false))).subscribe({
       next: () => this.messageSuccess(),
       error: () => {
-        this.router.navigate(['/usuario']);
+        this.router.navigate(['/produto']);
       },
     });
   }
