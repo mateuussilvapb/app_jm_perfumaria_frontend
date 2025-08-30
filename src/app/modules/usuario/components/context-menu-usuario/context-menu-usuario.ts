@@ -122,7 +122,7 @@ export class ContextMenuUsuario extends ContextMenu<ContextMenuUsuarioData> {
   private onExcluir(idString: string) {
     this.confirmationService.confirm({
       message:
-        'Tem certeza que deseja excluir este usuário? A ação não poderá ser desfeita.',
+        'Tem certeza que deseja excluir este usuário?<br>A ação não poderá ser desfeita.',
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',
