@@ -1,0 +1,120 @@
+<p-card>
+  @if (data.length > 0) {
+    <p-table
+      [rows]="10"
+      dataKey="idString"
+      [value]="data"
+      [paginator]="true"
+      class="table-custom"
+      [expandedRowKeys]="expandedRows"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-gridlines"
+      (onRowExpand)="onRowExpand($event)"
+      (onRowCollapse)="onRowCollapse($event)"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th id="id_th_tabela_acoes" class="text-50 text-center surface-100 text-color w-5rem"></th>
+          <th id="id_th_tabela_codigo" class="text-50 text-center surface-100 text-color" pFrozenColumn>Código</th>
+          <th id="id_th_tabela_usuario" class="text-50 text-center surface-100 text-color">Usuário</th>
+          <th id="id_th_tabela_data_entrada" class="text-50 text-center surface-100 text-color">Data de Entrada</th>
+          <th id="id_th_tabela_descricao" class="text-50 text-center surface-100 text-color">Descrição</th>
+          <th id="id_th_tabela_situacao" class="text-50 text-center surface-100 text-color">Situação</th>
+          <th id="id_th_tabela_qtd_itens" class="text-50 text-center surface-100 text-color">Qtd Itens</th>
+          <th id="id_th_tabela_qtd_itens" class="text-50 text-center surface-100 text-color">Qtd Itens Únicos</th>
+          <th id="id_th_tabela_opcoes" class="text-50 text-center surface-100 text-color">Opções</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-entradaEstoque let-expanded="expanded">
+        <tr>
+          <td>
+            <p-button
+              pRipple
+              type="button"
+              [text]="true"
+              [rounded]="true"
+              severity="secondary"
+              [pRowToggler]="entradaEstoque"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+          </td>
+          <td class="text-center" pFrozenColumn>{{ entradaEstoque.codigo ?? '-' }}</td>
+          <td class="text-center">{{ entradaEstoque.createdBy ?? '-'}}</td>
+          <td class="text-center">{{ (entradaEstoque.createdAt | date:'dd/MM/yyyy') ?? '-'}}</td>
+          <td class="text-center">{{ entradaEstoque.descricao ?? '-'}}</td>
+          <td class="text-center">
+            <p-tag [severity]="entradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(entradaEstoque.situacao)" />
+          </td>
+          <td class="text-center">{{ entradaEstoque.qtdItens ?? '-'}}</td>
+          <td class="text-center">{{ entradaEstoque.qtdItensUnicos ?? '-'}}</td>
+          <td class="text-center" style="width: 4%; min-width: 5rem">
+            <p-button
+              [text]="true"
+              icon="pi pi-ellipsis-v"
+              styleClass="text-color"
+              (onClick)="onToggleMenu($event, entradaEstoque)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #expandedrow let-produtoEntradaEstoque>
+        <tr>
+          <td colspan="9">
+            <div>
+              @if (produtoEntradaEstoque.loading) {
+                <app-loading></app-loading>
+              }
+              @else {
+                <p-card [header]="`Produtos da entrada de estoque de código ${produtoEntradaEstoque.codigo}`">
+                  <p-table [value]="produtoEntradaEstoque.produtos" dataKey="idString">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th id="id_th_subtabela_produto" class="text-50 text-center surface-100 text-color text-sm">Produto</th>
+                        <th id="id_th_subtabela_preco_venda" class="text-50 text-center surface-100 text-color text-sm">Preço de Venda</th>
+                        <th id="id_th_subtabela_estoque" class="text-50 text-center surface-100 text-color text-sm">Estoque</th>
+                        <th id="id_th_subtabela_quantidade" class="text-50 text-center surface-100 text-color text-sm">Quantidade</th>
+                        <th id="id_th_subtabela_desconto" class="text-50 text-center surface-100 text-color text-sm">Desconto</th>
+                        <th id="id_th_subtabela_valor_unitario" class="text-50 text-center surface-100 text-color text-sm">Valor Unitário</th>
+                        <th id="id_th_subtabela_valor_unitario_desconto" class="text-50 text-center surface-100 text-color text-sm">Valor Unitário com Desconto</th>
+                        <th id="id_th_subtabela_valor_final" class="text-50 text-center surface-100 text-color text-sm">Valor Final</th>
+                        <th id="id_th_subtabela_valor_final" class="text-50 text-center surface-100 text-color text-sm">Valor Final com Desconto</th>
+                        <th id="id_th_subtabela_acoes" class="text-50 text-center surface-100 text-color w-5rem"></th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-produtoEntrada let-expanded="expanded">
+                      <tr>
+                        <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.produto.nome ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (produtoEntrada.produto.precoVenda | currency: 'BRL') ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.produto.quantidadeEmEstoque ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.quantidade ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (produtoEntrada.desconto | percent) ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (produtoEntrada.precoUnitario | currency: 'BRL') ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (getValorUnitarioComDesconto(produtoEntrada) | currency: 'BRL') ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (produtoEntrada.precoUnitario * produtoEntrada.quantidade | currency: 'BRL') ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn>{{ (getPrecoFinal(produtoEntrada) | currency: 'BRL') }}</td>
+                        <td>
+                          <p-button
+                            pRipple
+                            type="button"
+                            [text]="true"
+                            [rounded]="true"
+                            icon="pi pi-search"
+                            severity="secondary"
+                            pTooltip="Visualizar Produto"
+                            (onClick)="goToVisualizarProduto(produtoEntrada)"/>
+                        </td>
+                      </tr>
+                  </ng-template>
+                  </p-table>
+                </p-card>
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+  <sem-dados [data]="data"></sem-dados>
+</p-card>
+
+<p-menu #actionMenu [popup]="true" />

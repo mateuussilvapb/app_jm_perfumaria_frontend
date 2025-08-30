@@ -27,6 +27,8 @@
       "@marca/*": ["app/modules/marca/*"],
       "@usuario/*": ["app/modules/usuario/*"],
       "@produto/*": ["app/modules/produto/*"],
+      "@entrada-estoque/*": ["app/modules/entrada-estoque/*"],
+      "@produto-entrada-estoque/*": ["app/modules/produto-entrada-estoque/*"],
       "@utils/*": ["app/utils/*"],
       "@config/*": ["app/config/*"]
     }

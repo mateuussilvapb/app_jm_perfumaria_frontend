@@ -87,6 +87,19 @@ export const ItensMenu: ItemMenu[] = [
     ],
   },
   {
+    label: 'ENTRADA ESTOQUE',
+    separator: true,
+    roles: ALL_ROLES,
+    children: [
+      {
+        label: 'Listar Entradas de Estoque',
+        separator: false,
+        icon: PrimeIcons.LIST,
+        route: '/entrada-estoque',
+      },
+    ],
+  },
+  {
     label: 'USUÁRIO',
     separator: true,
     roles: [ROLES.ADMIN],
