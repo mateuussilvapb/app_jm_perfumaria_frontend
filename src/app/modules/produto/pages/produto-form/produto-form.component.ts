@@ -24,6 +24,7 @@ import { BehaviorSubject, finalize, Observable } from 'rxjs';
 import { STATUS } from '@shared/enums/status.enum';
 import { Produto } from '@produto/interfaces/produto';
 import { FormBase } from '@shared/directives/form-base';
+import { OPTIONS_CURRENCY_MASK } from '@utils/constants';
 import { ProdutoDto } from '@produto/interfaces/produto-dto';
 import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { MarcaQueryService } from '@marca/service/marca-query.service';
@@ -67,16 +68,16 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
   public responseProduto: Produto;
   public marcaOptions: AutocompleteDto[] = [];
   public categoriaOptions: AutocompleteDto[] = [];
-  public optionsCurrencyMask = { prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left', allowNegative: false };
+  public optionsCurrencyMask = OPTIONS_CURRENCY_MASK;
 
   constructor(
     private readonly router: Router,
     private readonly fb: FormBuilder,
     private readonly location: Location,
     private readonly messageService: MessageService,
+    private readonly marcaQueryService: MarcaQueryService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly produtoQueryService: ProdutoQueryService,
-    private readonly marcaQueryService: MarcaQueryService,
     private readonly categoriaQueryService: CategoriaQueryService,
     private readonly produtoCommandService: ProdutoCommandService
   ) {
@@ -142,7 +143,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .getAllAutocomplete()
       .pipe(finalize(() => this.loadingAutocompleteMarca$.next(false)))
       .subscribe((marcas) => {
-        this.marcaOptions = marcas
+        this.marcaOptions = marcas;
       });
   }
 
