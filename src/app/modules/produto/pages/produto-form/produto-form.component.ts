@@ -25,6 +25,7 @@ import { STATUS } from '@shared/enums/status.enum';
 import { Produto } from '@produto/interfaces/produto';
 import { FormBase } from '@shared/directives/form-base';
 import { ProdutoDto } from '@produto/interfaces/produto-dto';
+import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { MarcaQueryService } from '@marca/service/marca-query.service';
 import { ProdutoUpdateDTO } from '@produto/interfaces/produto-update-dto';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
@@ -64,8 +65,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
 
   public titleCard: string = '';
   public responseProduto: Produto;
-  public marcaOptions: { label: string; value: string }[] = [];
-  public categoriaOptions: { label: string; value: string }[] = [];
+  public marcaOptions: AutocompleteDto[] = [];
+  public categoriaOptions: AutocompleteDto[] = [];
   public optionsCurrencyMask = { prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left', allowNegative: false };
 
   constructor(
@@ -93,22 +94,8 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
         ],
       ],
       descricao: ['', [Validators.maxLength(1000)]],
-      precoCusto: [
-        null,
-        [
-          Validators.required,
-          Validators.min(0),
-          Validators.max(9999999999.99),
-        ],
-      ],
-      precoVenda: [
-        null,
-        [
-          Validators.required,
-          Validators.min(0),
-          Validators.max(9999999999.99),
-        ],
-      ],
+      precoCusto: [ null, [Validators.required, Validators.min(0), Validators.max(9999999999.99)] ],
+      precoVenda: [ null, [Validators.required, Validators.min(0), Validators.max(9999999999.99)] ],
       idMarca: [null, [Validators.required]],
       idCategoria: [null, [Validators.required]],
     });
@@ -155,14 +142,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .getAllAutocomplete()
       .pipe(finalize(() => this.loadingAutocompleteMarca$.next(false)))
       .subscribe((marcas) => {
-        marcas.forEach((m) => {
-          if (m.nome !== 'Sem marca') {
-            this.marcaOptions.push({
-              label: m.nome,
-              value: m.id,
-            });
-          }
-        });
+        this.marcaOptions = marcas
       });
   }
 
@@ -172,14 +152,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       .getAllAutocomplete()
       .pipe(finalize(() => this.loadingAutocompleteCategoria$.next(false)))
       .subscribe((categorias) => {
-        categorias.forEach((m) => {
-          if (m.nome !== 'Sem categoria') {
-            this.categoriaOptions.push({
-              label: m.nome,
-              value: m.id,
-            });
-          }
-        });
+        this.categoriaOptions = categorias;
       });
   }
 
