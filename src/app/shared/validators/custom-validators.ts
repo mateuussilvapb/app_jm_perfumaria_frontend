@@ -31,4 +31,22 @@ export class CustomValidators {
       return valid ? null : { specialCharacters: true };
     };
   }
+
+  static produtosDuplicadosValidator(): ValidatorFn {
+    return (formArray: AbstractControl): ValidationErrors | null => {
+      if (!formArray?.value || !Array.isArray(formArray.value)) {
+        return null;
+      }
+
+      const ids = formArray.value
+        .map((produto: any) => produto.idProduto)
+        .filter((id: any) => id != null); // ignora se ainda não escolheu produto
+
+      const hasDuplicate = ids.some(
+        (id, index) => ids.indexOf(id) !== index
+      );
+
+      return hasDuplicate ? { produtosDuplicados: true } : null;
+    };
+  }
 }

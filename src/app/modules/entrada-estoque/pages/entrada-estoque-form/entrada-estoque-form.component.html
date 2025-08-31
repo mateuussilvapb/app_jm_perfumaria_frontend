@@ -1,1 +1,104 @@
-<p>entrada-estoque-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+  <p-card [header]="titleCard">
+    <!-- CAMPOS -->
+    <div class="grid">
+      <!-- Produtos da entrada de estoque -->
+      <div formArrayName="produtos" class="col-12">
+        @for (produto of produtosFormArray?.controls; track $index; let i = $index) {
+          <div [ngClass]="[i > 0 ? 'mt-3' : '']" class="w-full">
+            <p-card class="w-full">
+              @if (loadingAutocompleteProdutos$ | async) {
+                <app-loading></app-loading>
+              } @if (!(loadingAutocompleteProdutos$ | async)) {
+                <app-adicionar-produto-entrada-estoque
+                (removeProduto)="removeProduto(i)"
+                [isView]="isView"
+                [isCreate]="isCreate"
+                [isEditable]="isEditable"
+                [produtosAutocomplete]="produtosOptionsFinal"
+                [formProdutoEntradaEstoque]="getProdutoFormGroup(i)"
+                [podeRemoverProduto]="podeRemoverProduto"
+                ></app-adicionar-produto-entrada-estoque>
+              }
+            </p-card>
+          </div>
+        }
+      </div>
+
+      <!-- Botão Adicionar Produto -->
+       @if (!isView) {
+        <div class="col-12 flex flex-row justify-content-end p-0">
+          <p-button
+            pRipple
+            type="button"
+            [text]="true"
+            [rounded]="true"
+            icon="pi pi-plus"
+            severity="secondary"
+            tooltipPosition="left"
+            class="p-0 text-primary"
+            styleClass="p-0 text-primary"
+            pTooltip="Adicionar Produto"
+            (onClick)="addProduto()"/>
+        </div>
+       }
+
+      <!-- Descrição -->
+      <div class="col-12">
+        <label for="descricao-entrada-estoque">Descrição</label>
+        <textarea
+          [rows]="5"
+          [cols]="30"
+          pInputTextarea
+          class="w-full mt-1"
+          [autoResize]="true"
+          formControlName="descricao"
+          id="descricao-entrada-estoque"
+        ></textarea>
+        <app-form-control-errors
+          [control]="getControlForm('descricao')"
+        ></app-form-control-errors>
+      </div>
+
+      <!-- Erros array produtos -->
+      <div class="col-12">
+        <app-form-control-errors
+          [control]="getControlForm('produtos')"
+        ></app-form-control-errors>
+      </div>
+    </div>
+
+    <!-- INFORMAÇÕES COMPLEMENTARES -->
+     @if (isView) {
+      <div class="flex flex-row justify-content-between p-0 m-0">
+        <small><strong>Usuário: </strong> {{responseEntradaEstoque?.createdBy}}</small>
+        <small><strong>Data: </strong> {{responseEntradaEstoque?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
+      </div>
+     }
+
+    <!-- BOTÕES -->
+    <div [ngClass]="[isView ? 'justify-content-start' : 'justify-content-between']" class="pt-2 flex flex-wrap flex-column-reverse md:flex-row">
+      <div class="col-12 p-0 md:col-2 mt-2 md:mt-0">
+        <p-button
+          label="Voltar"
+          class="w-full"
+          variant="outlined"
+          styleClass="w-full"
+          severity="secondary"
+          (onClick)="onVoltar()"
+        />
+      </div>
+      @if (!isView) {
+        <div class="col-12 mt-2 p-0 md:col-2 md:mt-0">
+          <p-button
+            type="submit"
+            class="w-full"
+            styleClass="w-full"
+            [disabled]="form.invalid"
+            [label]="isCreate ? 'Adicionar' : 'Atualizar'"
+          />
+        </div>
+      }
+    </div>
+  </p-card>
+</form>
