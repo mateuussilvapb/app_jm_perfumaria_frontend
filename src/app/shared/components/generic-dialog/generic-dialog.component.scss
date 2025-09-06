@@ -1,0 +1,12 @@
+::ng-deep .ng-star-inserted {
+  div {
+    .generic-dialog {
+      .p-dialog-header {
+        display: none !important;
+      }
+      .p-dialog-content{
+        padding: 0px !important;
+      }
+    }
+  }
+}

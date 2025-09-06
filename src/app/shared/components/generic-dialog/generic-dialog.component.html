@@ -1,0 +1,16 @@
+<section>
+  <div [class]="classTitle">
+    <i [class]="icon"></i>
+    <p class="m-0 ml-2">{{ tituloDialog }}</p>
+  </div>
+  <div class="px-4 pb-3" [innerHTML]="mensagemHtml"></div>
+  <div class="px-4 pb-2 flex flex-row justify-content-end">
+    <p-button
+      label="OK"
+      type="button"
+      variant="outlined"
+      (onClick)="ref.close()"
+      [severity]="severityButton"
+    ></p-button>
+  </div>
+</section>
