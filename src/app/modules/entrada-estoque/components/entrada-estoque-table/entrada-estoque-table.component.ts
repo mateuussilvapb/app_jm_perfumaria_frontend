@@ -1,7 +1,7 @@
 //Angular
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 
 //Externos
 import {
@@ -51,16 +51,17 @@ import { ContextMenuEntradaEstoque } from '@entrada-estoque/components/context-m
   ],
   templateUrl: './entrada-estoque-table.component.html',
 })
-export class EntradaEstoqueTableComponent {
+export class EntradaEstoqueTableComponent implements AfterViewInit {
   @Input() refresh$: BehaviorSubject<void>;
   @Input() data: Array<Partial<EntradaEstoque>> = [];
-  private contextMenu: ContextMenuEntradaEstoque;
+
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
+
+  public expandedRows = {};
+  private contextMenu: ContextMenuEntradaEstoque;
 
   readonly STATUS = STATUS;
   readonly SITUACAO = SITUACAO;
-
-  expandedRows = {};
 
   constructor(
     private readonly router: Router,
@@ -81,6 +82,8 @@ export class EntradaEstoqueTableComponent {
       this.confirmationService,
       this.entradaEstoqueCommandService
     );
+
+    this.onRefresh();
   }
 
   onToggleMenu(event: MouseEvent, entradaEstoque: EntradaEstoque) {
@@ -139,5 +142,13 @@ export class EntradaEstoqueTableComponent {
     this.router.navigate([
       `/produto/${item?.produto?.idString}/${ROTAS_FORM.VISUALIZAR}`,
     ]);
+  }
+
+  onRefresh() {
+    this.refresh$.asObservable().subscribe(() => {
+      if (this.expandedRows) {
+        this.expandedRows = {};
+      }
+    })
   }
 }

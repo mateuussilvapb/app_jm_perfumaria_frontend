@@ -1,104 +1,121 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+<form [formGroup]="form" novalidate>
   <p-card [header]="titleCard">
-    <!-- CAMPOS -->
-    <div class="grid">
-      <!-- Produtos da entrada de estoque -->
-      <div formArrayName="produtos" class="col-12">
-        @for (produto of produtosFormArray?.controls; track $index; let i = $index) {
-          <div [ngClass]="[i > 0 ? 'mt-3' : '']" class="w-full">
-            <p-card class="w-full">
-              @if (loadingAutocompleteProdutos$ | async) {
-                <app-loading></app-loading>
-              } @if (!(loadingAutocompleteProdutos$ | async)) {
-                <app-adicionar-produto-entrada-estoque
-                (removeProduto)="removeProduto(i)"
-                [isView]="isView"
-                [isCreate]="isCreate"
-                [isEditable]="isEditable"
-                [produtosAutocomplete]="produtosOptionsFinal"
-                [formProdutoEntradaEstoque]="getProdutoFormGroup(i)"
-                [podeRemoverProduto]="podeRemoverProduto"
-                ></app-adicionar-produto-entrada-estoque>
-              }
-            </p-card>
+    @if (loading$ | async) {
+      <app-loading></app-loading>
+    } @else {
+      <!-- CAMPOS -->
+
+      <!-- Situação da entrada de estoque -->
+      @if (isView) {
+        <div class="w-full flex md:flex-row flex-column justify-content-between align-items-center align-content-center mb-3">
+          <div class="flex flex-row justify-content-center md:justify-content-start align-items-center align-content-center md:pb-0 pb-2">
+            <small><strong>Código da Entrada: </strong> {{ responseEntradaEstoque?.codigo ?? '-'}} </small>
+          </div>
+            <p-tag [severity]="responseEntradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(responseEntradaEstoque.situacao)" />
+        </div>
+      }
+
+      <!-- Componente adição de produto -->
+      <div class="grid">
+        @if (!isView) {
+          <div class="col-12">
+            @if (loadingAutocompleteProdutos$ | async) {
+              <app-loading></app-loading>
+            } @else {
+              <app-adicionar-produto-entrada-estoque
+                [produtoToEdit]="produtoToEdit"
+                [produtosOptions]="produtosOptions"
+                (adicionarProduto)="addProdutoOnProdutosList($event)"
+              ></app-adicionar-produto-entrada-estoque>
+            }
+          </div>
+        }
+
+        <!-- Produtos -->
+        <div class="col-12">
+          <p-card>
+            <app-lista-produtos-entrada-estoque-to-add
+              (edit)="onEditProdutoInList($event)"
+              (remove)="onRemoveInProduto($event)"
+              [isView]="isView"
+              [produtos]="produtosList"
+              [produtosOptions]="produtosOptions"
+            ></app-lista-produtos-entrada-estoque-to-add>
+          </p-card>
+        </div>
+
+        <!-- Descrição -->
+        <div class="col-12">
+          <label for="descricao-entrada-estoque">Descrição</label>
+          <textarea
+            [rows]="5"
+            [cols]="30"
+            pInputTextarea
+            class="w-full mt-1"
+            [autoResize]="true"
+            formControlName="descricao"
+            id="descricao-entrada-estoque"
+          ></textarea>
+          <app-form-control-errors
+            [control]="getControlForm('descricao')"
+          ></app-form-control-errors>
+        </div>
+
+        <!-- Erros array produtos -->
+        <div class="col-12">
+          <app-form-control-errors
+            [control]="getControlForm('produtos')"
+          ></app-form-control-errors>
+        </div>
+      </div>
+
+      <!-- INFORMAÇÕES COMPLEMENTARES -->
+      @if (isView) {
+        <div class="flex flex-row justify-content-between p-0 m-0">
+          <small><strong>Usuário: </strong> {{responseEntradaEstoque?.createdBy}}</small>
+          <small><strong>Data: </strong> {{responseEntradaEstoque?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
+        </div>
+      }
+
+      <!-- BOTÕES -->
+      <div [ngClass]="[isView ? 'justify-content-start' : 'justify-content-between']" class="pt-2 flex flex-wrap flex-column-reverse md:flex-row">
+        <div class="col-12 p-0 md:col-2 mt-2 md:mt-0">
+          <p-button
+            class="w-full"
+            variant="outlined"
+            styleClass="w-full"
+            severity="secondary"
+            (onClick)="onVoltar()"
+            [label]="isView ? 'Voltar' : 'Cancelar'"
+          />
+        </div>
+        @if (!isView) {
+          <div class="flex flex-column md:flex-row justify-content-end">
+            @if (responseEntradaEstoque?.situacao !== SITUACAO.CADASTRO_FINALIZADO) {
+              <div class="col-12 mt-2 mr-0 p-0 md:col-6 md:mt-0 md:mr-2">
+                <p-button
+                  class="w-full"
+                  variant="outlined"
+                  styleClass="w-full"
+                  label="Salvar Rascunho"
+                  (onClick)="onSubmit($event, true)"
+                  [disabled]="form.invalid || produtosList.length === 0"
+                />
+              </div>
+            }
+            <div [ngClass]="responseEntradaEstoque?.situacao !== SITUACAO.CADASTRO_FINALIZADO ? 'md:col-8' : 'md:col-12'" class="col-12 mt-2 p-0 md:mt-0">
+              <p-button
+                type="submit"
+                class="w-full"
+                styleClass="w-full"
+                (onClick)="onSubmit($event, false)"
+                [disabled]="form.invalid || produtosList.length === 0"
+                [label]="isCreate ? 'Salvar e Finalizar' : 'Atualizar e Finalizar'"
+              />
+            </div>
           </div>
         }
       </div>
-
-      <!-- Botão Adicionar Produto -->
-       @if (!isView) {
-        <div class="col-12 flex flex-row justify-content-end p-0">
-          <p-button
-            pRipple
-            type="button"
-            [text]="true"
-            [rounded]="true"
-            icon="pi pi-plus"
-            severity="secondary"
-            tooltipPosition="left"
-            class="p-0 text-primary"
-            styleClass="p-0 text-primary"
-            pTooltip="Adicionar Produto"
-            (onClick)="addProduto()"/>
-        </div>
-       }
-
-      <!-- Descrição -->
-      <div class="col-12">
-        <label for="descricao-entrada-estoque">Descrição</label>
-        <textarea
-          [rows]="5"
-          [cols]="30"
-          pInputTextarea
-          class="w-full mt-1"
-          [autoResize]="true"
-          formControlName="descricao"
-          id="descricao-entrada-estoque"
-        ></textarea>
-        <app-form-control-errors
-          [control]="getControlForm('descricao')"
-        ></app-form-control-errors>
-      </div>
-
-      <!-- Erros array produtos -->
-      <div class="col-12">
-        <app-form-control-errors
-          [control]="getControlForm('produtos')"
-        ></app-form-control-errors>
-      </div>
-    </div>
-
-    <!-- INFORMAÇÕES COMPLEMENTARES -->
-     @if (isView) {
-      <div class="flex flex-row justify-content-between p-0 m-0">
-        <small><strong>Usuário: </strong> {{responseEntradaEstoque?.createdBy}}</small>
-        <small><strong>Data: </strong> {{responseEntradaEstoque?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
-      </div>
-     }
-
-    <!-- BOTÕES -->
-    <div [ngClass]="[isView ? 'justify-content-start' : 'justify-content-between']" class="pt-2 flex flex-wrap flex-column-reverse md:flex-row">
-      <div class="col-12 p-0 md:col-2 mt-2 md:mt-0">
-        <p-button
-          label="Voltar"
-          class="w-full"
-          variant="outlined"
-          styleClass="w-full"
-          severity="secondary"
-          (onClick)="onVoltar()"
-        />
-      </div>
-      @if (!isView) {
-        <div class="col-12 mt-2 p-0 md:col-2 md:mt-0">
-          <p-button
-            type="submit"
-            class="w-full"
-            styleClass="w-full"
-            [disabled]="form.invalid"
-            [label]="isCreate ? 'Adicionar' : 'Atualizar'"
-          />
-        </div>
-      }
-    </div>
+    }
   </p-card>
 </form>

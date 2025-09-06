@@ -1,6 +1,7 @@
 <p-card>
   @if (data.length > 0) {
     <p-table
+      #entradaEstoqueTable
       [rows]="10"
       dataKey="idString"
       [value]="data"

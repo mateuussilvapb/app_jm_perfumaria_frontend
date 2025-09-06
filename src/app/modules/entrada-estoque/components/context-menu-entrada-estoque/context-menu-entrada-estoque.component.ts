@@ -12,6 +12,7 @@ import {
   MenuItensWithPermissions,
 } from '@shared/context-menu/context-menu';
 import { UtilsService } from '@utils/utils.service';
+import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
@@ -63,21 +64,24 @@ export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEst
       label: 'Excluir',
       icon: 'pi pi-trash',
       command: () => {
-        this.onExcluir(data.entradaEstoque.idString);
+        this.onExcluir(data.entradaEstoque);
       },
       rolesAllowed: [ROLES.ADMIN],
     },
   ];
 
-  private onExcluir(idString: string) {
+  private onExcluir(entradaEstoque: Partial<EntradaEstoque>) {
+    let mensagem = `Tem certeza que deseja excluir esta entrada de estoque? A ação não poderá ser desfeita.`;
+    if (entradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO) {
+      mensagem += `<br>Além disso, haverá repercursão no estoque: os itens adicionados serão removidos.<br>Confirma?`;
+    }
     this.confirmationService.confirm({
-      message:
-        `Tem certeza que deseja excluir esta entrada de estoque? A ação não poderá ser desfeita.<br>Além disso, haverá repercursão no estoque: os itens adicionados serão removidos.<br>Confirma?`,
+      message: mensagem,
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
-      accept: () => this.excluir(idString),
+      accept: () => this.excluir(entradaEstoque.idString),
     });
   }
 

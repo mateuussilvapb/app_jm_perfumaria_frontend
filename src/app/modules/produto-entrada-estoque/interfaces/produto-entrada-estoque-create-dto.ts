@@ -6,7 +6,7 @@ export class ProdutoEntradaEstoqueCreateDto {
   precoUnitario: number;
   quantidade: number;
   status: STATUS;
-  desconto: number;
+  desconto: number | string;
 
   constructor(data: any) {
     if (data) {

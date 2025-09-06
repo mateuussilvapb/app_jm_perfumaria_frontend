@@ -97,6 +97,12 @@ export const ItensMenu: ItemMenu[] = [
         icon: PrimeIcons.LIST,
         route: '/entrada-estoque',
       },
+      {
+        label: 'Adicionar Entrada de Estoque',
+        separator: false,
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/entrada-estoque/adicionar',
+      },
     ],
   },
   {

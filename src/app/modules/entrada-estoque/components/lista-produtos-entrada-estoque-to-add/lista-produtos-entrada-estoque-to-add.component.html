@@ -1,0 +1,50 @@
+@if (produtos.length > 0) {
+  <p-table
+    [rows]="10"
+    [paginator]="true"
+    [value]="produtos"
+    class="table-custom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    styleClass="p-datatable-gridlines"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="id_th_produto" class="text-50 text-center surface-100 text-color" pFrozenColumn>Produto</th>
+        <th id="id_th_preco_unidade" class="text-50 text-center surface-100 text-color">Preço por Unidade</th>
+        <th id="id_th_qtd_comprada" class="text-50 text-center surface-100 text-color">Quantidade Comprada</th>
+        <th id="id_th_desconto" class="text-50 text-center surface-100 text-color">Desconto</th>
+        @if (!isView) {
+          <th id="id_th_opcoes" class="text-50 text-center surface-100 text-color">Opções</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-produto>
+      <tr>
+        <td class="text-center" style="width: 19%; min-width: 5rem" pFrozenColumn>{{ getProdutoNameById(produto.idProduto) }}</td>
+        <td class="text-center" style="width: 19%; min-width: 5rem">{{ (produto.precoUnitario | currency: 'BRL') ?? '-'}}</td>
+        <td class="text-center" style="width: 19%; min-width: 5rem">{{ produto.quantidade ?? '-'}}</td>
+        <td class="text-center" style="width: 19%; min-width: 5rem">{{ getDescontoToPresenter(produto.desconto) ?? '-'}}</td>
+        @if (!isView) {
+          <td class="text-center" style="width: 10%; min-width: 5rem">
+            <p-button
+              [text]="true"
+              styleClass="text-primary"
+              icon="pi pi-pen-to-square"
+              (onClick)="edit.emit(produto.idProduto)"
+              pTooltip="Editar produto" tooltipPosition="left"
+            ></p-button>
+            <p-button
+              [text]="true"
+              icon="pi pi-trash"
+              styleClass="text-primary"
+              (onClick)="remove.emit(produto.idProduto)"
+              pTooltip="Remover produto" tooltipPosition="left"
+            ></p-button>
+          </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+}
+<sem-dados [data]="produtos"></sem-dados>

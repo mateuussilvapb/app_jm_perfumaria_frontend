@@ -2,7 +2,7 @@
 import { STATUS } from '@shared/enums/status.enum';
 import { Produto } from '@produto/interfaces/produto';
 
-export interface ProdutoEntradaEstoque {
+export class ProdutoEntradaEstoque {
   id: number;
   precoUnitario: number;
   quantidade: number;
@@ -12,4 +12,18 @@ export interface ProdutoEntradaEstoque {
   createdAt: string;
   createdBy: string;
   produto: Partial<Produto>;
+
+  constructor(data: any) {
+    if (data) {
+      this.id = data.id;
+      this.precoUnitario = data.precoUnitario;
+      this.quantidade = data.quantidade;
+      this.status = data.status;
+      this.desconto = data.desconto;
+      this.idString = data.idString;
+      this.createdAt = data.createdAt;
+      this.createdBy = data.createdBy;
+      this.produto = data.produto;
+    }
+  }
 }
