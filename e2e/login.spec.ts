@@ -12,8 +12,9 @@ test('login form', async ({ page }) => {
 
   // Fill the login form
   await page.getByLabel('username').fill('miqueias');
-  await page.getByTestId('password').fill('miqueias123');
-  await page.getByRole('button', { name: 'login' }).click();
+  // Full the password form with miqueias123
+  await page.fill('input[name="password"]', 'miqueias123');
+  await page.click('button:has-text("Sign in")');
 
   // Expect to be redirected to the dashboard
   await expect(page).toHaveURL('http://localhost:4200/');
