@@ -2,7 +2,7 @@
   <div class="flex flex-column justify-content-center">
     <p>{{ mensagem }}</p>
     @if (showBtnAction) {
-      <button pButton (click)="executarAcao()">{{labelBtn}}</button>
+      <button pButton type="button" (click)="executarAcao()">{{labelBtn}}</button>
     }
   </div>
 </p-popover>
