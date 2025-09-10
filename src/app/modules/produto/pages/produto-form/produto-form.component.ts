@@ -5,9 +5,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 //Externos
 import { TagModule } from 'primeng/tag';
@@ -25,6 +25,7 @@ import { STATUS } from '@shared/enums/status.enum';
 import { Produto } from '@produto/interfaces/produto';
 import { FormBase } from '@shared/directives/form-base';
 import { OPTIONS_CURRENCY_MASK } from '@utils/constants';
+import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { ProdutoDto } from '@produto/interfaces/produto-dto';
 import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { MarcaQueryService } from '@marca/service/marca-query.service';
@@ -33,6 +34,7 @@ import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ProdutoCommandService } from '@produto/service/produto-command.service';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
+import { GenericPopOverComponent } from '@shared/components/generic-pop-over/generic-pop-over.component';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({
@@ -54,21 +56,28 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
 
     //Internos
     LoadingComponent,
+    GenericPopOverComponent,
     FormControlErrorsComponent,
   ],
   templateUrl: './produto-form.component.html',
 })
 export class ProdutoFormComponent extends FormBase implements OnInit {
+  @ViewChild(GenericPopOverComponent)
+  genericPopOverComponent!: GenericPopOverComponent;
+
   public readonly loading$ = new BehaviorSubject<boolean>(false);
+  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
   public readonly loadingAutocompleteMarca$ = new BehaviorSubject<boolean>(false);
   public readonly loadingAutocompleteCategoria$ = new BehaviorSubject<boolean>(false);
-  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
   public responseProduto: Produto;
+  public actionGenericPopOver: any;
+  public mensagemGenericPopOver: string = '';
   public marcaOptions: AutocompleteDto[] = [];
   public categoriaOptions: AutocompleteDto[] = [];
   public optionsCurrencyMask = OPTIONS_CURRENCY_MASK;
+
 
   constructor(
     private readonly router: Router,
@@ -231,5 +240,27 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       // Não há histórico, redireciona manualmente
       this.router.navigate(['/produto']);
     }
+  }
+
+  onMouseEnterMarca(event: any) {
+    this.genericPopOverComponent.showBtnAction = true;
+    this.genericPopOverComponent.labelBtn = 'Adicionar Marca';
+    this.genericPopOverComponent.acao = () => this.router.navigate([`/marca/${ROTAS_FORM.ADICIONAR}`]);
+    this.genericPopOverComponent.mensagem = 'Caso queira adicionar uma nova marca, clique no botão abaixo.'
+
+    this.genericPopOverComponent.show(event);
+  }
+
+  onMouseEnterCategoria(event: any) {
+    this.genericPopOverComponent.showBtnAction = true;
+    this.genericPopOverComponent.labelBtn = 'Adicionar Categoria';
+    this.genericPopOverComponent.acao = () => this.router.navigate([`/categoria/${ROTAS_FORM.ADICIONAR}`]);
+    this.genericPopOverComponent.mensagem = 'Caso queira adicionar uma nova categoria, clique no botão abaixo.'
+
+    this.genericPopOverComponent.show(event);
+  }
+
+  onMouseLeavePopOver() {
+    this.genericPopOverComponent.hide();
   }
 }

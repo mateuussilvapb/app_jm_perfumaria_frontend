@@ -82,7 +82,15 @@
 
       <!-- Marca -->
       <div class="col-12" [ngClass]="isView ? 'lg:col-4' : 'lg:col-6'">
-        <label for="marca-produto">Marca</label>
+        <label
+          for="marca-produto"
+          class="flex flex-row align-items-center"
+          >
+            Marca
+            @if (!isView) {
+              <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterMarca($event)"></i>
+            }
+        </label>
         @if (loadingAutocompleteMarca$ | async) {
           <app-loading></app-loading>
         } @if (!(loadingAutocompleteMarca$ | async)) {
@@ -106,7 +114,15 @@
 
       <!-- Categoria -->
       <div class="col-12" [ngClass]="isView ? 'lg:col-4' : 'lg:col-6'">
-        <label for="categoria-produto">Categoria</label>
+        <label
+          for="categoria-produto"
+          class="flex flex-row align-items-center"
+          >
+            Categoria
+            @if (!isView) {
+              <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterCategoria($event)"></i>
+            }
+        </label>
         @if (loadingAutocompleteCategoria$ | async) {
           <app-loading></app-loading>
         } @if (!(loadingAutocompleteCategoria$ | async)) {
@@ -183,3 +199,5 @@
     </div>
   </p-card>
 </form>
+
+<app-generic-pop-over (mouseleave)="onMouseLeavePopOver()"></app-generic-pop-over>
