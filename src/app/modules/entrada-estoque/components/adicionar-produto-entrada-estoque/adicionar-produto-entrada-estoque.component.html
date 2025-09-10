@@ -5,7 +5,15 @@
     <div class="grid">
       <!-- Produto -->
       <div class="col-12 lg:col-3">
-          <label for="id-produto">Produto</label>
+          <label
+            for="id-produto"
+            class="flex flex-row align-items-center"
+            >
+              Produto
+              @if (!isView) {
+                <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterProduto($event)"></i>
+              }
+          </label>
           <p-select
             [filter]="true"
             id="id-produto"
@@ -93,3 +101,5 @@
     </div>
   </form>
 </p-card>
+
+<app-generic-pop-over (mouseleave)="onMouseLeavePopOver()"></app-generic-pop-over>

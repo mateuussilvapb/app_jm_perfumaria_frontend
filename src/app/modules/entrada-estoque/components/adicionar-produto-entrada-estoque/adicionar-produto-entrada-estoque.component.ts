@@ -6,8 +6,8 @@ import {
   Validators
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 //Externos
 import { CardModule } from 'primeng/card';
@@ -22,8 +22,10 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { STATUS } from '@shared/enums/status.enum';
 import { FormBase } from '@shared/directives/form-base';
 import { OPTIONS_CURRENCY_MASK } from '@utils/constants';
+import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { PorcentagemMaskDirective } from '@shared/directives/porcentagem-mask-directive';
+import { GenericPopOverComponent } from '@shared/components/generic-pop-over/generic-pop-over.component';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({
@@ -44,12 +46,16 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     InputMaskModule,
 
     //Interno
+    GenericPopOverComponent,
     PorcentagemMaskDirective,
     FormControlErrorsComponent,
   ],
   templateUrl: './adicionar-produto-entrada-estoque.component.html',
 })
 export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements OnInit, OnChanges {
+  @ViewChild(GenericPopOverComponent)
+  genericPopOverComponent!: GenericPopOverComponent;
+
   @Input({required: true}) produtosOptions: AutocompleteDto[] = [];
   @Input({required: true}) produtoToEdit: any = null;
 
@@ -58,6 +64,7 @@ export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements
   public optionsCurrencyMask = OPTIONS_CURRENCY_MASK;
 
   constructor(
+    private readonly router: Router,
     private readonly fb: FormBuilder,
     public override readonly activatedRoute: ActivatedRoute,
   ) {
@@ -87,5 +94,18 @@ export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements
       this.form.get('status')?.setValue(STATUS.ATIVO);
       this.produtoToEdit = null;
     }
+  }
+
+  onMouseEnterProduto(event: any) {
+    this.genericPopOverComponent.showBtnAction = true;
+    this.genericPopOverComponent.labelBtn = 'Adicionar Produto';
+    this.genericPopOverComponent.acao = () => this.router.navigate([`/produto/${ROTAS_FORM.ADICIONAR}`]);
+    this.genericPopOverComponent.mensagem = 'Caso queira adicionar um novo produto, clique no botão abaixo.'
+
+    this.genericPopOverComponent.show(event);
+  }
+
+  onMouseLeavePopOver() {
+    this.genericPopOverComponent.hide();
   }
 }
