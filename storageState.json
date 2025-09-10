@@ -1,0 +1,45 @@
+{
+  "cookies": [
+    {
+      "name": "AUTH_SESSION_ID",
+      "value": "ODM3NDYzOGEtODk5ZS00NTZiLTk4ZjItMzg3NTU3YjZhMTQ0LnRFcDlkU1h0VXdaRUFHTXNqc1hYclFlM3kwdlQ4YVFuRWg5ZFU3YXhEVDM1Tk95SWlxMU5ldHE3V0VPYm1YMUtCRkJENlFoVU96T0xYcjZ1cS1RSm5n",
+      "domain": "localhost",
+      "path": "/realms/JMPERFUMARIA/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KC_AUTH_SESSION_HASH",
+      "value": "\"t3H7hJE7KZo0s0X4Z2/8A5iOTYfTBpbVtVQCJmienIA\"",
+      "domain": "localhost",
+      "path": "/realms/JMPERFUMARIA/",
+      "expires": 1757470926.722575,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KEYCLOAK_IDENTITY",
+      "value": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJjZjQ4YTFhNS03OWQ2LTQ2YTgtODBkYi0wYWI0YThmYTExNGUifQ.eyJleHAiOjE3NTc1MDY4NjcsImlhdCI6MTc1NzQ3MDg2NywianRpIjoiMzUxZGM4MjgtNGUwMS00ZDZiLTk3Y2EtNzk2ZDcwMWRkZjAzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9KTVBFUkZVTUFSSUEiLCJzdWIiOiJkZjUwMzExNi0xMzc0LTQ4YWMtOTMzOC1iMmRmNTQwMDFmYjQiLCJ0eXAiOiJTZXJpYWxpemVkLUlEIiwic2lkIjoiODM3NDYzOGEtODk5ZS00NTZiLTk4ZjItMzg3NTU3YjZhMTQ0Iiwic3RhdGVfY2hlY2tlciI6IkpmbUoxRzhRR0dKZm1VNF9rT29zRlk0dmZPeDc4Uk5xOC1BMFZxOHBSaW8ifQ.wwTHEXM5UP2lNB_5eQFSUSxRw2erEl-VtIb-APr5atv8aksBzx17_1uZTWaAuV7p9VnR9r_2ez_f5wEVRB9Pdg",
+      "domain": "localhost",
+      "path": "/realms/JMPERFUMARIA/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KEYCLOAK_SESSION",
+      "value": "t3H7hJE7KZo0s0X4Z2_8A5iOTYfTBpbVtVQCJmienIA",
+      "domain": "localhost",
+      "path": "/realms/JMPERFUMARIA/",
+      "expires": 1757506867.394373,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": []
+}
