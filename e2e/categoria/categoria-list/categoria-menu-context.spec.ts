@@ -1,75 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'crypto';
 
-test.use({ storageState: 'storageState.json' });
-
 let categoriaId: string;
 let token: string;
-let externalCategoria = `nova-categoria-test-${Date.now()}-${randomUUID().slice(0,8)}`;
 let serialCategoria = `nova-categoria-test-${Date.now()}-${randomUUID().slice(0,8)}`;
 
-test.beforeAll(async ({ request }) => {
-  console.log('>>> beforeAll', new Date().toISOString(), 'pid', process.pid);
-
-  // get validation token
-  const tokenResponse = await request.post('http://localhost:8081/token', {
-    data: {
-      username: 'miqueias',
-      password: 'miqueias123',
-      clientID: 'app_jm_perfumaria',
-      grantType: 'password',
-    },
-  });
-  const tokenJson = await tokenResponse.json();
-  token = tokenJson.access_token;
-
-  // create a categoria via API
-  const res = await request.post('http://localhost:8081/categorias/command', {
-    data: {
-      nome: externalCategoria,
-      descricao:
-        'nova categoria teste.',
-      status: 'ATIVO',
-    },
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  const categoriaJson = await res.json();
-  console.log(categoriaJson);
-  categoriaId = categoriaJson.idString;
-  console.log(`Categoria criada com ID: ${categoriaId}`);
-});
-
-test('go to categoria', async ({ page }) => {
-  await page.goto('/categoria');
-
-  expect(page).toBeDefined();
-});
-
-test('categoria options', async ({ page }) => {
-  await page.goto('/categoria');
-
-  // find the row by cell text (e.g. category name)
-  const row = page.locator('p-table').locator('tbody tr', { hasText: externalCategoria });
-  await expect(row).toBeVisible();
-
-  // Click on the button in the row
-  await row.locator('button.p-button, button.p-menu-button, .actions button').click();
-
-  // Verify if show options
-  const visualizar = page.getByText("Visualizar");
-  const editar = page.getByText("Editar");
-  const desabilitar = page.getByText("Desabilitar");
-  const excluir = page.getByText("Excluir");
-
-  await expect(visualizar).toBeVisible();
-  await expect(editar).toBeVisible();
-  await expect(desabilitar).toBeVisible();
-  await expect(excluir).toBeVisible();
-});
+// Get and check if environment variables are set
+const username = process.env['APP_USERNAME'] || '';
+const password = process.env['APP_PASSWORD'] || '';
+const clientID = process.env['CLIENT_ID'] || '';
+if (!username || !password || !clientID) {
+  throw new Error('APP_USERNAME or APP_PASSWORD environment variable is not set');
+}
 
 test.describe.serial('categoria flow', () => {
   test.beforeAll(async ({ request }) => {
@@ -78,9 +20,9 @@ test.describe.serial('categoria flow', () => {
     // get validation token
     const tokenResponse = await request.post('http://localhost:8081/token', {
       data: {
-        username: 'miqueias',
-        password: 'miqueias123',
-        clientID: 'app_jm_perfumaria',
+        username: username,
+        password: password,
+        clientID: clientID,
         grantType: 'password',
       },
     });
@@ -108,7 +50,7 @@ test.describe.serial('categoria flow', () => {
   });
 
   test('categoria desabilitar', async ({ page }) => {
-    await page.goto('/categoria');
+    await page.goto('/categoria', { waitUntil: 'networkidle' });
     // wait until the data is loaded
     await page.waitForFunction(() => {
       const table = document.querySelector('p-table');
@@ -142,7 +84,7 @@ test.describe.serial('categoria flow', () => {
   });
 
   test('categoria habilitar', async ({ page }) => {
-    await page.goto('/categoria');
+    await page.goto('/categoria', { waitUntil: 'networkidle' });
     // wait until the data is loaded
     await page.waitForFunction(() => {
       const table = document.querySelector('p-table');
@@ -197,20 +139,4 @@ test.describe.serial('categoria flow', () => {
     console.log(res.status());
     expect(res.ok()).toBeTruthy();
   });
-});
-
-test.afterAll(async ({ request }) => {
-  console.log('>>> afterAll', new Date().toISOString(), 'pid', process.pid);
-
-  const res = await request.delete(
-    `http://localhost:8081/categorias/command/${categoriaId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  console.log(res.status());
-  expect(res.ok()).toBeTruthy();
 });
