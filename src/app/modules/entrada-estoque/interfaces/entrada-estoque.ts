@@ -14,5 +14,6 @@ export interface EntradaEstoque {
   createdBy: string;
   qtdItens: number;
   qtdItensUnicos: number;
+  dataEntradaEstoque: Date;
   entradasProdutos: Array<Partial<ProdutoEntradaEstoque>>;
 }

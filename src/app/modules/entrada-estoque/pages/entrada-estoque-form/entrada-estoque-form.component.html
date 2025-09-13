@@ -1,5 +1,6 @@
 <form [formGroup]="form" novalidate>
   <p-card [header]="titleCard">
+    <div class="px-2">
     @if (loading$ | async) {
       <app-loading></app-loading>
     } @else {
@@ -14,6 +15,14 @@
             <p-tag [severity]="responseEntradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(responseEntradaEstoque.situacao)" />
         </div>
       }
+
+      <!-- Data da Entrada de Estoque -->
+      <div class="grid my-2">
+        <div class="col-12 md:col-3">
+          <label for="data-entrada-estoque">Data da Entrada de Estoque</label>
+          <p-datepicker id="data-entrada-estoque" formControlName="dataEntradaEstoque" [maxDate]="maxDate" />
+        </div>
+      </div>
 
       <!-- Componente adição de produto -->
       <div class="grid">
@@ -33,7 +42,7 @@
 
         <!-- Produtos -->
         <div class="col-12">
-          <p-card>
+          <p-card header="Produtos da entrada de estoque">
             <app-lista-produtos-entrada-estoque-to-add
               (edit)="onEditProdutoInList($event)"
               (remove)="onRemoveInProduto($event)"
@@ -71,9 +80,9 @@
 
       <!-- INFORMAÇÕES COMPLEMENTARES -->
       @if (isView) {
-        <div class="flex flex-row justify-content-between p-0 m-0">
+        <div class="flex flex-column md:flex-row justify-content-between p-0 m-0">
           <small><strong>Usuário: </strong> {{responseEntradaEstoque?.createdBy}}</small>
-          <small><strong>Data: </strong> {{responseEntradaEstoque?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
+          <small><strong>Data de criação: </strong> {{responseEntradaEstoque?.createdAt | date: 'dd/MM/yyyy HH:MM'}}</small>
         </div>
       }
 
@@ -117,5 +126,6 @@
         }
       </div>
     }
+    </div>
   </p-card>
 </form>

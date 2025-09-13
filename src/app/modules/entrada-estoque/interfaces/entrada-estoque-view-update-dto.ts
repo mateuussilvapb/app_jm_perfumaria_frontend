@@ -12,6 +12,7 @@ export class EntradaEstoqueViewUpdateDto {
   public situacao: SITUACAO;
   public descricao: string;
   public codigo: number;
+  public dataEntradaEstoque: Date;
   public entradasProdutos: Array<Partial<ProdutoEntradaEstoque>>;
 
   constructor(data: any) {
@@ -24,6 +25,7 @@ export class EntradaEstoqueViewUpdateDto {
       this.situacao = data.situacao;
       this.descricao = data.descricao;
       this.codigo = data.codigo;
+      this.dataEntradaEstoque = data.dataEntradaEstoque ? new Date(data.dataEntradaEstoque) : new Date();
       this.entradasProdutos = data.entradasProdutos ? data.entradasProdutos.map((p: any) => new ProdutoEntradaEstoque(p)) : [];
     }
   }

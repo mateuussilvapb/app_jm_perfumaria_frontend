@@ -17,6 +17,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 //Interno
@@ -50,6 +51,7 @@ import { ListaProdutosEntradaEstoqueToAddComponent } from '@entrada-estoque/comp
     CardModule,
     ButtonModule,
     TextareaModule,
+    DatePickerModule,
 
     //Interno
     LoadingComponent,
@@ -64,6 +66,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
+  public maxDate: Date | undefined;
   public produtoToEdit: any = null;
   public readonly SITUACAO = SITUACAO;
   public produtosOptions: AutocompleteDto[] = [];
@@ -89,6 +92,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       descricao: ['', [Validators.maxLength(1000)]],
       status: [STATUS.ATIVO, Validators.required],
       situacao: [SITUACAO.EM_CADASTRAMENTO, Validators.required],
+      dataEntradaEstoque: [null, [Validators.required]],
       produtos: this.fb.array([], [CustomValidators.produtosDuplicadosValidator()]),
     });
   }
@@ -96,6 +100,10 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   protected override afterIdentificarTipoRota(): void {
     this.setTitleCard();
     this.getAllProdutosAutocomplete();
+  }
+
+  protected override afterBuildForm(): void {
+    this.definirDataMaxima();
   }
 
   setTitleCard() {
@@ -122,19 +130,22 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       .subscribe((res) => {
         this.responseEntradaEstoque = res;
         this.form.patchValue(res);
-        if (this.responseEntradaEstoque.entradasProdutos && this.responseEntradaEstoque.entradasProdutos.length > 0) {
-          this.responseEntradaEstoque.entradasProdutos.forEach(p => {
-            this.produtosList.push({
-              idProduto: p.produto.id,
-              precoUnitario: p.precoUnitario,
-              quantidade: p.quantidade,
-              desconto: p.desconto,
-              status: p.status
-            });
-            console.log(this.produtosList);
-          });
-        }
+        this.adicionarProdutosResponseNoArray();
       });
+  }
+
+  adicionarProdutosResponseNoArray() {
+    if (this.responseEntradaEstoque.entradasProdutos && this.responseEntradaEstoque.entradasProdutos.length > 0) {
+      this.responseEntradaEstoque.entradasProdutos.forEach((p) => {
+        this.produtosList.push({
+          idProduto: p.produto.id,
+          precoUnitario: p.precoUnitario,
+          quantidade: p.quantidade,
+          desconto: p.desconto,
+          status: p.status,
+        });
+      });
+    }
   }
 
   onSubmit(event, isRascunho: boolean = false) {
@@ -306,6 +317,13 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     } else {
       // Não há histórico, redireciona manualmente
       this.router.navigate(['/entrada-estoque']);
+    }
+  }
+
+  definirDataMaxima() {
+    this.maxDate = new Date();
+    if(this.isCreate) {
+      this.form.get('dataEntradaEstoque')?.setValue(this.maxDate);
     }
   }
 }
