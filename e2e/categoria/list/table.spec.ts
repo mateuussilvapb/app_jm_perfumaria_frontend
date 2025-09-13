@@ -48,31 +48,33 @@ test.beforeAll(async ({ request }) => {
   console.log(`Categoria criada com ID: ${idCategoria}`);
 });
 
-test('go to categoria', async ({ page }) => {
-  await page.goto('/categoria');
+test.describe.serial('categoria table', () => {
+  test('go to categoria', async ({ page }) => {
+    await page.goto('/categoria');
 
-  expect(page).toBeDefined();
-});
+    expect(page).toBeDefined();
+  });
 
-test('categoria options', async ({ page }) => {
-  await page.goto('/categoria', { waitUntil: 'networkidle' });
+  test('categoria options', async ({ page }) => {
+    await page.goto('/categoria', { waitUntil: 'networkidle' });
 
-  // find the row by cell text (e.g. category name)
-  const row = await page.getByRole('row', { name: categoria });
-  await expect(row).toBeVisible();
+    // find the row by cell text (e.g. category name)
+    const row = await page.getByRole('row', { name: categoria });
+    await expect(row).toBeVisible();
 
-  // Click on the button in the row
-  await row.getByRole('button').click();
+    // Click on the button in the row
+    await row.getByRole('button').click();
 
-  // Verify if show options
-  const visualizar = page.getByRole('menuitem', { name: 'Visualizar' });
-  await expect(visualizar).toBeVisible();
-  const editar = page.getByRole('menuitem', { name: 'Editar' });
-  await expect(editar).toBeVisible();
-  const desabilitar = page.getByRole('menuitem', { name: 'Desabilitar' });
-  await expect(desabilitar).toBeVisible();
-  const excluir = page.getByRole('menuitem', { name: 'Excluir' });
-  await expect(excluir).toBeVisible();
+    // Verify if show options
+    const visualizar = page.getByRole('menuitem', { name: 'Visualizar' });
+    await expect(visualizar).toBeVisible();
+    const editar = page.getByRole('menuitem', { name: 'Editar' });
+    await expect(editar).toBeVisible();
+    const desabilitar = page.getByRole('menuitem', { name: 'Desabilitar' });
+    await expect(desabilitar).toBeVisible();
+    const excluir = page.getByRole('menuitem', { name: 'Excluir' });
+    await expect(excluir).toBeVisible();
+  });
 });
 
 test.afterAll(async ({ request }) => {

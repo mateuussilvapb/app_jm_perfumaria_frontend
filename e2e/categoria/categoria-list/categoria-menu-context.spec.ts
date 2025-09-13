@@ -85,12 +85,6 @@ test.describe.serial('categoria flow', () => {
 
   test('categoria habilitar', async ({ page }) => {
     await page.goto('/categoria', { waitUntil: 'networkidle' });
-    // wait until the data is loaded
-    await page.waitForFunction(() => {
-      const table = document.querySelector('p-table');
-      const rows = table?.querySelectorAll('tbody tr');
-      return rows?.length > 0;
-    });
 
     // Click on last page if necessary
     const lastBtn = page.locator('.p-paginator .p-paginator-last');
