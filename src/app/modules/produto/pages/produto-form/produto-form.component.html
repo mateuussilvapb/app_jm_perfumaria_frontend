@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate autocomplete="off">
   <p-card [header]="titleCard">
     @if (isView) {
     <div class="w-full flex md:flex-row flex-column justify-content-between align-items-center align-content-center">

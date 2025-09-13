@@ -2,7 +2,7 @@
   <app-loading></app-loading>
 }
 @if (!(this.loading$ | async)) {
-  <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate autocomplete="off">
     <p-card [header]="titleCard">
       <!-- CAMPOS -->
       @if (isView) {
