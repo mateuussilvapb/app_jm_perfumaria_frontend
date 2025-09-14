@@ -1,9 +1,9 @@
 <p-card header="Entradas de Estoque">
   <div>
-    <!-- <app-categoria-filters
+    <app-entrada-estoque-filters
       [refresh$]="refresh$"
-      (onFilter)="onFilter($event)"
-    ></app-categoria-filters> -->
+      (filter)="onFilter($event)"
+    ></app-entrada-estoque-filters>
   </div>
   <p-divider />
   <div class="grid justify-content-end">

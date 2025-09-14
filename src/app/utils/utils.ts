@@ -34,4 +34,28 @@ export class Utils {
     if (!filters) return '';
     return `?${filters.toString()}`;
   };
+
+  static readonly getSearchParamsFromObj = (obj: Object): URLSearchParams => {
+    const params = new URLSearchParams;
+    if (obj) {
+      Object.keys(obj).forEach(key => {
+        if (this.canAddValueOnParams(obj[key])) {
+          params.append(key, obj[key]);
+        }
+      })
+    }
+    return params
+  }
+
+  private static readonly canAddValueOnParams = (value: any): boolean => {
+    if (value != null && value != undefined && value != '') {
+      return true;
+    }
+    return false;
+  }
+
+  static readonly formatarLocalDate = (date: Date | null): string | null => {
+    if (!date) return null;
+    return date.toISOString().split("T")[0];
+  }
 }

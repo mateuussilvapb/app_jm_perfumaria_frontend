@@ -17,10 +17,12 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-estoque-query.service';
 import { EntradaEstoqueTableComponent } from '@entrada-estoque/components/entrada-estoque-table/entrada-estoque-table.component';
+import { EntradaEstoqueFiltersComponent } from '@entrada-estoque/components/entrada-estoque-filters/entrada-estoque-filters.component';
 
 @Component({
   selector: 'app-entrada-estoque-list',
@@ -36,6 +38,7 @@ import { EntradaEstoqueTableComponent } from '@entrada-estoque/components/entrad
     //Internos
     LoadingComponent,
     EntradaEstoqueTableComponent,
+    EntradaEstoqueFiltersComponent,
   ],
   templateUrl: './entrada-estoque-list.component.html',
 })
@@ -59,11 +62,16 @@ export class EntradaEstoqueListComponent implements OnInit {
       //Impede que as ações sejam realizadas caso o refresh$ seja emitido mais de uma vez seguida em menos de 50ms
       auditTime(50),
       switchMap(() => {
-        return this.entradaEstoqueQueryService.all().pipe(
+        return this.entradaEstoqueQueryService.getAllByFilters(formValue).pipe(
           take(1),
           finalize(() => this.loading$.next(false))
         );
       })
     );
+  }
+
+  onFilter(event) {
+    const params = Utils.getSearchParamsFromObj(event);
+    this.loadData(params);
   }
 }

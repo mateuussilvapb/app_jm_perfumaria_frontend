@@ -1,11 +1,12 @@
 //Angular
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 //Externos
 import { map, Observable } from 'rxjs';
 
 //Internos
+import { Utils } from '@utils/utils';
 import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
 import { EntradaEstoqueViewUpdateDto } from '@entrada-estoque/interfaces/entrada-estoque-view-update-dto';
@@ -25,6 +26,10 @@ export class EntradaEstoqueQueryService extends AbstractQueryService<Partial<Ent
       `${this.baseURL}/query/list`
     );
   };
+
+  getAllByFilters = (dto: URLSearchParams): Observable<Array<Partial<EntradaEstoque>>> =>
+    this.http
+      .get<Array<Partial<EntradaEstoque>>>(`${this.baseURL}/query/searchByFilters${Utils.searchParamsToString(dto)}`);
 
   getById = (id: string): Observable<EntradaEstoqueViewUpdateDto> =>
     this.http
