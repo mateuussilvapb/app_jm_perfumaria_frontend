@@ -25,7 +25,7 @@ import { BehaviorSubject, map, startWith } from 'rxjs';
 })
 export class UsuarioFiltersComponent implements OnInit {
   @Input() refresh$: BehaviorSubject<void>;
-  @Output() onFilter = new EventEmitter<any>();
+  @Output() filter = new EventEmitter<any>();
   public searchTerm: string = '';
 
   ngOnInit(): void {
@@ -34,19 +34,19 @@ export class UsuarioFiltersComponent implements OnInit {
         startWith(undefined),
         map(() => {
           this.searchTerm = '';
-          this.onFilter.emit();
+          this.filter.emit();
         })
       )
       .subscribe();
   }
 
   onSubmit() {
-    this.onFilter.emit(this.searchTerm);
+    this.filter.emit(this.searchTerm);
   }
 
   limparCampos() {
     this.searchTerm = '';
-    this.onFilter.emit(this.searchTerm);
+    this.filter.emit(this.searchTerm);
   }
 
   disableButtonBuscar() {

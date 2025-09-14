@@ -38,7 +38,7 @@ import { STATUS } from '@shared/enums/status.enum';
 })
 export class CategoriaFiltersComponent implements OnInit {
   @Input() refresh$: BehaviorSubject<void>;
-  @Output() onFilter = new EventEmitter<any>();
+  @Output() filter = new EventEmitter<any>();
 
   form: FormGroup;
   statusSelect: { key: string; value: string }[] = [
@@ -62,7 +62,7 @@ export class CategoriaFiltersComponent implements OnInit {
         startWith(undefined),
         map(() => {
           this.form.reset();
-          this.onFilter.emit();
+          this.filter.emit();
         })
       )
       .subscribe();
@@ -81,12 +81,12 @@ export class CategoriaFiltersComponent implements OnInit {
   }
 
   onSubmit() {
-    this.onFilter.emit(this.form.value);
+    this.filter.emit(this.form.value);
   }
 
   limparCampos() {
     this.form.reset();
-    this.onFilter.emit();
+    this.filter.emit();
   }
 
   disableButtonBuscar() {
