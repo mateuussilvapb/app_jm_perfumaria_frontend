@@ -23,6 +23,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-estoque-query.service';
 import { EntradaEstoqueTableComponent } from '@entrada-estoque/components/entrada-estoque-table/entrada-estoque-table.component';
 import { EntradaEstoqueFiltersComponent } from '@entrada-estoque/components/entrada-estoque-filters/entrada-estoque-filters.component';
+import { UtilsService } from '@utils/utils.service';
 
 @Component({
   selector: 'app-entrada-estoque-list',
@@ -48,7 +49,8 @@ export class EntradaEstoqueListComponent implements OnInit {
   public entradasEstoque$ = new Observable<Array<Partial<EntradaEstoque>>>();
 
   constructor(
-    private readonly entradaEstoqueQueryService: EntradaEstoqueQueryService
+    private readonly entradaEstoqueQueryService: EntradaEstoqueQueryService,
+    private readonly utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -73,5 +75,10 @@ export class EntradaEstoqueListComponent implements OnInit {
   onFilter(event) {
     const params = Utils.getSearchParamsFromObj(event);
     this.loadData(params);
+  }
+
+  showAddButton() {
+    const roles = this.utilsService.getUserRoles();
+    return roles.includes('admin') || roles.includes('manager');
   }
 }

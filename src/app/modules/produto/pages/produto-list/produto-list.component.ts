@@ -12,7 +12,7 @@ import {
   Observable,
   startWith,
   switchMap,
-  take
+  take,
 } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -22,6 +22,7 @@ import { Produto } from '@produto/interfaces/produto';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ProdutoTableComponent } from '@produto/components/produto-table/produto-table.component';
+import { UtilsService } from '@utils/utils.service';
 
 @Component({
   selector: 'app-produto-list',
@@ -45,7 +46,10 @@ export class ProdutoListComponent implements OnInit {
   public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private readonly produtoQueryService: ProdutoQueryService) {}
+  constructor(
+    private readonly produtoQueryService: ProdutoQueryService,
+    private readonly utilsService: UtilsService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -86,5 +90,9 @@ export class ProdutoListComponent implements OnInit {
     }
     return null;
   }
-}
 
+  showAddButton() {
+    const roles = this.utilsService.getUserRoles();
+    return roles.includes('admin') || roles.includes('manager');
+  }
+}
