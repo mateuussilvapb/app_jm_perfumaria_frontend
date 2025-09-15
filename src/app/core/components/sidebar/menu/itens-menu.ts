@@ -81,6 +81,7 @@ export const ItensMenu: ItemMenu[] = [
       {
         label: 'Adicionar Produtos',
         separator: false,
+        roles: [ROLES.ADMIN, ROLES.MANAGER],
         icon: PrimeIcons.PLUS_CIRCLE,
         route: '/produto/adicionar',
       },
@@ -100,6 +101,7 @@ export const ItensMenu: ItemMenu[] = [
       {
         label: 'Adicionar Entrada de Estoque',
         separator: false,
+        roles: [ROLES.ADMIN, ROLES.MANAGER],
         icon: PrimeIcons.PLUS_CIRCLE,
         route: '/entrada-estoque/adicionar',
       },
