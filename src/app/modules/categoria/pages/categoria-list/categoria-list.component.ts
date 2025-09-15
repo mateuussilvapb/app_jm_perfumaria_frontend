@@ -22,6 +22,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
 import { CategoriaTableComponent } from '@categoria/components/categoria-table/categoria-table.component';
 import { CategoriaFiltersComponent } from '@categoria/components/categoria-filters/categoria-filters.component';
+import { UtilsService } from '@utils/utils.service';
 
 @Component({
   selector: 'app-categoria-list',
@@ -46,7 +47,10 @@ export class CategoriaListComponent implements OnInit {
   public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private readonly categoriaQueryService: CategoriaQueryService) {}
+  constructor(
+    private readonly categoriaQueryService: CategoriaQueryService,
+    private readonly utilsService: UtilsService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -85,5 +89,10 @@ export class CategoriaListComponent implements OnInit {
       return params;
     }
     return null;
+  }
+
+  showAddButton() {
+    const roles = this.utilsService.getUserRoles();
+    return roles.includes('admin') || roles.includes('manager');
   }
 }

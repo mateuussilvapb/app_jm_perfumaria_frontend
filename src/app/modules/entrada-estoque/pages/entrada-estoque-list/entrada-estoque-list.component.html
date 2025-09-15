@@ -1,0 +1,29 @@
+<p-card header="Entradas de Estoque">
+  <div>
+    <app-entrada-estoque-filters
+      [refresh$]="refresh$"
+      (filter)="onFilter($event)"
+    ></app-entrada-estoque-filters>
+  </div>
+  <p-divider />
+  @if (showAddButton()) {
+    <div class="grid justify-content-end">
+      <div class="col-12 lg:col-3">
+        <a [routerLink]="['adicionar']" class="btn-primary-outlined-link">
+          <i class="pi pi-plus-circle mr-2"></i>
+          Cadastrar Entrada
+        </a>
+      </div>
+    </div>
+  }
+  @if (loading$ |async) {
+    <app-loading></app-loading>
+  } @if ( entradasEstoque$ | async; as entradasEstoque) {
+  <div>
+    <app-entrada-estoque-table
+      [data]="entradasEstoque"
+      [refresh$]="refresh$"
+    ></app-entrada-estoque-table>
+  </div>
+  }
+</p-card>

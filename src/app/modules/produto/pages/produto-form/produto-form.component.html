@@ -1,12 +1,15 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate>
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)" novalidate autocomplete="off">
   <p-card [header]="titleCard">
     @if (isView) {
-      <div class="w-full flex flex-row justify-content-end">
-        <p-tag [severity]="responseProduto?.status ? 'success' : 'danger'" [value]="responseProduto?.status ? 'Ativo' : 'Inativo'" />
+    <div class="w-full flex md:flex-row flex-column justify-content-between align-items-center align-content-center">
+      <div class="flex flex-row justify-content-center md:justify-content-start align-items-center align-content-center md:pb-0 pb-2">
+        <small><strong>Código do produto: </strong> {{ responseProduto?.codigo ?? '-'}} </small>
       </div>
+      <p-tag [severity]="responseProduto?.status ? 'success' : 'danger'" [value]="responseProduto?.status ? 'Ativo' : 'Inativo'" class="w-full md:w-auto" />
+    </div>
     }
     <!-- CAMPOS PRINCIPAIS -->
-    <div class="grid mt-2">
+    <div class="grid">
       <!-- Nome -->
       <div class="col-12 lg:col-6">
         <label for="nome-produto">Nome</label>
@@ -29,13 +32,14 @@
         <label for="preco-custo">Preço de Custo</label>
         <input
           pInputText
-          type="number"
           step="0.01"
-          class="w-full mt-1"
+          type="text"
+          currencyMask
           id="preco-custo"
-          formControlName="precoCusto"
           placeholder="R$"
-          min="0"
+          class="w-full mt-1"
+          formControlName="precoCusto"
+          [options]="optionsCurrencyMask"
         />
         <app-form-control-errors
           [control]="getControlForm('precoCusto')"
@@ -47,25 +51,49 @@
         <label for="preco-venda">Preço de Venda</label>
         <input
           pInputText
-          type="number"
           step="0.01"
-          class="w-full mt-1"
+          type="text"
+          currencyMask
           id="preco-venda"
-          formControlName="precoVenda"
           placeholder="R$"
+          class="w-full mt-1"
+          formControlName="precoVenda"
+          [options]="optionsCurrencyMask"
         />
         <app-form-control-errors
           [control]="getControlForm('precoVenda')"
         ></app-form-control-errors>
       </div>
 
+      @if (isView) {
+        <!-- Quantidade Estoque -->
+        <div class="col-12 lg:col-4">
+          <label for="quantidade-estoque">Quantidade em estoque</label>
+          <input
+            pInputText
+            type="text"
+            [disabled]="true"
+            class="w-full mt-1"
+            id="quantidade-estoque"
+            [value]="responseProduto?.quantidadeEmEstoque ?? '-'"
+          />
+        </div>
+      }
+
       <!-- Marca -->
-      <div class="col-12 lg:col-6">
-        <label for="marca-produto">Marca</label>
+      <div class="col-12" [ngClass]="isView ? 'lg:col-4' : 'lg:col-6'">
+        <label
+          for="marca-produto"
+          class="flex flex-row align-items-center"
+          >
+            Marca
+            @if (!isView) {
+              <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterMarca($event)"></i>
+            }
+        </label>
         @if (loadingAutocompleteMarca$ | async) {
           <app-loading></app-loading>
-        }
-        @if (!(loadingAutocompleteMarca$ | async)) {
+        } @if (!(loadingAutocompleteMarca$ | async)) {
           <p-select
             [filter]="true"
             id="marca-produto"
@@ -85,12 +113,19 @@
       </div>
 
       <!-- Categoria -->
-      <div class="col-12 lg:col-6">
-        <label for="categoria-produto">Categoria</label>
+      <div class="col-12" [ngClass]="isView ? 'lg:col-4' : 'lg:col-6'">
+        <label
+          for="categoria-produto"
+          class="flex flex-row align-items-center"
+          >
+            Categoria
+            @if (!isView) {
+              <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterCategoria($event)"></i>
+            }
+        </label>
         @if (loadingAutocompleteCategoria$ | async) {
           <app-loading></app-loading>
-        }
-        @if (!(loadingAutocompleteCategoria$ | async)) {
+        } @if (!(loadingAutocompleteCategoria$ | async)) {
           <p-select
             id="categoria-produto"
             formControlName="idCategoria"
@@ -129,18 +164,15 @@
 
     <!-- INFORMAÇÕES COMPLEMENTARES -->
     @if (isView) {
-    <div class="flex flex-row justify-content-between mt-3">
-      <small><strong>Usuário: </strong> {{ responseProduto?.createdBy }}</small>
-      <small
-        ><strong>Data: </strong>
-        {{ responseProduto?.createdAt | date : "dd/MM/yyyy HH:mm" }}</small
-      >
-    </div>
+      <div class="flex flex-row justify-content-between">
+        <small><strong>Usuário: </strong> {{ responseProduto?.createdBy }}</small>
+        <small><strong>Data: </strong>{{ responseProduto?.createdAt | date : "dd/MM/yyyy HH:mm" }}</small>
+      </div>
     }
 
     <!-- BOTÕES -->
     <div [ngClass]="[isView ? 'justify-content-start' : 'justify-content-between']" class="pt-2 flex flex-wrap flex-column-reverse md:flex-row">
-      <div class="col-12 p-0 md:col-2">
+      <div class="col-12 p-0 md:col-2 mt-2 md:mt-0">
         <p-button
           label="Voltar"
           class="w-full"
@@ -161,10 +193,11 @@
             [disabled]="form.invalid || (onCreateUpdate$ | async)"
           />
         </div>
-      }
-      @if (onCreateUpdate$ | async) {
+      } @if (onCreateUpdate$ | async) {
         <app-loading></app-loading>
       }
     </div>
   </p-card>
 </form>
+
+<app-generic-pop-over (mouseleave)="onMouseLeavePopOver()"></app-generic-pop-over>

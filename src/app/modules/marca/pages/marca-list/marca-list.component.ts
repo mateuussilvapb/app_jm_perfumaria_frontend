@@ -22,6 +22,7 @@ import { MarcaQueryService } from '@marca/service/marca-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MarcaTableComponent } from '@marca/components/marca-table/marca-table.component';
 import { MarcaFiltersComponent } from '@marca/components/marca-filters/marca-filters.component';
+import { UtilsService } from '@utils/utils.service';
 
 @Component({
   selector: 'app-marca-list',
@@ -46,7 +47,10 @@ export class MarcaListComponent implements OnInit {
   public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private readonly marcaQueryService: MarcaQueryService) {}
+  constructor(
+    private readonly marcaQueryService: MarcaQueryService,
+    private readonly utilsService: UtilsService
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -85,5 +89,10 @@ export class MarcaListComponent implements OnInit {
       return params;
     }
     return null;
+  }
+
+  showAddButton() {
+    const roles = this.utilsService.getUserRoles();
+    return roles.includes('admin') || roles.includes('manager');
   }
 }

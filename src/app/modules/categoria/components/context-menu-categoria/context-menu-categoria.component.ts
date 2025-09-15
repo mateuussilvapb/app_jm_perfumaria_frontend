@@ -95,7 +95,7 @@ export class ContextMenuCategoria extends ContextMenu<ContextMenuCategoriaData> 
   private onExcluir(idString: string) {
     this.confirmationService.confirm({
       message:
-        'Tem certeza que deseja excluir esta categoria? A ação não poderá ser desfeita.',
+        'Tem certeza que deseja excluir esta categoria?<br>A ação não poderá ser desfeita.',
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',

@@ -14,7 +14,7 @@ export const PRODUTO_ROUTES: Routes = [
     canActivate: [AuthGuard],
     component: ProdutoListComponent,
     data: {
-      roles: [ALL_ROLES],
+      roles: ALL_ROLES,
     },
   },
   {

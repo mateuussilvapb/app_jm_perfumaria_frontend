@@ -17,7 +17,6 @@ import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
 import { Categoria } from '@categoria/interfaces/categoria';
-import { LayoutService } from '@core/services/layout.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { ContextMenuCategoria } from '@categoria/components/context-menu-categoria/context-menu-categoria.component';
@@ -46,16 +45,11 @@ export class CategoriaTableComponent implements AfterViewInit {
   private contextMenu: ContextMenuCategoria;
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
-  get isDarkTheme() {
-    return this.layoutService.isDarkTheme();
-  }
-
   readonly STATUS = STATUS;
 
   constructor(
     private readonly router: Router,
     private readonly utilsService: UtilsService,
-    private readonly layoutService: LayoutService,
     private readonly messageService: MessageService,
     private readonly confirmationService: ConfirmationService,
     private readonly categoriaCommandService: CategoriaCommandService

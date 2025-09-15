@@ -9,14 +9,16 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 
-//Externos
-import { MessageService } from 'primeng/api';
+//Internos
+import { CustomDialogService } from '@shared/services/custom-dialog.service';
 
 const UNAUTHORIZED = 403;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private readonly messageService: MessageService) {}
+  constructor(
+    private readonly customDialogService: CustomDialogService,
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -28,25 +30,20 @@ export class ErrorInterceptor implements HttpInterceptor {
   private readonly handleError = (error: HttpErrorResponse) => {
     console.error('>>> ERROR> ', error, ' <<<');
     if (error.status === UNAUTHORIZED) {
-      this.showMessage(
+      this.showErrorDialog(
         'Operação não permitida. Entre em contato com o administrador do sistema.'
       );
     } else if (error.error?.message) {
-      this.showMessage(error.error.message);
+      this.showErrorDialog(error.error.message);
     } else {
-      this.showMessage(
+      this.showErrorDialog(
         'Erro inesperado. Entre em contato com o administrador do sistema.'
       );
     }
     throw error;
   };
 
-  private readonly showMessage = (message: string) => {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erro',
-      detail: message,
-      life: 5000,
-    });
+  private readonly showErrorDialog = (message: string) => {
+    this.customDialogService.openDialog(message, 'error')
   };
 }

@@ -40,4 +40,5 @@ export const errorMessagesDictionary = {
   specialCharacters: () => 'Usuário não pode conter espaços ou caracteres especiais',
   lettersAndNumbers: () => 'A senha deve possuir letras e números',
   passwordMismatch: () => 'As senhas não conferem',
+  produtosDuplicados: () => 'Não são permitidos produtos duplicados',
 };

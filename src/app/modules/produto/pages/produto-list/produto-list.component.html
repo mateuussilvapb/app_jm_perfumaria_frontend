@@ -2,18 +2,20 @@
   <!-- <div>
     <app-produto-filters
       [refresh$]="refresh$"
-      (onFilter)="onFilter($event)"
+      (filter)="onFilter($event)"
     ></app-produto-filters>
   </div>
   <p-divider /> -->
+  @if (showAddButton()) {
   <div class="grid justify-content-end">
     <div class="col-12 lg:col-3">
       <a [routerLink]="['adicionar']" class="btn-primary-outlined-link">
+        <i class="pi pi-plus-circle mr-2"></i>
         Cadastrar Produto
       </a>
     </div>
   </div>
-  @if (loading$ |async) {
+  } @if (loading$ |async) {
   <app-loading></app-loading>
   } @if (produto$ | async; as produtos) {
   <div>

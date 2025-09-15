@@ -9,6 +9,7 @@ import { ALL_ROLES, ROLES } from '@shared/models/roles';
 import { USUARIO_ROUTES } from '@usuario/usuario.routes';
 import { PRODUTO_ROUTES } from '@produto/produto.routes';
 import { CATEGORIA_ROUTES } from '@categoria/categoria.routes';
+import { ENTRADA_ESTOQUE_ROUTES } from '@entrada-estoque/entrada-estoque.routes';
 
 export const CORE_ROUTES: Routes = [
   {
@@ -51,4 +52,12 @@ export const CORE_ROUTES: Routes = [
       roles: ALL_ROLES,
     },
   },
+  {
+    path: 'entrada-estoque',
+    canActivate: [AuthGuard],
+    children: ENTRADA_ESTOQUE_ROUTES,
+    data: {
+      roles: ALL_ROLES,
+    },
+  }
 ];

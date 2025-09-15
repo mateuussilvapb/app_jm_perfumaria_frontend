@@ -1,0 +1,8 @@
+<p-popover #genericPopOver>
+  <div class="flex flex-column justify-content-center">
+    <p>{{ mensagem }}</p>
+    @if (showBtnAction) {
+      <button pButton type="button" (click)="executarAcao()">{{labelBtn}}</button>
+    }
+  </div>
+</p-popover>

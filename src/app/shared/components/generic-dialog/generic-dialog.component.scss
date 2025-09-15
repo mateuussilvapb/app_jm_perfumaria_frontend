@@ -1,0 +1,31 @@
+::ng-deep .ng-star-inserted {
+  div {
+    .generic-dialog {
+      .p-dialog-header {
+        display: none !important;
+      }
+      .p-dialog-content{
+        padding: 0px !important;
+        border-radius: 11px !important;
+      }
+    }
+  }
+}
+
+::ng-deep .p-dialog.dialog-success {
+  border-radius: 11px !important;
+  border: 3px solid #22c55e !important;
+  background-color: #f8fffa !important;
+}
+
+::ng-deep .p-dialog.dialog-error {
+  border-radius: 11px !important;
+  border: 3px solid #ef4444 !important;
+  background-color: #fffafa !important;
+}
+
+::ng-deep .p-dialog.dialog-warn {
+  border-radius: 11px !important;
+  border: 3px solid #f97316 !important;
+  background-color: #fefcfa !important;
+}

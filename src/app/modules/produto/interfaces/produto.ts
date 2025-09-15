@@ -14,8 +14,8 @@ export interface Produto {
   status: STATUS;
   codigo: number;
   quantidadeEmEstoque: number;
-  marca: Marca;
-  categoria: Categoria;
+  marca: Partial<Marca>;
+  categoria: Partial<Categoria>;
   identificacao: string;
   idString: string;
 }

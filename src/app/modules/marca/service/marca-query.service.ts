@@ -2,6 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+//Externos
+import { map } from 'rxjs';
+
 //Internos
 import { Utils } from '@utils/utils';
 import { Marca } from '@marca/interfaces/marca';
@@ -27,8 +30,8 @@ export class MarcaQueryService extends AbstractQueryService<Marca> {
   };
 
   getAllAutocomplete = () => {
-    return this.http.get<AutocompleteDto[]>(
-      `${this.baseURL}/query/ativos/autocomplete`
-    );
+    return this.http
+      .get<AutocompleteDto[]>(`${this.baseURL}/query/ativos/autocomplete`)
+      .pipe(map((items) => items.map((item) => new AutocompleteDto(item))));
   };
 }

@@ -1,0 +1,142 @@
+<p-card>
+  <ng-template #header>
+    <h4 class="m-0 pl-3 pt-3 font-medium">Buscar por...</h4>
+  </ng-template>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <!-- FORM -->
+    <div class="grid">
+
+      <!-- Produtos -->
+      <div class="col-12 lg:col-4">
+        <label for="produtos-entrada">Produtos</label>
+        @if (loadingAutocompleteProdutos$ | async) {
+          <app-loading></app-loading>
+        } @else {
+          <p-multiselect
+            [fluid]="true"
+            dataKey="value"
+            styleClass="mt-1"
+            [showClear]="true"
+            optionLabel="label"
+            id="produtos-entrada"
+            formControlName="produtos"
+            [options]="produtosOptions"
+            placeholder="Selecione um produto..."
+          />
+          <app-form-control-errors [control]="getControlForm('produtos')"></app-form-control-errors>
+        }
+      </div>
+
+      <!-- Marcas -->
+      <div class="col-12 lg:col-4">
+        <label for="marcas-entrada">Marcas</label>
+        @if (loadingAutocompleteMarcas$ | async) {
+          <app-loading></app-loading>
+        } @else {
+          <p-multiselect
+            [fluid]="true"
+            dataKey="value"
+            styleClass="mt-1"
+            [showClear]="true"
+            optionLabel="label"
+            id="marcas-entrada"
+            formControlName="marcas"
+            [options]="marcasOptions"
+            placeholder="Selecione uma marca..."
+          />
+          <app-form-control-errors [control]="getControlForm('marcas')"></app-form-control-errors>
+        }
+      </div>
+
+      <!-- Categorias -->
+      <div class="col-12 lg:col-4">
+        <label for="categorias-entrada">Categorias</label>
+        @if (loadingAutocompleteCategorias$ | async) {
+          <app-loading></app-loading>
+        } @else {
+          <p-multiselect
+            [fluid]="true"
+            dataKey="value"
+            styleClass="mt-1"
+            [showClear]="true"
+            optionLabel="label"
+            id="categorias-entrada"
+            formControlName="categorias"
+            [options]="categoriasOptions"
+            placeholder="Selecione uma categoria..."
+          />
+          <app-form-control-errors [control]="getControlForm('categorias')"></app-form-control-errors>
+        }
+      </div>
+
+      <!-- Intervalo de Datas -->
+      <div class="col-12 lg:col-3">
+        <label for="datas-entrada">Intervalo de Datas</label>
+        <p-datepicker
+          class="w-full"
+          id="datas-entrada"
+          [showClear]="true"
+          [maxDate]="maxDate"
+          selectionMode="range"
+          styleClass="w-full mt-1"
+          formControlName="datas"
+          placeholder="Informe um intervalo de datas..."
+        />
+      </div>
+
+      <!-- Descrição -->
+      <div class="col-12 lg:col-3">
+        <label for="descricao-entrada">Descrição</label>
+        <input
+          pInputText
+          type="text"
+          maxlength="100"
+          class="w-full mt-1"
+          id="descricao-entrada"
+          formControlName="descricao"
+          placeholder="Informe uma descricao..."
+        />
+      </div>
+
+      <!-- Intervalo de desconto -->
+      <div class="col-12 lg:col-2 flex flex-column">
+        <label>Intervalo de Desconto</label>
+        <div class="flex flex-column justify-content-end h-full mt-1">
+          <div>
+            <p-slider formControlName="descontos" [range]="true" class="w-full" />
+          </div>
+          <div class="flex flex-row justify-content-between mt-2">
+            <small>{{descontoMin}}</small>
+            <small>{{descontoMax}}</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Situação -->
+      <div class="col-12 lg:col-4">
+        <label>Situação</label>
+        <div class="flex flex-wrap flex-row w-full align-content-center mt-3 justify-content-between lg:justify-content-start">
+          @for (situacao of situacaoSelect; track $index) {
+            <div class="mr-3 mt-2 xl:mt-0">
+              <p-radiobutton
+                [value]="situacao"
+                [inputId]="situacao.key"
+                formControlName="situacao"
+              />
+              <label [for]="situacao.key" class="ml-2">{{ situacao.value }}</label>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <!-- BOTÕES -->
+    <div class="grid justify-content-end mt-2">
+      <div class="col-12 lg:col-2 lg:pr-1">
+        <p-button label="Limpar" class="w-full" styleClass="w-full" variant="outlined" severity="secondary" (onClick)="limparCampos()" />
+      </div>
+      <div class="col-12 lg:col-2 lg:pl-1">
+        <p-button label="Buscar" class="w-full" styleClass="w-full" type="submit" [disabled]="disableButtonBuscar()" />
+      </div>
+    </div>
+  </form>
+</p-card>
