@@ -84,7 +84,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-produtoEntrada let-expanded="expanded">
                       <tr>
-                        <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.produto.nome ?? '-' }}</td>
+                        <td class="text-center text-sm" pFrozenColumn [pTooltip]="getTooltipMessage(produtoEntrada.produto)" tooltipPosition="top">{{ produtoEntrada.produto.nome ?? '-' }}</td>
                         <td class="text-center text-sm" pFrozenColumn>{{ (produtoEntrada.produto.precoVenda | currency: 'BRL') ?? '-' }}</td>
                         <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.produto.quantidadeEmEstoque ?? '-' }}</td>
                         <td class="text-center text-sm" pFrozenColumn>{{ produtoEntrada.quantidade ?? '-' }}</td>

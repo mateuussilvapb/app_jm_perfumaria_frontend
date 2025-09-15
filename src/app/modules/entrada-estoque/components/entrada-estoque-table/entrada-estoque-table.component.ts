@@ -21,6 +21,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { UtilsService } from '@utils/utils.service';
+import { Produto } from '@produto/interfaces/produto';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
@@ -150,5 +151,9 @@ export class EntradaEstoqueTableComponent implements AfterViewInit {
         this.expandedRows = {};
       }
     })
+  }
+
+  getTooltipMessage(produto: Partial<Produto>): string {
+    return `Categoria: ${produto?.categoria?.nome ?? ''}\nMarca: ${produto?.marca?.nome ?? ''}`;
   }
 }
