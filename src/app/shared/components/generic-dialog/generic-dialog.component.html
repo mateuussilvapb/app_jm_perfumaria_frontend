@@ -1,16 +1,22 @@
 <section>
-  <div [class]="classTitle">
-    <i [class]="icon"></i>
-    <p class="m-0 ml-2">{{ tituloDialog }}</p>
-  </div>
-  <div class="px-4 pb-3" [innerHTML]="mensagemHtml"></div>
-  <div class="px-4 pb-2 flex flex-row justify-content-end">
-    <p-button
-      label="OK"
-      type="button"
-      variant="outlined"
-      (onClick)="ref.close()"
-      [severity]="severityButton"
-    ></p-button>
+  <div class="flex flex-column">
+    <div class="flex flex-row w-full ml-2">
+      <i [class]="iconClass"></i>
+      <div class="flex flex-column px-2">
+        <p [class]="titleClass" >{{ dialogTitle }}</p>
+        <div class="py-2 text-sm" [innerHTML]="mensagemHtml"></div>
+      </div>
+      <div class="flex flex-column align-content-start justify-content-start pr-1">
+        <p-button
+          class="py-0"
+          [text]="true"
+          rounded="true"
+          styleClass="py-0"
+          icon="pi pi-times"
+          (onClick)="ref.close()"
+          [severity]="severityButton"
+        ></p-button>
+      </div>
+    </div>
   </div>
 </section>

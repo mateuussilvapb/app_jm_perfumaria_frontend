@@ -12,14 +12,14 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class GenericDialogComponent implements OnInit {
 
-  icon: string = '';
-  colorTitle: string = '';
   mensagemHtml: string = '';
+  dialogStyleClass: string = '';
+  iconClass: string = 'mt-2 text-base';
+  titleClass: string = 'mb-0 mt-2 text-base';
   severityButton: 'success' | 'warn' | 'danger' = 'warn';
-  classTitle: string = 'flex align-items-center px-3 pt-2 text-xl font-bold mb-3';
 
   @Input() message: string = '';
-  @Input() tituloDialog: string = 'Atenção';
+  @Input() dialogTitle: string = 'Atenção';
   @Input() type: 'error' | 'info' | 'success' = 'info';
 
   ngOnInit(): void {
@@ -27,14 +27,15 @@ export class GenericDialogComponent implements OnInit {
     this.mensagemHtml = this.message.replace(/\n/g, '<br>');
     this.type = this.config.data?.type ?? 'info';
     if (this.config.data?.titulo !== undefined && this.config.data?.titulo !== null && this.config.data?.titulo !== '') {
-      this.tituloDialog = this.config.data?.titulo;
+      this.dialogTitle = this.config.data?.titulo;
       return;
     }
-    this.setTituloDialog();
-    this.setIcon();
-    this.setColorTitle();
-    this.setClassesTitle();
+
+    this.setIconClass();
+    this.setTitleClass();
+    this.setDialogTitle();
     this.setSeverityButton();
+    this.setDialogStyleClass();
   }
 
   constructor(
@@ -46,36 +47,24 @@ export class GenericDialogComponent implements OnInit {
     this.ref.close();
   }
 
-  setTituloDialog() {
+  setIconClass() {
     if (this.type === 'success') {
-      this.tituloDialog = 'Sucesso';
+      this.iconClass += ' pi pi-check-circle text-green-500';
     } else if (this.type === 'error') {
-      this.tituloDialog = 'Erro';
-    }
-  }
-
-  setIcon() {
-    if (this.type === 'success') {
-      this.icon = 'pi pi-check-circle';
-    } else if (this.type === 'error') {
-      this.icon = 'pi pi-times-circle';
+      this.iconClass += ' pi pi-times-circle text-red-500';
     } else {
-      this.icon = 'pi pi-info-circle';
+      this.iconClass += ' pi pi-info-circle text-orange-500';
     }
   }
 
-  setColorTitle() {
+  setTitleClass() {
     if (this.type === 'success') {
-      this.colorTitle = 'text-green-500';
+      this.titleClass += ' text-green-500';
     } else if (this.type === 'error') {
-      this.colorTitle = 'text-red-500';
+      this.titleClass += ' text-red-500';
     } else {
-      this.colorTitle = 'text-orange-500';
+      this.titleClass += ' text-orange-500';
     }
-  }
-
-  setClassesTitle() {
-    this.classTitle = `${this.classTitle} ${this.colorTitle}`;
   }
 
   setSeverityButton() {
@@ -87,4 +76,23 @@ export class GenericDialogComponent implements OnInit {
       this.severityButton = 'warn';
     }
   }
+
+  setDialogTitle() {
+    if (this.type === 'success') {
+      this.dialogTitle = 'Sucesso';
+    } else if (this.type === 'error') {
+      this.dialogTitle = 'Erro';
+    }
+  }
+
+  setDialogStyleClass() {
+    if (this.type === 'success') {
+      this.dialogStyleClass = 'dialog-success';
+    } else if (this.type === 'error') {
+      this.dialogStyleClass = 'dialog-error';
+    } else {
+      this.dialogStyleClass = 'dialog-warn';
+    }
+  }
+
 }

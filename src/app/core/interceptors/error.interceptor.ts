@@ -9,20 +9,15 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 
-//Externos
-import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
-
 //Internos
-import { LayoutService } from '@core/services/layout.service';
-import { GenericDialogComponent } from '@shared/components/generic-dialog/generic-dialog.component';
+import { CustomDialogService } from '@shared/services/custom-dialog.service';
 
 const UNAUTHORIZED = 403;
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private readonly dialogService: DialogService,
-    private readonly layoutService: LayoutService
+    private readonly customDialogService: CustomDialogService,
   ) {}
 
   intercept(
@@ -49,31 +44,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   };
 
   private readonly showErrorDialog = (message: string) => {
-    let width: string = '30vw';
-    let height: string = 'auto';
-    let styleClass: string = 'generic-dialog';
-
-    if (this.layoutService.isMobile) {
-      width = '100vw';
-      height = '100vh';
-      styleClass = 'max-h-full generic-dialog';
-      this.layoutService.state.sidebarMenuOptionsVisible = false;
-    }
-
-    const configDialog: DynamicDialogConfig = {
-      modal: true,
-      width: width,
-      height: height,
-      baseZIndex: 10000,
-      styleClass: styleClass,
-      data: { type: 'error', message: message },
-      contentStyle: { overflow: 'hidden', height: 'auto' },
-    };
-
-    this.dialogService.open(
-      GenericDialogComponent,
-      configDialog
-    );
-
+    this.customDialogService.openDialog(message, 'error')
   };
 }

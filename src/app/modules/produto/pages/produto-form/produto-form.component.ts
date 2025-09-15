@@ -212,10 +212,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
 
   onSubscribe(subscribe: Observable<any>) {
     subscribe.pipe(finalize(() => this.onCreateUpdate$.next(false))).subscribe({
-      next: () => this.messageSuccess(),
-      error: () => {
-        this.router.navigate(['/produto']);
-      },
+      next: () => this.messageSuccess()
     });
   }
 
