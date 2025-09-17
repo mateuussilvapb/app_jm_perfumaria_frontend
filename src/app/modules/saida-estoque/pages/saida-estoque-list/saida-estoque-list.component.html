@@ -1,0 +1,29 @@
+<p-card header="Saidas de Estoque">
+  <div>
+    <app-saida-estoque-filters
+      [refresh$]="refresh$"
+      (filter)="onFilter($event)"
+    ></app-saida-estoque-filters>
+  </div>
+  <p-divider />
+  @if (showAddButton()) {
+    <div class="grid justify-content-end">
+      <div class="col-12 lg:col-3">
+        <a [routerLink]="['adicionar']" class="btn-primary-outlined-link">
+          <i class="pi pi-plus-circle mr-2"></i>
+          Cadastrar Saida
+        </a>
+      </div>
+    </div>
+  }
+  @if (loading$ |async) {
+    <app-loading></app-loading>
+  } @if ( saidasEstoque$ | async; as saidasEstoque) {
+  <div>
+    <app-saida-estoque-table
+      [data]="saidasEstoque"
+      [refresh$]="refresh$"
+    ></app-saida-estoque-table>
+  </div>
+  }
+</p-card>

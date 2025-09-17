@@ -108,6 +108,26 @@ export const ItensMenu: ItemMenu[] = [
     ],
   },
   {
+    label: 'SAIDA ESTOQUE',
+    separator: true,
+    roles: ALL_ROLES,
+    children: [
+      {
+        label: 'Listar Saidas de Estoque',
+        separator: false,
+        icon: PrimeIcons.LIST,
+        route: '/saida-estoque',
+      },
+      // {
+      //   label: 'Adicionar Saida de Estoque',
+      //   separator: false,
+      //   roles: [ROLES.ADMIN, ROLES.MANAGER],
+      //   icon: PrimeIcons.PLUS_CIRCLE,
+      //   route: '/saida-estoque/adicionar',
+      // },
+    ],
+  },
+  {
     label: 'USUÁRIO',
     separator: true,
     roles: [ROLES.ADMIN],
