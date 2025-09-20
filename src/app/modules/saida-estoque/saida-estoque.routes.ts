@@ -5,8 +5,8 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
 // import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-// import { EntradaEstoqueFormComponent } from '@entrada-estoque/pages/entrada-estoque-form/entrada-estoque-form.component';
-import { SaidaEstoqueListComponent } from './pages/saida-estoque-list/saida-estoque-list.component';
+// import { SaidaEstoqueFormComponent } from '@saida-estoque/pages/saida-estoque-form/saida-estoque-form.component';
+import { SaidaEstoqueListComponent } from '@saida-estoque/pages/saida-estoque-list/saida-estoque-list.component';
 
 export const SAIDA_ESTOQUE_ROUTES: Routes = [
   {
@@ -20,7 +20,7 @@ export const SAIDA_ESTOQUE_ROUTES: Routes = [
   // {
   //   path: `${ROTAS_FORM.ADICIONAR}`,
   //   canActivate: [AuthGuard],
-  //   component: EntradaEstoqueFormComponent,
+  //   component: SaidaEstoqueFormComponent,
   //   data: {
   //     roles: [ROLES.ADMIN, ROLES.MANAGER],
   //   },
@@ -28,7 +28,7 @@ export const SAIDA_ESTOQUE_ROUTES: Routes = [
   // {
   //   path: `:id/${ROTAS_FORM.VISUALIZAR}`,
   //   canActivate: [AuthGuard],
-  //   component: EntradaEstoqueFormComponent,
+  //   component: SaidaEstoqueFormComponent,
   //   data: {
   //     roles: ALL_ROLES,
   //   },
@@ -36,7 +36,7 @@ export const SAIDA_ESTOQUE_ROUTES: Routes = [
   // {
   //   path: `:id/${ROTAS_FORM.EDITAR}`,
   //   canActivate: [AuthGuard],
-  //   component: EntradaEstoqueFormComponent,
+  //   component: SaidaEstoqueFormComponent,
   //   data: {
   //     roles: [ROLES.ADMIN, ROLES.MANAGER],
   //   },

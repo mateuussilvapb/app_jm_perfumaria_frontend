@@ -7,9 +7,9 @@ import { map, Observable } from 'rxjs';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { SaidaEstoque } from '../interfaces/saida-estoque';
+import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
-import { SaidaEstoqueViewUpdateDto } from '../interfaces/saida-estoque-view-update-dto';
+import { SaidaEstoqueViewUpdateDto } from '@saida-estoque/interfaces/saida-estoque-view-update-dto';
 
 @Injectable({
   providedIn: 'root',

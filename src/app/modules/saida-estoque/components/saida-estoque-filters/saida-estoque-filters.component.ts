@@ -21,7 +21,7 @@ import { MarcaQueryService } from '@marca/service/marca-query.service';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
-import { SaidaEstoqueFilterDto } from '../../interfaces/saida-estoque-filter-dto';
+import { SaidaEstoqueFilterDto } from '@saida-estoque/interfaces/saida-estoque-filter-dto';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({

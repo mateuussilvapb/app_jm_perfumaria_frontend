@@ -14,8 +14,8 @@ import {
 import { UtilsService } from '@utils/utils.service';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
-import { SaidaEstoque } from '../../interfaces/saida-estoque';
-import { SaidaEstoqueCommandService } from '../../services/saida-estoque-command.service';
+import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
+import { SaidaEstoqueCommandService } from '@saida-estoque/services/saida-estoque-command.service';
 
 export interface ContextMenuSaidaEstoqueData {
   saidaEstoque: Partial<SaidaEstoque>;

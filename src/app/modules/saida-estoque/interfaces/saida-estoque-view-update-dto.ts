@@ -1,7 +1,7 @@
 //Internos
 import { STATUS } from '@shared/enums/status.enum';
 import { SITUACAO } from '@shared/enums/situacao.enum';
-import { ProdutoSaidaEstoque } from 'app/modules/produto-saida-estoque/interfaces/produto-saida-estoque';
+import { ProdutoSaidaEstoque } from '@produto-saida-estoque/interfaces/produto-saida-estoque';
 
 export class SaidaEstoqueViewUpdateDto {
   public id: string;

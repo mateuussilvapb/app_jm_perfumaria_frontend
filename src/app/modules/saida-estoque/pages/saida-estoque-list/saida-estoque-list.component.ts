@@ -18,11 +18,11 @@ import { DividerModule } from 'primeng/divider';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { SaidaEstoque } from '../../interfaces/saida-estoque';
+import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
-import { SaidaEstoqueQueryService } from '../../services/saida-estoque-query.service';
-import { SaidaEstoqueTableComponent } from '../../components/saida-estoque-table/saida-estoque-table.component';
-import { SaidaEstoqueFiltersComponent } from '../../components/saida-estoque-filters/saida-estoque-filters.component';
+import { SaidaEstoqueQueryService } from '@saida-estoque/services/saida-estoque-query.service';
+import { SaidaEstoqueTableComponent } from '@saida-estoque/components/saida-estoque-table/saida-estoque-table.component';
+import { SaidaEstoqueFiltersComponent } from '@saida-estoque/components/saida-estoque-filters/saida-estoque-filters.component';
 import { UtilsService } from '@utils/utils.service';
 
 @Component({

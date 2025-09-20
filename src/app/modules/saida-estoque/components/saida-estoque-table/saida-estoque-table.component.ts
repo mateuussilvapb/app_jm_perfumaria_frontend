@@ -24,13 +24,13 @@ import { UtilsService } from '@utils/utils.service';
 import { Produto } from '@produto/interfaces/produto';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { SaidaEstoque } from '../../interfaces/saida-estoque';
+import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { ProdutoSaidaEstoque } from 'app/modules/produto-saida-estoque/interfaces/produto-saida-estoque';
-import { SaidaEstoqueCommandService } from '../../services/saida-estoque-command.service';
+import { SaidaEstoqueCommandService } from '@saida-estoque/services/saida-estoque-command.service';
 import { ProdutoSaidaEstoqueQueryService } from 'app/modules/produto-saida-estoque/services/produto-saida-estoque-query.service';
-import { ContextMenuSaidaEstoque } from '../context-menu-saida-estoque/context-menu-saida-estoque.component';
+import { ContextMenuSaidaEstoque } from '@saida-estoque/components/context-menu-saida-estoque/context-menu-saida-estoque.component';
 
 @Component({
   selector: 'app-saida-estoque-table',
