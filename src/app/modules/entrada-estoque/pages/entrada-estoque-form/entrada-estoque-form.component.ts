@@ -29,7 +29,7 @@ import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { CustomValidators } from '@shared/validators/custom-validators';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
-import { EntradaEstoqueCreateDto } from '@entrada-estoque/interfaces/entrada-estoque-create-dto';
+import { MovimentacaoEstoqueCreateDto } from '@shared/interfaces/movimentacao-estoque-create-dto';
 import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-estoque-query.service';
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
 import { EntradaEstoqueViewUpdateDto } from '@entrada-estoque/interfaces/entrada-estoque-view-update-dto';
@@ -161,7 +161,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     if (this.form.valid && this.produtosList.length > 0) {
       this.addProdutosOnFormArray();
       this.setSituacaoOnForm(isRascunho);
-      const dto = new EntradaEstoqueCreateDto(this.form.value);
+      const dto = new MovimentacaoEstoqueCreateDto(this.form.value);
       if (this.isCreate) {
         this.create(dto);
       } else if (this.isUpdate) {
@@ -178,7 +178,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       );
   }
 
-  create(dto: EntradaEstoqueCreateDto) {
+  create(dto: MovimentacaoEstoqueCreateDto) {
     if (this.form.valid && this.produtosList.length > 0) {
       this.entradaEstoqueCommandService.create(dto).subscribe((res) => {
         if (res) {
@@ -188,7 +188,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     }
   }
 
-  update(dto: EntradaEstoqueCreateDto) {
+  update(dto: MovimentacaoEstoqueCreateDto) {
     if (this.form.valid && this.produtosList.length > 0) {
       this.entradaEstoqueCommandService
         .update(this.responseEntradaEstoque.idString, dto)

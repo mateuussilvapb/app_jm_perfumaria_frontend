@@ -3,7 +3,7 @@ import { STATUS } from "@shared/enums/status.enum";
 import { SITUACAO } from "@shared/enums/situacao.enum";
 import { ProdutoEntradaEstoqueCreateDto } from "@produto-entrada-estoque/interfaces/produto-entrada-estoque-create-dto";
 
-export class EntradaEstoqueCreateDto {
+export class MovimentacaoEstoqueCreateDto {
   status: STATUS;
   situacao: SITUACAO;
   descricao: string;
