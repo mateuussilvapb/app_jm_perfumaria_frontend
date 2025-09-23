@@ -24,7 +24,7 @@ import { UtilsService } from '@utils/utils.service';
 import { Produto } from '@produto/interfaces/produto';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { ProdutoEntradaEstoque } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque';
@@ -54,7 +54,7 @@ import { ContextMenuEntradaEstoque } from '@entrada-estoque/components/context-m
 })
 export class EntradaEstoqueTableComponent implements AfterViewInit {
   @Input() refresh$: BehaviorSubject<void>;
-  @Input() data: Array<Partial<EntradaEstoque>> = [];
+  @Input() data: Array<Partial<MovimentacaoEstoque>> = [];
 
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
@@ -87,8 +87,8 @@ export class EntradaEstoqueTableComponent implements AfterViewInit {
     this.onRefresh();
   }
 
-  onToggleMenu(event: MouseEvent, entradaEstoque: EntradaEstoque) {
-    this.contextMenu.toggle(event, { entradaEstoque });
+  onToggleMenu(event: MouseEvent, movimentacaoEstoque: MovimentacaoEstoque) {
+    this.contextMenu.toggle(event, { movimentacaoEstoque });
   }
 
   getSituacaoNormalized(situacao: SITUACAO) {
@@ -150,10 +150,12 @@ export class EntradaEstoqueTableComponent implements AfterViewInit {
       if (this.expandedRows) {
         this.expandedRows = {};
       }
-    })
+    });
   }
 
   getTooltipMessage(produto: Partial<Produto>): string {
-    return `Categoria: ${produto?.categoria?.nome ?? ''}\nMarca: ${produto?.marca?.nome ?? ''}`;
+    return `Categoria: ${produto?.categoria?.nome ?? ''}\nMarca: ${
+      produto?.marca?.nome ?? ''
+    }`;
   }
 }

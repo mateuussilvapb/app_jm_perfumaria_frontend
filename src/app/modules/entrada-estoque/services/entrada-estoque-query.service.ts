@@ -7,14 +7,16 @@ import { map, Observable } from 'rxjs';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
 import { EntradaEstoqueViewUpdateDto } from '@entrada-estoque/interfaces/entrada-estoque-view-update-dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EntradaEstoqueQueryService extends AbstractQueryService<Partial<EntradaEstoque>> {
+export class EntradaEstoqueQueryService extends AbstractQueryService<
+  Partial<MovimentacaoEstoque>
+> {
   protected override path = (): string => 'entradas-estoque';
 
   constructor(http: HttpClient) {
@@ -22,14 +24,17 @@ export class EntradaEstoqueQueryService extends AbstractQueryService<Partial<Ent
   }
 
   override all = () => {
-    return this.http.get<Partial<EntradaEstoque>[]>(
+    return this.http.get<Partial<MovimentacaoEstoque>[]>(
       `${this.baseURL}/query/list`
     );
   };
 
-  getAllByFilters = (dto: URLSearchParams): Observable<Array<Partial<EntradaEstoque>>> =>
-    this.http
-      .get<Array<Partial<EntradaEstoque>>>(`${this.baseURL}/query/searchByFilters${Utils.searchParamsToString(dto)}`);
+  getAllByFilters = (
+    dto: URLSearchParams
+  ): Observable<Array<Partial<MovimentacaoEstoque>>> =>
+    this.http.get<Array<Partial<MovimentacaoEstoque>>>(
+      `${this.baseURL}/query/searchByFilters${Utils.searchParamsToString(dto)}`
+    );
 
   getById = (id: string): Observable<EntradaEstoqueViewUpdateDto> =>
     this.http

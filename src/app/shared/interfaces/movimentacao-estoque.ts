@@ -3,7 +3,7 @@ import { STATUS } from '@shared/enums/status.enum';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ProdutoEntradaEstoque } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque';
 
-export interface EntradaEstoque {
+export interface MovimentacaoEstoque {
   id: number;
   status: STATUS;
   situacao: SITUACAO;

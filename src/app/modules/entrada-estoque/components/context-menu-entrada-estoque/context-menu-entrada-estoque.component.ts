@@ -14,11 +14,11 @@ import {
 import { UtilsService } from '@utils/utils.service';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
-import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
 
 export interface ContextMenuEntradaEstoqueData {
-  entradaEstoque: Partial<EntradaEstoque>;
+  movimentacaoEstoque: Partial<MovimentacaoEstoque>;
 }
 
 export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEstoqueData> {
@@ -43,7 +43,7 @@ export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEst
       icon: 'pi pi-search',
       command: () => {
         this.onNavigate(
-          `/entrada-estoque/${data.entradaEstoque.idString}/visualizar`
+          `/entrada-estoque/${data.movimentacaoEstoque.idString}/visualizar`
         );
       },
       rolesAllowed: [...ALL_ROLES],
@@ -54,7 +54,7 @@ export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEst
       icon: 'pi pi-user-edit',
       command: () => {
         this.onNavigate(
-          `/entrada-estoque/${data.entradaEstoque.idString}/editar`
+          `/entrada-estoque/${data.movimentacaoEstoque.idString}/editar`
         );
       },
       rolesAllowed: [ROLES.ADMIN, ROLES.MANAGER],
@@ -64,15 +64,15 @@ export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEst
       label: 'Excluir',
       icon: 'pi pi-trash',
       command: () => {
-        this.onExcluir(data.entradaEstoque);
+        this.onExcluir(data.movimentacaoEstoque);
       },
       rolesAllowed: [ROLES.ADMIN],
     },
   ];
 
-  private onExcluir(entradaEstoque: Partial<EntradaEstoque>) {
+  private onExcluir(movimentacaEstoque: Partial<MovimentacaoEstoque>) {
     let mensagem = `Tem certeza que deseja excluir esta entrada de estoque? A ação não poderá ser desfeita.`;
-    if (entradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO) {
+    if (movimentacaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO) {
       mensagem += `<br>Além disso, haverá repercursão no estoque: os itens adicionados serão removidos.<br>Confirma?`;
     }
     this.confirmationService.confirm({
@@ -81,7 +81,7 @@ export class ContextMenuEntradaEstoque extends ContextMenu<ContextMenuEntradaEst
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
-      accept: () => this.excluir(entradaEstoque.idString),
+      accept: () => this.excluir(movimentacaEstoque.idString),
     });
   }
 

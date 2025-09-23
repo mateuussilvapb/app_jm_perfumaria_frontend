@@ -18,7 +18,7 @@ import { DividerModule } from 'primeng/divider';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { EntradaEstoque } from '@entrada-estoque/interfaces/entrada-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-estoque-query.service';
 import { EntradaEstoqueTableComponent } from '@entrada-estoque/components/entrada-estoque-table/entrada-estoque-table.component';
@@ -46,7 +46,7 @@ import { UtilsService } from '@utils/utils.service';
 export class EntradaEstoqueListComponent implements OnInit {
   public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public entradasEstoque$ = new Observable<Array<Partial<EntradaEstoque>>>();
+  public entradasEstoque$ = new Observable<Array<Partial<MovimentacaoEstoque>>>();
 
   constructor(
     private readonly entradaEstoqueQueryService: EntradaEstoqueQueryService,

@@ -63,7 +63,9 @@ import { ListaProdutosEntradaEstoqueToAddComponent } from '@entrada-estoque/comp
 })
 export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(false);
+  public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(
+    false
+  );
 
   public titleCard: string = '';
   public maxDate: Date | undefined;
@@ -82,7 +84,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     private readonly confirmationService: ConfirmationService,
     private readonly produtoQueryService: ProdutoQueryService,
     private readonly entradaEstoqueQueryService: EntradaEstoqueQueryService,
-    private readonly entradaEstoqueCommandService: EntradaEstoqueCommandService,
+    private readonly entradaEstoqueCommandService: EntradaEstoqueCommandService
   ) {
     super(activatedRoute);
   }
@@ -93,7 +95,10 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       status: [STATUS.ATIVO, Validators.required],
       situacao: [SITUACAO.EM_CADASTRAMENTO, Validators.required],
       dataEntradaEstoque: [null, [Validators.required]],
-      produtos: this.fb.array([], [CustomValidators.produtosDuplicadosValidator()]),
+      produtos: this.fb.array(
+        [],
+        [CustomValidators.produtosDuplicadosValidator()]
+      ),
     });
   }
 
@@ -135,7 +140,10 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   adicionarProdutosResponseNoArray() {
-    if (this.responseEntradaEstoque.entradasProdutos && this.responseEntradaEstoque.entradasProdutos.length > 0) {
+    if (
+      this.responseEntradaEstoque.entradasProdutos &&
+      this.responseEntradaEstoque.entradasProdutos.length > 0
+    ) {
       this.responseEntradaEstoque.entradasProdutos.forEach((p) => {
         this.produtosList.push({
           idProduto: p.produto.id,
@@ -163,18 +171,20 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   setSituacaoOnForm(isRascunho: boolean) {
-    this.form.get('situacao').setValue(isRascunho ? SITUACAO.EM_CADASTRAMENTO : SITUACAO.CADASTRO_FINALIZADO);
+    this.form
+      .get('situacao')
+      .setValue(
+        isRascunho ? SITUACAO.EM_CADASTRAMENTO : SITUACAO.CADASTRO_FINALIZADO
+      );
   }
 
   create(dto: EntradaEstoqueCreateDto) {
     if (this.form.valid && this.produtosList.length > 0) {
-      this.entradaEstoqueCommandService
-        .create(dto)
-        .subscribe((res) => {
-          if (res) {
-            this.messageSuccess();
-          }
-        });
+      this.entradaEstoqueCommandService.create(dto).subscribe((res) => {
+        if (res) {
+          this.messageSuccess();
+        }
+      });
     }
   }
 
@@ -219,19 +229,29 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     return this.produtosFormArray.at(i) as FormGroup;
   }
 
-  createProdutoToFormArray(produto: Partial<ProdutoEntradaEstoqueCreateDto>): FormGroup {
+  createProdutoToFormArray(
+    produto: Partial<ProdutoEntradaEstoqueCreateDto>
+  ): FormGroup {
     return this.fb.group({
       idProduto: [produto.idProduto, Validators.required],
-      precoUnitario: [produto.precoUnitario, [Validators.required, Validators.min(0.01)]],
-      quantidade: [produto.quantidade, [Validators.required, Validators.min(1)]],
+      precoUnitario: [
+        produto.precoUnitario,
+        [Validators.required, Validators.min(0.01)],
+      ],
+      quantidade: [
+        produto.quantidade,
+        [Validators.required, Validators.min(1)],
+      ],
       status: [STATUS.ATIVO, Validators.required],
       desconto: [produto.desconto],
     });
   }
 
-  addProdutosOnFormArray(){
+  addProdutosOnFormArray() {
     this.produtosFormArray.clear();
-    this.produtosList.forEach(p => {this.produtosFormArray.push(this.createProdutoToFormArray(p))});
+    this.produtosList.forEach((p) => {
+      this.produtosFormArray.push(this.createProdutoToFormArray(p));
+    });
   }
 
   addProdutoOnProdutosList(event) {
@@ -239,7 +259,8 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       this.messageService.add({
         severity: 'warn',
         summary: 'Atenção',
-        detail: 'Produto já adicionado na lista.\nVerifique os produtos adicionados.',
+        detail:
+          'Produto já adicionado na lista.\nVerifique os produtos adicionados.',
         life: 5000,
       });
       return;
@@ -250,13 +271,13 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   onEditProdutoInList(event: any) {
-    const produto = this.produtosList.find(p => p.idProduto === event);
+    const produto = this.produtosList.find((p) => p.idProduto === event);
     if (produto) {
       if (typeof produto.desconto === 'number') {
         const descontoPresenter = (produto.desconto * 100).toFixed(2);
         produto.desconto = `${descontoPresenter} %`;
       }
-      this.produtoToEdit = {...produto};
+      this.produtoToEdit = { ...produto };
       this.produtoToEdit.status = STATUS.ATIVO;
       this.onRemoveInProduto(event);
     }
@@ -264,7 +285,9 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
 
   onRemoveInProduto(event: any) {
     if (event) {
-      this.produtosList = this.produtosList.filter(p => p.idProduto !== event);
+      this.produtosList = this.produtosList.filter(
+        (p) => p.idProduto !== event
+      );
     }
   }
 
@@ -280,20 +303,25 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
 
   confirmarNavegacaoVoltar() {
     this.confirmationService.confirm({
-      message:
-        `Tem certeza que deseja sair? As alterações não salvas serão perdidas.`,
+      message: `Tem certeza que deseja sair? As alterações não salvas serão perdidas.`,
       header: 'Confirma?',
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
-      accept: () => this.voltar()
+      accept: () => this.voltar(),
     });
   }
 
-  validadeProdutoCanAdd(produto: Partial<ProdutoEntradaEstoqueCreateDto>): boolean {
+  validadeProdutoCanAdd(
+    produto: Partial<ProdutoEntradaEstoqueCreateDto>
+  ): boolean {
     for (const key of Object.keys(produto)) {
       if (key !== 'desconto' && key !== 'status') {
-        if (produto[key] === null || produto[key] === undefined || produto[key] === '') {
+        if (
+          produto[key] === null ||
+          produto[key] === undefined ||
+          produto[key] === ''
+        ) {
           return false;
         }
       }
@@ -302,9 +330,8 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   validadeProdutoAlreadyAdded(idProduto: string): boolean {
-    return this.produtosList.some(p => p.idProduto === idProduto);
+    return this.produtosList.some((p) => p.idProduto === idProduto);
   }
-
 
   getSituacaoNormalized(situacao: SITUACAO) {
     return Utils.getSituacaoNormalized(situacao);
@@ -322,7 +349,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
 
   definirDataMaxima() {
     this.maxDate = new Date();
-    if(this.isCreate) {
+    if (this.isCreate) {
       this.form.get('dataEntradaEstoque')?.setValue(this.maxDate);
     }
   }
