@@ -7,7 +7,7 @@ export class MovimentacaoEstoqueCreateDto {
   status: STATUS;
   situacao: SITUACAO;
   descricao: string;
-  dataEntradaEstoque: Date;
+  dataMovimentacaoEstoque: Date;
   produtos: Array<ProdutoEntradaEstoqueCreateDto>;
 
   constructor(data: any) {
@@ -15,7 +15,7 @@ export class MovimentacaoEstoqueCreateDto {
       this.status = data.status ?? STATUS.INATIVO;
       this.situacao = data.situacao ?? SITUACAO.EM_CADASTRAMENTO;
       this.descricao = data.descricao ?? '';
-      this.dataEntradaEstoque = data.dataEntradaEstoque ?? new Date;
+      this.dataMovimentacaoEstoque = data.dataMovimentacaoEstoque ?? new Date;
       this.produtos = data.produtos?.map((produto) => new ProdutoEntradaEstoqueCreateDto(produto)) ?? [];
     }
   }

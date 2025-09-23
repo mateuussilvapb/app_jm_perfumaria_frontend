@@ -1,7 +1,7 @@
 import { AutocompleteDto } from "@shared/interfaces/autocomplete-dto";
 import { Utils } from "@utils/utils";
 
-export class EntradaEstoqueFilterDto {
+export class MovimentacaoEstoqueFilterDto {
   dataInicial: string;
   dataFinal: string;
   descricao: string;
