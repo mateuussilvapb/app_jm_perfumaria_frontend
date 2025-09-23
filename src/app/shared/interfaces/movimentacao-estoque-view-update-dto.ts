@@ -3,7 +3,7 @@ import { STATUS } from "@shared/enums/status.enum";
 import { SITUACAO } from "@shared/enums/situacao.enum";
 import { ProdutoEntradaEstoque } from "@produto-entrada-estoque/interfaces/produto-entrada-estoque";
 
-export class EntradaEstoqueViewUpdateDto {
+export class MovimentacaoEstoqueViewUpdateDto {
   public id: string;
   public idString: string;
   public createdAt: string;
@@ -12,8 +12,8 @@ export class EntradaEstoqueViewUpdateDto {
   public situacao: SITUACAO;
   public descricao: string;
   public codigo: number;
-  public dataEntradaEstoque: Date;
-  public entradasProdutos: Array<Partial<ProdutoEntradaEstoque>>;
+  public dataMovimentacaoEstoque: Date;
+  public movimentacaoProdutos: Array<Partial<ProdutoEntradaEstoque>>;
 
   constructor(data: any) {
     if (data) {
@@ -25,8 +25,8 @@ export class EntradaEstoqueViewUpdateDto {
       this.situacao = data.situacao;
       this.descricao = data.descricao;
       this.codigo = data.codigo;
-      this.dataEntradaEstoque = data.dataEntradaEstoque ? new Date(data.dataEntradaEstoque) : new Date();
-      this.entradasProdutos = data.entradasProdutos ? data.entradasProdutos.map((p: any) => new ProdutoEntradaEstoque(p)) : [];
+      this.dataMovimentacaoEstoque = data.dataMovimentacaoEstoque ? new Date(data.dataMovimentacaoEstoque) : new Date();
+      this.movimentacaoProdutos = data.movimentacaoProdutos ? data.movimentacaoProdutos.map((p: any) => new ProdutoEntradaEstoque(p)) : [];
     }
   }
 }

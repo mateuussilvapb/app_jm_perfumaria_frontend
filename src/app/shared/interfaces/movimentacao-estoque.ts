@@ -14,6 +14,6 @@ export interface MovimentacaoEstoque {
   createdBy: string;
   qtdItens: number;
   qtdItensUnicos: number;
-  dataEntradaEstoque: Date;
-  entradasProdutos: Array<Partial<ProdutoEntradaEstoque>>;
+  dataMovimentacaoEstoque: Date;
+  movimentacaoProdutos: Array<Partial<ProdutoEntradaEstoque>>;
 }

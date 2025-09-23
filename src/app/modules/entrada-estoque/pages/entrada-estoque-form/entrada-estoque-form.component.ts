@@ -32,7 +32,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MovimentacaoEstoqueCreateDto } from '@shared/interfaces/movimentacao-estoque-create-dto';
 import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-estoque-query.service';
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
-import { EntradaEstoqueViewUpdateDto } from '@entrada-estoque/interfaces/entrada-estoque-view-update-dto';
+import { MovimentacaoEstoqueViewUpdateDto } from '@shared/interfaces/movimentacao-estoque-view-update-dto';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 import { ProdutoEntradaEstoqueCreateDto } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque-create-dto';
 import { AdicionarProdutoEntradaEstoqueComponent } from '@entrada-estoque/components/adicionar-produto-entrada-estoque/adicionar-produto-entrada-estoque.component';
@@ -72,7 +72,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   public produtoToEdit: any = null;
   public readonly SITUACAO = SITUACAO;
   public produtosOptions: AutocompleteDto[] = [];
-  public responseEntradaEstoque: Partial<EntradaEstoqueViewUpdateDto>;
+  public responseEntradaEstoque: Partial<MovimentacaoEstoqueViewUpdateDto>;
   public produtosList: Array<Partial<ProdutoEntradaEstoqueCreateDto>> = [];
 
   constructor(
@@ -141,10 +141,10 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
 
   adicionarProdutosResponseNoArray() {
     if (
-      this.responseEntradaEstoque.entradasProdutos &&
-      this.responseEntradaEstoque.entradasProdutos.length > 0
+      this.responseEntradaEstoque.movimentacaoProdutos &&
+      this.responseEntradaEstoque.movimentacaoProdutos.length > 0
     ) {
-      this.responseEntradaEstoque.entradasProdutos.forEach((p) => {
+      this.responseEntradaEstoque.movimentacaoProdutos.forEach((p) => {
         this.produtosList.push({
           idProduto: p.produto.id,
           precoUnitario: p.precoUnitario,

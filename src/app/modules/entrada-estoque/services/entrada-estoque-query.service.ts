@@ -9,7 +9,7 @@ import { map, Observable } from 'rxjs';
 import { Utils } from '@utils/utils';
 import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
-import { EntradaEstoqueViewUpdateDto } from '@entrada-estoque/interfaces/entrada-estoque-view-update-dto';
+import { MovimentacaoEstoqueViewUpdateDto } from '@shared/interfaces/movimentacao-estoque-view-update-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +36,8 @@ export class EntradaEstoqueQueryService extends AbstractQueryService<
       `${this.baseURL}/query/searchByFilters${Utils.searchParamsToString(dto)}`
     );
 
-  getById = (id: string): Observable<EntradaEstoqueViewUpdateDto> =>
+  getById = (id: string): Observable<MovimentacaoEstoqueViewUpdateDto> =>
     this.http
-      .get<EntradaEstoqueViewUpdateDto>(`${this.baseURL}/query/${id}`)
-      .pipe(map((data) => new EntradaEstoqueViewUpdateDto(data)));
+      .get<MovimentacaoEstoqueViewUpdateDto>(`${this.baseURL}/query/${id}`)
+      .pipe(map((data) => new MovimentacaoEstoqueViewUpdateDto(data)));
 }
