@@ -1,7 +1,7 @@
 //Internos
 import { STATUS } from '@shared/enums/status.enum';
 
-export class ProdutoEntradaEstoqueCreateDto {
+export class ProdutoMovimentacaoEstoqueCreateDto {
   idProduto: string;
   precoUnitario: number;
   quantidade: number;

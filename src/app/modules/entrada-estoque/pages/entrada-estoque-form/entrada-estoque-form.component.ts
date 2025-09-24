@@ -34,7 +34,7 @@ import { EntradaEstoqueQueryService } from '@entrada-estoque/services/entrada-es
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
 import { MovimentacaoEstoqueViewUpdateDto } from '@shared/interfaces/movimentacao-estoque-view-update-dto';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
-import { ProdutoEntradaEstoqueCreateDto } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque-create-dto';
+import { ProdutoMovimentacaoEstoqueCreateDto } from '@shared/interfaces/produto-movimentacao-estoque-create-dto';
 import { AdicionarProdutoEntradaEstoqueComponent } from '@entrada-estoque/components/adicionar-produto-entrada-estoque/adicionar-produto-entrada-estoque.component';
 import { ListaProdutosEntradaEstoqueToAddComponent } from '@entrada-estoque/components/lista-produtos-entrada-estoque-to-add/lista-produtos-entrada-estoque-to-add.component';
 
@@ -73,7 +73,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   public readonly SITUACAO = SITUACAO;
   public produtosOptions: AutocompleteDto[] = [];
   public responseEntradaEstoque: Partial<MovimentacaoEstoqueViewUpdateDto>;
-  public produtosList: Array<Partial<ProdutoEntradaEstoqueCreateDto>> = [];
+  public produtosList: Array<Partial<ProdutoMovimentacaoEstoqueCreateDto>> = [];
 
   constructor(
     private readonly router: Router,
@@ -230,7 +230,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   createProdutoToFormArray(
-    produto: Partial<ProdutoEntradaEstoqueCreateDto>
+    produto: Partial<ProdutoMovimentacaoEstoqueCreateDto>
   ): FormGroup {
     return this.fb.group({
       idProduto: [produto.idProduto, Validators.required],
@@ -313,7 +313,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   }
 
   validadeProdutoCanAdd(
-    produto: Partial<ProdutoEntradaEstoqueCreateDto>
+    produto: Partial<ProdutoMovimentacaoEstoqueCreateDto>
   ): boolean {
     for (const key of Object.keys(produto)) {
       if (key !== 'desconto' && key !== 'status') {
