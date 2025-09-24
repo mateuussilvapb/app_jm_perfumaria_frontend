@@ -1,7 +1,7 @@
 //Internos
 import { STATUS } from '@shared/enums/status.enum';
 import { SITUACAO } from '@shared/enums/situacao.enum';
-import { ProdutoEntradaEstoque } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque';
+import { ProdutoMovimentacaoEstoque } from '@shared/interfaces/produto-movimentacao-estoque';
 
 export interface MovimentacaoEstoque {
   id: number;
@@ -15,5 +15,5 @@ export interface MovimentacaoEstoque {
   qtdItens: number;
   qtdItensUnicos: number;
   dataMovimentacaoEstoque: Date;
-  movimentacaoProdutos: Array<Partial<ProdutoEntradaEstoque>>;
+  movimentacaoProdutos: Array<Partial<ProdutoMovimentacaoEstoque>>;
 }

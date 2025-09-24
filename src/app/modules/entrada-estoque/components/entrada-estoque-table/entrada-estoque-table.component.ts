@@ -27,7 +27,7 @@ import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
 import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { ProdutoEntradaEstoque } from '@produto-entrada-estoque/interfaces/produto-entrada-estoque';
+import { ProdutoMovimentacaoEstoque } from '@shared/interfaces/produto-movimentacao-estoque';
 import { EntradaEstoqueCommandService } from '@entrada-estoque/services/entrada-estoque-command.service';
 import { ProdutoEntradaEstoqueQueryService } from '@produto-entrada-estoque/services/produto-entrada-estoque-query.service';
 import { ContextMenuEntradaEstoque } from '@entrada-estoque/components/context-menu-entrada-estoque/context-menu-entrada-estoque.component';
@@ -124,14 +124,14 @@ export class EntradaEstoqueTableComponent implements AfterViewInit {
     return null;
   }
 
-  getValorUnitarioComDesconto(item: Partial<ProdutoEntradaEstoque>) {
+  getValorUnitarioComDesconto(item: Partial<ProdutoMovimentacaoEstoque>) {
     if (item?.desconto && item.desconto <= 0.0) return '-';
     const valorUnitarioComDesconto =
       item?.precoUnitario - item?.precoUnitario * item?.desconto;
     return valorUnitarioComDesconto;
   }
 
-  getPrecoFinal(item: Partial<ProdutoEntradaEstoque>) {
+  getPrecoFinal(item: Partial<ProdutoMovimentacaoEstoque>) {
     if (item?.desconto && item.desconto <= 0.0) return '-';
     const valorTotalSemDesconto = item?.precoUnitario * item?.quantidade;
     const valorFinal =
@@ -139,7 +139,7 @@ export class EntradaEstoqueTableComponent implements AfterViewInit {
     return valorFinal;
   }
 
-  goToVisualizarProduto(item: Partial<ProdutoEntradaEstoque>) {
+  goToVisualizarProduto(item: Partial<ProdutoMovimentacaoEstoque>) {
     this.router.navigate([
       `/produto/${item?.produto?.idString}/${ROTAS_FORM.VISUALIZAR}`,
     ]);

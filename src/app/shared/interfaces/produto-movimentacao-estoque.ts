@@ -2,7 +2,7 @@
 import { STATUS } from '@shared/enums/status.enum';
 import { Produto } from '@produto/interfaces/produto';
 
-export class ProdutoEntradaEstoque {
+export class ProdutoMovimentacaoEstoque {
   id: number;
   precoUnitario: number;
   quantidade: number;
