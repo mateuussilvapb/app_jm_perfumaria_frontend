@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 //Internos
-import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { AbstractCommandService } from '@shared/services/abstract-command.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SaidaEstoqueCommandService extends AbstractCommandService<SaidaEstoque> {
+export class SaidaEstoqueCommandService extends AbstractCommandService<MovimentacaoEstoque> {
   protected override path = (): string => 'saidas-estoque';
 
   constructor(http: HttpClient) {

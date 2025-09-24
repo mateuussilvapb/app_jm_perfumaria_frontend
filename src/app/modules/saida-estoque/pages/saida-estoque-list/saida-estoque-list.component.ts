@@ -18,7 +18,7 @@ import { DividerModule } from 'primeng/divider';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { SaidaEstoqueQueryService } from '@saida-estoque/services/saida-estoque-query.service';
 import { SaidaEstoqueTableComponent } from '@saida-estoque/components/saida-estoque-table/saida-estoque-table.component';
@@ -46,7 +46,7 @@ import { UtilsService } from '@utils/utils.service';
 export class SaidaEstoqueListComponent implements OnInit {
   public readonly refresh$ = new BehaviorSubject<void>(null);
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public saidasEstoque$ = new Observable<Array<Partial<SaidaEstoque>>>();
+  public saidasEstoque$ = new Observable<Array<Partial<MovimentacaoEstoque>>>();
 
   constructor(
     private readonly saidaEstoqueQueryService: SaidaEstoqueQueryService,

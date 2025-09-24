@@ -14,11 +14,11 @@ import {
 import { UtilsService } from '@utils/utils.service';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ALL_ROLES, ROLES } from '@shared/models/roles';
-import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { SaidaEstoqueCommandService } from '@saida-estoque/services/saida-estoque-command.service';
 
 export interface ContextMenuSaidaEstoqueData {
-  saidaEstoque: Partial<SaidaEstoque>;
+  saidaEstoque: Partial<MovimentacaoEstoque>;
 }
 
 export class ContextMenuSaidaEstoque extends ContextMenu<ContextMenuSaidaEstoqueData> {
@@ -70,7 +70,7 @@ export class ContextMenuSaidaEstoque extends ContextMenu<ContextMenuSaidaEstoque
     },
   ];
 
-  private onExcluir(saidaEstoque: Partial<SaidaEstoque>) {
+  private onExcluir(saidaEstoque: Partial<MovimentacaoEstoque>) {
     let mensagem = `Tem certeza que deseja excluir esta saida de estoque? A ação não poderá ser desfeita.`;
     if (saidaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO) {
       mensagem += `<br>Além disso, haverá repercursão no estoque: os itens adicionados serão removidos.<br>Confirma?`;

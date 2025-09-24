@@ -21,7 +21,7 @@ import { MarcaQueryService } from '@marca/service/marca-query.service';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
-import { SaidaEstoqueFilterDto } from '@saida-estoque/interfaces/saida-estoque-filter-dto';
+import { MovimentacaoEstoqueFilterDto } from '@shared/interfaces/movimentacao-estoque-filter-dto';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({
@@ -142,7 +142,7 @@ export class SaidaEstoqueFiltersComponent implements OnInit {
   }
 
   onSubmit() {
-    const dto = new SaidaEstoqueFilterDto(this.form.value);
+    const dto = new MovimentacaoEstoqueFilterDto(this.form.value);
     this.filter.emit(dto);
   }
 

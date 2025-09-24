@@ -5,13 +5,13 @@ import { HttpClient } from '@angular/common/http';
 //Internos
 import { Utils } from '@utils/utils';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
-import { ProdutoSaidaEstoque } from '../interfaces/produto-saida-estoque';
+import { ProdutoMovimentacaoEstoque } from '@shared/interfaces/produto-movimentacao-estoque';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProdutoSaidaEstoqueQueryService extends AbstractQueryService<
-  Partial<ProdutoSaidaEstoque>
+  Partial<ProdutoMovimentacaoEstoque>
 > {
   protected override path = (): string => 'produtos-saidas-estoque';
 
@@ -20,7 +20,7 @@ export class ProdutoSaidaEstoqueQueryService extends AbstractQueryService<
   }
 
   findAllBySaidaEstoqueId = (filters?: URLSearchParams) => {
-    return this.http.get<Partial<ProdutoSaidaEstoque>[]>(
+    return this.http.get<Partial<ProdutoMovimentacaoEstoque>[]>(
       `${this.baseURL}/query/findBySaidaEstoqueId${Utils.searchParamsToString(
         filters
       )}`

@@ -24,10 +24,10 @@ import { UtilsService } from '@utils/utils.service';
 import { Produto } from '@produto/interfaces/produto';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { ProdutoSaidaEstoque } from 'app/modules/produto-saida-estoque/interfaces/produto-saida-estoque';
+import { ProdutoMovimentacaoEstoque } from '@shared/interfaces/produto-movimentacao-estoque';
 import { SaidaEstoqueCommandService } from '@saida-estoque/services/saida-estoque-command.service';
 import { ProdutoSaidaEstoqueQueryService } from 'app/modules/produto-saida-estoque/services/produto-saida-estoque-query.service';
 import { ContextMenuSaidaEstoque } from '@saida-estoque/components/context-menu-saida-estoque/context-menu-saida-estoque.component';
@@ -54,7 +54,7 @@ import { ContextMenuSaidaEstoque } from '@saida-estoque/components/context-menu-
 })
 export class SaidaEstoqueTableComponent implements AfterViewInit {
   @Input() refresh$: BehaviorSubject<void>;
-  @Input() data: Array<Partial<SaidaEstoque>> = [];
+  @Input() data: Array<Partial<MovimentacaoEstoque>> = [];
 
   @ViewChild('actionMenu', { static: true }) actionMenu: any;
 
@@ -87,7 +87,7 @@ export class SaidaEstoqueTableComponent implements AfterViewInit {
     this.onRefresh();
   }
 
-  onToggleMenu(event: MouseEvent, saidaEstoque: SaidaEstoque) {
+  onToggleMenu(event: MouseEvent, saidaEstoque: MovimentacaoEstoque) {
     this.contextMenu.toggle(event, { saidaEstoque });
   }
 
@@ -124,14 +124,14 @@ export class SaidaEstoqueTableComponent implements AfterViewInit {
     return null;
   }
 
-  getValorUnitarioComDesconto(item: Partial<ProdutoSaidaEstoque>) {
+  getValorUnitarioComDesconto(item: Partial<ProdutoMovimentacaoEstoque>) {
     if (item?.desconto && item.desconto <= 0.0) return '-';
     const valorUnitarioComDesconto =
       item?.precoUnitario - item?.precoUnitario * item?.desconto;
     return valorUnitarioComDesconto;
   }
 
-  getPrecoFinal(item: Partial<ProdutoSaidaEstoque>) {
+  getPrecoFinal(item: Partial<ProdutoMovimentacaoEstoque>) {
     if (item?.desconto && item.desconto <= 0.0) return '-';
     const valorTotalSemDesconto = item?.precoUnitario * item?.quantidade;
     const valorFinal =
@@ -139,7 +139,7 @@ export class SaidaEstoqueTableComponent implements AfterViewInit {
     return valorFinal;
   }
 
-  goToVisualizarProduto(item: Partial<ProdutoSaidaEstoque>) {
+  goToVisualizarProduto(item: Partial<ProdutoMovimentacaoEstoque>) {
     this.router.navigate([
       `/produto/${item?.produto?.idString}/${ROTAS_FORM.VISUALIZAR}`,
     ]);

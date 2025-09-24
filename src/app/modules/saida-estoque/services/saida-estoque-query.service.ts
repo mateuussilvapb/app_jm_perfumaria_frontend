@@ -7,15 +7,15 @@ import { map, Observable } from 'rxjs';
 
 //Internos
 import { Utils } from '@utils/utils';
-import { SaidaEstoque } from '@saida-estoque/interfaces/saida-estoque';
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
-import { SaidaEstoqueViewUpdateDto } from '@saida-estoque/interfaces/saida-estoque-view-update-dto';
+import { MovimentacaoEstoqueViewUpdateDto } from '@shared/interfaces/movimentacao-estoque-view-update-dto';
+import { MovimentacaoEstoque } from '@shared/interfaces/movimentacao-estoque';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SaidaEstoqueQueryService extends AbstractQueryService<
-  Partial<SaidaEstoque>
+  Partial<MovimentacaoEstoque>
 > {
   protected override path = (): string => 'saidas-estoque';
 
@@ -24,18 +24,18 @@ export class SaidaEstoqueQueryService extends AbstractQueryService<
   }
 
   override all = () => {
-    return this.http.get<Partial<SaidaEstoque>[]>(`${this.baseURL}/query/list`);
+    return this.http.get<Partial<MovimentacaoEstoque>[]>(`${this.baseURL}/query/list`);
   };
 
   getAllByFilters = (
     dto: URLSearchParams
-  ): Observable<Array<Partial<SaidaEstoque>>> =>
-    this.http.get<Array<Partial<SaidaEstoque>>>(
+  ): Observable<Array<Partial<MovimentacaoEstoque>>> =>
+    this.http.get<Array<Partial<MovimentacaoEstoque>>>(
       `${this.baseURL}/query/searchByFilters${Utils.searchParamsToString(dto)}`
     );
 
-  getById = (id: string): Observable<SaidaEstoqueViewUpdateDto> =>
+  getById = (id: string): Observable<MovimentacaoEstoqueViewUpdateDto> =>
     this.http
-      .get<SaidaEstoqueViewUpdateDto>(`${this.baseURL}/query/${id}`)
-      .pipe(map((data) => new SaidaEstoqueViewUpdateDto(data)));
+      .get<MovimentacaoEstoqueViewUpdateDto>(`${this.baseURL}/query/${id}`)
+      .pipe(map((data) => new MovimentacaoEstoqueViewUpdateDto(data)));
 }
