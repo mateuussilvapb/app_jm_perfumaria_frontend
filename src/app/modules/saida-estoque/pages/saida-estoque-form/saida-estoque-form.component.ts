@@ -94,7 +94,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
       descricao: ['', [Validators.maxLength(1000)]],
       status: [STATUS.ATIVO, Validators.required],
       situacao: [SITUACAO.EM_CADASTRAMENTO, Validators.required],
-      dataSaidaEstoque: [null, [Validators.required]],
+      dataMovimentacaoEstoque: [null, [Validators.required]],
       produtos: this.fb.array(
         [],
         [CustomValidators.produtosDuplicadosValidator()]
@@ -350,7 +350,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
   definirDataMaxima() {
     this.maxDate = new Date();
     if (this.isCreate) {
-      this.form.get('dataSaidaEstoque')?.setValue(this.maxDate);
+      this.form.get('dataMovimentacaoEstoque')?.setValue(this.maxDate);
     }
   }
 }

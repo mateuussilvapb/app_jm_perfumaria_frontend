@@ -19,7 +19,7 @@
           <th id="id_th_tabela_acoes" class="text-50 text-center surface-100 text-color w-5rem"></th>
           <th id="id_th_tabela_codigo" class="text-50 text-center surface-100 text-color" pFrozenColumn>Código</th>
           <th id="id_th_tabela_usuario" class="text-50 text-center surface-100 text-color">Usuário</th>
-          <th id="id_th_tabela_data_entrada" class="text-50 text-center surface-100 text-color">Data de Entrada</th>
+          <th id="id_th_tabela_data_movimentacao" class="text-50 text-center surface-100 text-color">Data de Entrada</th>
           <th id="id_th_tabela_descricao" class="text-50 text-center surface-100 text-color">Descrição</th>
           <th id="id_th_tabela_situacao" class="text-50 text-center surface-100 text-color">Situação</th>
           <th id="id_th_tabela_qtd_itens" class="text-50 text-center surface-100 text-color">Qtd Itens</th>
@@ -41,7 +41,7 @@
           </td>
           <td class="text-center" pFrozenColumn>{{ entradaEstoque.codigo ?? '-' }}</td>
           <td class="text-center">{{ entradaEstoque.createdBy ?? '-'}}</td>
-          <td class="text-center">{{ (entradaEstoque.dataEntradaEstoque | date:'dd/MM/yyyy') ?? '-'}}</td>
+          <td class="text-center">{{ (entradaEstoque.dataMovimentacaoEstoque | date:'dd/MM/yyyy') ?? '-'}}</td>
           <td class="text-center">{{ entradaEstoque.descricao ?? '-'}}</td>
           <td class="text-center">
             <p-tag [severity]="entradaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(entradaEstoque.situacao)" />

@@ -41,7 +41,7 @@
           </td>
           <td class="text-center" pFrozenColumn>{{ saidaEstoque.codigo ?? '-' }}</td>
           <td class="text-center">{{ saidaEstoque.createdBy ?? '-'}}</td>
-          <td class="text-center">{{ (saidaEstoque.dataSaidaEstoque | date:'dd/MM/yyyy') ?? '-'}}</td>
+          <td class="text-center">{{ (saidaEstoque.dataMovimentacaoEstoque | date:'dd/MM/yyyy') ?? '-'}}</td>
           <td class="text-center">{{ saidaEstoque.descricao ?? '-'}}</td>
           <td class="text-center">
             <p-tag [severity]="saidaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(saidaEstoque.situacao)" />
