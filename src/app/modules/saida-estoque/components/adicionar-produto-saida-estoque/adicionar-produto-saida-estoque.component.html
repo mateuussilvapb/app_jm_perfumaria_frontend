@@ -1,0 +1,105 @@
+<p-card>
+  <form [formGroup]="form" (ngSubmit)="onAdicionarProduto()" novalidate autocomplete="off">
+    <p class="m-0 mb-3 font-semibold">Preencha os campos para adicionar um produto...</p>
+    <!-- CAMPOS -->
+    <div class="grid">
+      <!-- Produto -->
+      <div class="col-12 lg:col-3">
+          <label
+            for="id-produto"
+            class="flex flex-row align-items-center"
+            >
+              Produto
+              @if (!isView) {
+                <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterProduto($event)"></i>
+              }
+          </label>
+          <p-select
+            [filter]="true"
+            id="id-produto"
+            [showClear]="true"
+            optionValue="value"
+            optionLabel="label"
+            class="w-full mt-1"
+            [options]="produtosOptions"
+            formControlName="idProduto"
+            filterPlaceholder="Busca..."
+            [placeholder]="isView || isEditable ? '' : 'Selecione o produto'"
+          ></p-select>
+          <app-form-control-errors
+            [control]="getControlForm('idProduto')"
+          ></app-form-control-errors>
+      </div>
+
+      <!-- Preço de custo por unidade vendida -->
+      <div class="col-12 lg:col-3">
+        <label for="preco-unitario">Preço por Unidade Vendida</label>
+        <input
+          pInputText
+          step="0.01"
+          type="text"
+          currencyMask
+          placeholder="R$"
+          id="preco-unitario"
+          class="w-full mt-1"
+          formControlName="precoUnitario"
+          [options]="optionsCurrencyMask"
+        />
+        <app-form-control-errors
+          [control]="getControlForm('precoUnitario')"
+        ></app-form-control-errors>
+      </div>
+
+      <!-- Quantidade Vendida-->
+      <div class="col-12 lg:col-3">
+        <label for="quantidade-vendida">Quantidade Vendida</label>
+          <input
+            step="1"
+            pInputText
+            type="number"
+            class="w-full mt-1"
+            id="quantidade-vendida"
+            formControlName="quantidade"
+          />
+          <app-form-control-errors
+            [control]="getControlForm('quantidade')"
+          ></app-form-control-errors>
+      </div>
+
+      <!-- Desconto -->
+      <div class="col-12 lg:col-3 flex-column flex">
+        <label for="desconto">Desconto</label>
+        <input
+          pInputText
+          type="text"
+          id="desconto"
+          appPorcentagemMask
+          class="w-full mt-1"
+          formControlName="desconto"
+        />
+        <app-form-control-errors
+          [control]="getControlForm('desconto')"
+        ></app-form-control-errors>
+      </div>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="pt-2 flex flex-wrap flex-column-reverse md:flex-row justify-content-end h-full">
+      <div class="col-12 lg:col-2 flex-column flex">
+        <p-button
+          type="submit"
+          [text]="true"
+          [rounded]="true"
+          class="w-full h-full p-0"
+          icon="pi pi-plus"
+          tooltipPosition="left"
+          styleClass="w-full h-full p-0"
+          [disabled]="form.invalid"
+          label="Adicionar Produto"
+          pTooltip="Adicionar Produto"/>
+      </div>
+    </div>
+  </form>
+</p-card>
+
+<app-generic-pop-over (mouseleave)="onMouseLeavePopOver()"></app-generic-pop-over>

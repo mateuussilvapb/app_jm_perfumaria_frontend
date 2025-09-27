@@ -118,13 +118,13 @@ export const ItensMenu: ItemMenu[] = [
         icon: PrimeIcons.LIST,
         route: '/saida-estoque',
       },
-      // {
-      //   label: 'Adicionar Saida de Estoque',
-      //   separator: false,
-      //   roles: [ROLES.ADMIN, ROLES.MANAGER],
-      //   icon: PrimeIcons.PLUS_CIRCLE,
-      //   route: '/saida-estoque/adicionar',
-      // },
+      {
+        label: 'Adicionar Saida de Estoque',
+        separator: false,
+        roles: [ROLES.ADMIN, ROLES.MANAGER],
+        icon: PrimeIcons.PLUS_CIRCLE,
+        route: '/saida-estoque/adicionar',
+      },
     ],
   },
   {
