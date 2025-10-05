@@ -14,8 +14,8 @@ export class GenericDialogComponent implements OnInit {
 
   mensagemHtml: string = '';
   dialogStyleClass: string = '';
-  iconClass: string = 'mt-2 text-base';
-  titleClass: string = 'mb-0 mt-2 text-base';
+  iconClass: string = 'text-4xl mr-3';
+  titleClass: string = 'my-0 text-xl font-semibold';
   severityButton: 'success' | 'warn' | 'danger' = 'warn';
 
   @Input() message: string = '';

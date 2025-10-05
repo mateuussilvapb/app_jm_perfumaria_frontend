@@ -4,9 +4,10 @@
       .p-dialog-header {
         display: none !important;
       }
-      .p-dialog-content{
+      .p-dialog-content {
         padding: 0px !important;
         border-radius: 11px !important;
+        background: var(--p-dialog-background) !important;
       }
     }
   }
@@ -14,18 +15,40 @@
 
 ::ng-deep .p-dialog.dialog-success {
   border-radius: 11px !important;
-  border: 3px solid #22c55e !important;
-  background-color: #f8fffa !important;
+  // border: 1px solid #22c55e !important;
 }
 
 ::ng-deep .p-dialog.dialog-error {
   border-radius: 11px !important;
-  border: 3px solid #ef4444 !important;
-  background-color: #fffafa !important;
+  border: 2px solid #ef4444 !important;
 }
 
 ::ng-deep .p-dialog.dialog-warn {
   border-radius: 11px !important;
-  border: 3px solid #f97316 !important;
-  background-color: #fefcfa !important;
+  // border: 1px solid #f97316 !important;
+}
+
+.header-dialog-custom {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--p-dialog-header-padding);
+}
+
+.content-dialog-custom {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: start;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+.footer-dialog-custom {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: end;
+  padding: 0 1.25rem 1.25rem 1.25rem;
 }
