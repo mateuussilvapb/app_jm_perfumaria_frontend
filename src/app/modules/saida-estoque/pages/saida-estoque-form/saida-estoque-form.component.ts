@@ -76,9 +76,9 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
   public produtosList: Array<Partial<ProdutoMovimentacaoEstoqueCreateDto>> = [];
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override location: Location,
+    protected override readonly router: Router,
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly confirmationService: ConfirmationService,
@@ -86,7 +86,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
     private readonly saidaEstoqueQueryService: SaidaEstoqueQueryService,
     private readonly saidaEstoqueCommandService: SaidaEstoqueCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/saida-estoque', activatedRoute);
   }
 
   buildForm() {
@@ -213,11 +213,11 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
     this.router.navigate(['/saida-estoque']);
   }
 
-  onVoltar() {
+  voltar() {
     if (this.produtosList.length > 0 && !this.isView) {
       this.confirmarNavegacaoVoltar();
     } else {
-      this.voltar();
+      this.onVoltar();
     }
   }
 
@@ -335,16 +335,6 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
 
   getSituacaoNormalized(situacao: SITUACAO) {
     return Utils.getSituacaoNormalized(situacao);
-  }
-
-  voltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/saida-estoque']);
-    }
   }
 
   definirDataMaxima() {

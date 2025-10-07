@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
@@ -64,11 +64,12 @@ export class AdicionarProdutoSaidaEstoqueComponent extends FormBase implements O
   public optionsCurrencyMask = OPTIONS_CURRENCY_MASK;
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     public override readonly activatedRoute: ActivatedRoute,
   ) {
-    super(activatedRoute);
+    super(router, location, '', activatedRoute);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -69,15 +69,15 @@ export class UsuarioFormComponent extends FormBase implements OnInit {
   ];
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly usuarioQueryService: UsuarioQueryService,
     private readonly usuarioCommandService: UsuarioCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/usuario', activatedRoute);
   }
 
   buildForm() {
@@ -242,16 +242,6 @@ export class UsuarioFormComponent extends FormBase implements OnInit {
       life: 5000,
     });
     this.router.navigate(['/usuario']);
-  }
-
-  onVoltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/usuario']);
-    }
   }
 
   disableLabelsOnLoading() {

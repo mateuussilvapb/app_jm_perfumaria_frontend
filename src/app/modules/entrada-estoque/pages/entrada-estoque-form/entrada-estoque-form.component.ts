@@ -76,9 +76,9 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   public produtosList: Array<Partial<ProdutoMovimentacaoEstoqueCreateDto>> = [];
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly confirmationService: ConfirmationService,
@@ -86,7 +86,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     private readonly entradaEstoqueQueryService: EntradaEstoqueQueryService,
     private readonly entradaEstoqueCommandService: EntradaEstoqueCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/entrada-estoque', activatedRoute);
   }
 
   buildForm() {
@@ -213,11 +213,11 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
     this.router.navigate(['/entrada-estoque']);
   }
 
-  onVoltar() {
+  voltar() {
     if (this.produtosList.length > 0 && !this.isView) {
       this.confirmarNavegacaoVoltar();
     } else {
-      this.voltar();
+      this.onVoltar();
     }
   }
 
@@ -335,16 +335,6 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
 
   getSituacaoNormalized(situacao: SITUACAO) {
     return Utils.getSituacaoNormalized(situacao);
-  }
-
-  voltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/entrada-estoque']);
-    }
   }
 
   definirDataMaxima() {

@@ -52,15 +52,15 @@ export class MarcaFormComponent extends FormBase implements OnInit {
   public responseMarca: Marca;
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly marcaQueryService: MarcaQueryService,
     private readonly marcaCommandService: MarcaCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/marca', activatedRoute);
   }
 
   buildForm() {
@@ -153,15 +153,5 @@ export class MarcaFormComponent extends FormBase implements OnInit {
       life: 5000,
     });
     this.router.navigate(['/marca']);
-  }
-
-  onVoltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/marca']);
-    }
   }
 }

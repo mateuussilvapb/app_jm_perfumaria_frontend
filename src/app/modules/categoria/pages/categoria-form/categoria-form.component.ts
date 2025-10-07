@@ -52,15 +52,15 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
   public responseCategoria: Categoria;
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     private readonly messageService: MessageService,
     public override readonly activatedRoute: ActivatedRoute,
     private readonly categoriaQueryService: CategoriaQueryService,
     private readonly categoriaCommandService: CategoriaCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/categoria', activatedRoute);
   }
 
   buildForm() {
@@ -153,15 +153,5 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
       life: 5000,
     });
     this.router.navigate(['/categoria']);
-  }
-
-  onVoltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/categoria']);
-    }
   }
 }

@@ -1,7 +1,8 @@
 //Angular
-import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Directive, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 //Internos
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
@@ -16,7 +17,12 @@ export abstract class FormBase implements OnInit {
   public isUpdate = false;
   public isCreate = false;
 
-  constructor(protected readonly activatedRoute: ActivatedRoute) {}
+  constructor(
+    protected readonly router: Router,
+    protected readonly location: Location,
+    protected readonly rotaOnVoltar: string,
+    protected readonly activatedRoute: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.identificarTipoRota();
@@ -108,5 +114,18 @@ export abstract class FormBase implements OnInit {
     }
     console.error(`Controle de formulário "${controlName}" não existe`);
     return new FormControl;
+  }
+
+  /**
+   * Função genérica para voltar à página anterior ou a uma rota específica
+   */
+  onVoltar() {
+    if (window.history.length > 1) {
+      // Existe histórico, pode voltar
+      this.location.back();
+    } else {
+      // Não há histórico, redireciona manualmente
+      this.router.navigate([`/${this.rotaOnVoltar}`]);
+    }
   }
 }

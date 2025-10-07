@@ -80,9 +80,9 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
 
 
   constructor(
-    private readonly router: Router,
     private readonly fb: FormBuilder,
-    private readonly location: Location,
+    protected override readonly router: Router,
+    protected override readonly location: Location,
     private readonly messageService: MessageService,
     private readonly marcaQueryService: MarcaQueryService,
     public override readonly activatedRoute: ActivatedRoute,
@@ -90,7 +90,7 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
     private readonly categoriaQueryService: CategoriaQueryService,
     private readonly produtoCommandService: ProdutoCommandService
   ) {
-    super(activatedRoute);
+    super(router, location, '/produto', activatedRoute);
   }
 
   buildForm(): void {
@@ -227,16 +227,6 @@ export class ProdutoFormComponent extends FormBase implements OnInit {
       life: 5000,
     });
     this.router.navigate(['/produto']);
-  }
-
-  onVoltar() {
-    if (window.history.length > 1) {
-      // Existe histórico, pode voltar
-      this.location.back();
-    } else {
-      // Não há histórico, redireciona manualmente
-      this.router.navigate(['/produto']);
-    }
   }
 
   onMouseEnterMarca(event: any) {
