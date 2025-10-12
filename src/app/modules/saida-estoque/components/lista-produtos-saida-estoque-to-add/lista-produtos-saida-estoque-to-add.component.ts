@@ -8,8 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 
 //Internos
-import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
+import { ProdutoMovimentacaoAutocompleteDto } from '@produto/interfaces/produto-movimentacao-autocomplete-dto';
 import { ProdutoMovimentacaoEstoqueCreateDto } from '@shared/interfaces/produto-movimentacao-estoque-create-dto';
 
 @Component({
@@ -30,7 +30,7 @@ import { ProdutoMovimentacaoEstoqueCreateDto } from '@shared/interfaces/produto-
 })
 export class ListaProdutosSaidaEstoqueToAddComponent {
   @Input({ required: true }) isView: boolean = false;
-  @Input({ required: true }) produtosOptions: Array<AutocompleteDto> = [];
+  @Input({ required: true }) produtosOptions: Array<ProdutoMovimentacaoAutocompleteDto> = [];
   @Input({ required: true }) produtos: Array<
     Partial<ProdutoMovimentacaoEstoqueCreateDto>
   > = [];
@@ -39,8 +39,8 @@ export class ListaProdutosSaidaEstoqueToAddComponent {
   @Output() remove = new EventEmitter<string>();
 
   getProdutoNameById(id: string): string {
-    const produto = this.produtosOptions.find((p) => p.value === id);
-    return produto ? produto.label : '-';
+    const produto = this.produtosOptions.find((p) => p.id === id);
+    return produto ? produto.nome : '-';
   }
 
   getDescontoToPresenter(desconto: number | string) {

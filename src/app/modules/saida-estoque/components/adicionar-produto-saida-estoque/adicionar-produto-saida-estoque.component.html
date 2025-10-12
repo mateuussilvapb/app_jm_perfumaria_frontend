@@ -18,8 +18,8 @@
             [filter]="true"
             id="id-produto"
             [showClear]="true"
-            optionValue="value"
-            optionLabel="label"
+            optionValue="id"
+            optionLabel="nome"
             class="w-full mt-1"
             [options]="produtosOptions"
             formControlName="idProduto"
@@ -83,6 +83,29 @@
         ></app-form-control-errors>
       </div>
     </div>
+
+     <!-- Informações do Produto selecionado -->
+    @if (produtoSelecionado) {
+      <div class="flex flex-column md:flex-row" @slideInOut>
+        <!-- Quantidade em estoque -->
+        <small>
+          <strong>Estoque atual:</strong>
+          {{produtoSelecionado?.quantidadeEmEstoque ?? '-'}}
+        </small>
+
+        <!-- Preço de custo -->
+        <small class="md:mx-4 md:my-0 my-2">
+          <strong>Preço de custo atual:</strong>
+          {{(produtoSelecionado?.precoCusto | currency:'BRL') ?? '-'}}
+        </small>
+
+        <!-- Preço de venda -->
+        <small>
+          <strong>Preço de venda atual:</strong>
+          {{(produtoSelecionado?.precoVenda | currency:'BRL') ?? '-'}}
+        </small>
+      </div>
+    }
 
     <!-- BOTÕES -->
     <div class="pt-2 flex flex-wrap flex-column-reverse md:flex-row justify-content-end h-full">

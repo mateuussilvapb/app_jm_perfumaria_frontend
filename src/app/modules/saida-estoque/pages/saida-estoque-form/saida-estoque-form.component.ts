@@ -25,16 +25,16 @@ import { Utils } from '@utils/utils';
 import { STATUS } from '@shared/enums/status.enum';
 import { SITUACAO } from '@shared/enums/situacao.enum';
 import { FormBase } from '@shared/directives/form-base';
-import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { CustomValidators } from '@shared/validators/custom-validators';
 import { ProdutoQueryService } from '@produto/service/produto-query.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
-import { MovimentacaoEstoqueCreateDto } from '@shared/interfaces/movimentacao-estoque-create-dto';
 import { SaidaEstoqueQueryService } from '@saida-estoque/services/saida-estoque-query.service';
+import { MovimentacaoEstoqueCreateDto } from '@shared/interfaces/movimentacao-estoque-create-dto';
 import { SaidaEstoqueCommandService } from '@saida-estoque/services/saida-estoque-command.service';
 import { MovimentacaoEstoqueViewUpdateDto } from '@shared/interfaces/movimentacao-estoque-view-update-dto';
-import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
+import { ProdutoMovimentacaoAutocompleteDto } from '@produto/interfaces/produto-movimentacao-autocomplete-dto';
 import { ProdutoMovimentacaoEstoqueCreateDto } from '@shared/interfaces/produto-movimentacao-estoque-create-dto';
+import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 import { AdicionarProdutoSaidaEstoqueComponent } from '@saida-estoque/components/adicionar-produto-saida-estoque/adicionar-produto-saida-estoque.component';
 import { ListaProdutosSaidaEstoqueToAddComponent } from '@saida-estoque/components/lista-produtos-saida-estoque-to-add/lista-produtos-saida-estoque-to-add.component';
 
@@ -63,15 +63,13 @@ import { ListaProdutosSaidaEstoqueToAddComponent } from '@saida-estoque/componen
 })
 export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
-  public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(
-    false
-  );
+  public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
   public maxDate: Date | undefined;
   public produtoToEdit: any = null;
   public readonly SITUACAO = SITUACAO;
-  public produtosOptions: AutocompleteDto[] = [];
+  public produtosOptions: ProdutoMovimentacaoAutocompleteDto[] = [];
   public responseSaidaEstoque: Partial<MovimentacaoEstoqueViewUpdateDto>;
   public produtosList: Array<Partial<ProdutoMovimentacaoEstoqueCreateDto>> = [];
 
@@ -294,7 +292,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
   getAllProdutosAutocomplete() {
     this.loadingAutocompleteProdutos$.next(true);
     this.produtoQueryService
-      .getAllAutocomplete()
+      .getAllAutocompletMovimentacao()
       .pipe(finalize(() => this.loadingAutocompleteProdutos$.next(false)))
       .subscribe((produtos) => {
         this.produtosOptions = produtos;
