@@ -308,7 +308,7 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       rejectButtonStyleClass: 'p-button-secondary',
       acceptButtonStyleClass: 'p-button-danger',
-      accept: () => this.voltar(),
+      accept: () => this.onVoltar(),
     });
   }
 
