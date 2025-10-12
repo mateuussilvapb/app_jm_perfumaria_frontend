@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 //Externos
@@ -23,9 +24,9 @@ import { STATUS } from '@shared/enums/status.enum';
 import { FormBase } from '@shared/directives/form-base';
 import { OPTIONS_CURRENCY_MASK } from '@utils/constants';
 import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { AutocompleteDto } from '@shared/interfaces/autocomplete-dto';
 import { PorcentagemMaskDirective } from '@shared/directives/porcentagem-mask-directive';
 import { GenericPopOverComponent } from '@shared/components/generic-pop-over/generic-pop-over.component';
+import { ProdutoMovimentacaoAutocompleteDto } from '@produto/interfaces/produto-movimentacao-autocomplete-dto';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
 
 @Component({
@@ -51,12 +52,23 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     FormControlErrorsComponent,
   ],
   templateUrl: './adicionar-produto-entrada-estoque.component.html',
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }), // começa acima
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })) // desce
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' })) // sobe e some
+      ])
+    ])
+  ]
 })
 export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements OnInit, OnChanges {
   @ViewChild(GenericPopOverComponent)
   genericPopOverComponent!: GenericPopOverComponent;
 
-  @Input({required: true}) produtosOptions: AutocompleteDto[] = [];
+  @Input({required: true}) produtosOptions: ProdutoMovimentacaoAutocompleteDto[] = [];
   @Input({required: true}) produtoToEdit: any = null;
 
   @Output() adicionarProduto = new EventEmitter<any>();
@@ -108,5 +120,9 @@ export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements
 
   onMouseLeavePopOver() {
     this.genericPopOverComponent.hide();
+  }
+
+  get produtoSelecionado(): ProdutoMovimentacaoAutocompleteDto | undefined {
+    return this.produtosOptions.find(produto => produto.id === this.form.get('idProduto')?.value);
   }
 }
