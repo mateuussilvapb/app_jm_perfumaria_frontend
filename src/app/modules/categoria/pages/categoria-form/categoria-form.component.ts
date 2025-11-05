@@ -25,6 +25,7 @@ import { CategoriaUpdateDTO } from '@categoria/interfaces/categoria-update-dto';
 import { CategoriaQueryService } from '@categoria/service/categoria-query.service';
 import { CategoriaCommandService } from '@categoria/service/categoria-command.service';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-categoria-form',
@@ -42,14 +43,17 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     InputTextModule,
 
     //Internos
+    LoadingComponent,
     FormControlErrorsComponent,
   ],
   templateUrl: './categoria-form.component.html',
 })
 export class CategoriaFormComponent extends FormBase implements OnInit {
-  public readonly loading$ = new BehaviorSubject<boolean>(false);
   public titleCard: string = '';
   public responseCategoria: Categoria;
+
+  public readonly loading$ = new BehaviorSubject<boolean>(false);
+  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly fb: FormBuilder,
@@ -111,6 +115,7 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
 
   onSubmit(event) {
     event.preventDefault();
+    this.onCreateUpdate$.next(true);
     if (this.isCreate) {
       this.createCategoria();
     } else if (this.isUpdate) {
@@ -119,11 +124,13 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
   }
 
   createCategoria() {
-    this.categoriaCommandService.create(this.form.value).subscribe((res) => {
-      if (res) {
-        this.messageSuccess();
-      }
-    });
+    this.categoriaCommandService.create(this.form.value)
+      .pipe(finalize(() => this.onCreateUpdate$.next(false)))
+      .subscribe((res) => {
+        if (res) {
+          this.messageSuccess();
+        }
+      });
   }
 
   updateCategoria() {
@@ -135,6 +142,7 @@ export class CategoriaFormComponent extends FormBase implements OnInit {
     };
     this.categoriaCommandService
       .update(this.responseCategoria.idString, categoriaDTO)
+      .pipe(finalize(() => this.onCreateUpdate$.next(false)))
       .subscribe((res) => {
         if (res) {
           this.messageSuccess();

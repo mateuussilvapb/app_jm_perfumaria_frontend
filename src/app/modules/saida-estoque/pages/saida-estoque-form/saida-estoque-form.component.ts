@@ -63,6 +63,7 @@ import { ListaProdutosSaidaEstoqueToAddComponent } from '@saida-estoque/componen
 })
 export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
   public readonly loading$ = new BehaviorSubject<boolean>(false);
+  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
   public readonly loadingAutocompleteProdutos$ = new BehaviorSubject<boolean>(false);
 
   public titleCard: string = '';
@@ -142,7 +143,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
       this.responseSaidaEstoque.movimentacaoProdutos &&
       this.responseSaidaEstoque.movimentacaoProdutos.length > 0
     ) {
-      this.responseSaidaEstoque.movimentacaoProdutos.forEach((p) => {
+      for (const p of this.responseSaidaEstoque.movimentacaoProdutos) {
         this.produtosList.push({
           idProduto: p.produto.id,
           precoUnitario: p.precoUnitario,
@@ -150,7 +151,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
           desconto: p.desconto,
           status: p.status,
         });
-      });
+      }
     }
   }
 
@@ -160,6 +161,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
       this.addProdutosOnFormArray();
       this.setSituacaoOnForm(isRascunho);
       const dto = new MovimentacaoEstoqueCreateDto(this.form.value);
+      this.onCreateUpdate$.next(true);
       if (this.isCreate) {
         this.create(dto);
       } else if (this.isUpdate) {
@@ -178,11 +180,13 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
 
   create(dto: MovimentacaoEstoqueCreateDto) {
     if (this.form.valid && this.produtosList.length > 0) {
-      this.saidaEstoqueCommandService.create(dto).subscribe((res) => {
-        if (res) {
-          this.messageSuccess();
-        }
-      });
+      this.saidaEstoqueCommandService.create(dto)
+        .pipe(finalize(() => this.onCreateUpdate$.next(false)))
+        .subscribe((res) => {
+          if (res) {
+            this.messageSuccess();
+          }
+        });
     }
   }
 
@@ -190,6 +194,7 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
     if (this.form.valid && this.produtosList.length > 0) {
       this.saidaEstoqueCommandService
         .update(this.responseSaidaEstoque.idString, dto)
+        .pipe(finalize(() => this.onCreateUpdate$.next(false)))
         .subscribe((res) => {
           if (res) {
             this.messageSuccess();
@@ -247,9 +252,9 @@ export class SaidaEstoqueFormComponent extends FormBase implements OnInit {
 
   addProdutosOnFormArray() {
     this.produtosFormArray.clear();
-    this.produtosList.forEach((p) => {
+    for (const p of this.produtosList) {
       this.produtosFormArray.push(this.createProdutoToFormArray(p));
-    });
+    }
   }
 
   addProdutoOnProdutosList(event) {

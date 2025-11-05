@@ -53,18 +53,22 @@
           styleClass="w-full"
           severity="secondary"
           (onClick)="onVoltar()"
+          [disabled]="onCreateUpdate$ | async"
         />
       </div>
-      @if (!isView) {
+      @if (!isView && !(onCreateUpdate$ | async)) {
         <div class="col-12 mt-2 p-0 md:col-2 md:mt-0">
           <p-button
             type="submit"
             class="w-full"
-            [label]="isCreate ? 'Adicionar' : 'Atualizar'"
             styleClass="w-full"
-            [disabled]="form.invalid"
+            [label]="isCreate ? 'Adicionar' : 'Atualizar'"
+            [disabled]="form.invalid || (onCreateUpdate$ | async)"
           />
         </div>
+      }
+      @if (onCreateUpdate$ | async) {
+        <app-loading></app-loading>
       }
     </div>
   </p-card>
