@@ -25,6 +25,7 @@ import { MarcaUpdateDTO } from '@marca/interfaces/marca-update-dto';
 import { MarcaQueryService } from '@marca/service/marca-query.service';
 import { MarcaCommandService } from '@marca/service/marca-command.service';
 import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-marca-form',
@@ -42,14 +43,17 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
     InputTextModule,
 
     //Internos
+    LoadingComponent,
     FormControlErrorsComponent,
   ],
   templateUrl: './marca-form.component.html',
 })
 export class MarcaFormComponent extends FormBase implements OnInit {
-  public readonly loading$ = new BehaviorSubject<boolean>(false);
   public titleCard: string = '';
   public responseMarca: Marca;
+
+  public readonly loading$ = new BehaviorSubject<boolean>(false);
+  public readonly onCreateUpdate$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly fb: FormBuilder,
@@ -111,6 +115,7 @@ export class MarcaFormComponent extends FormBase implements OnInit {
 
   onSubmit(event) {
     event.preventDefault();
+    this.onCreateUpdate$.next(true);
     if (this.isCreate) {
       this.createMarca();
     } else if (this.isUpdate) {
@@ -119,11 +124,13 @@ export class MarcaFormComponent extends FormBase implements OnInit {
   }
 
   createMarca() {
-    this.marcaCommandService.create(this.form.value).subscribe((res) => {
-      if (res) {
-        this.messageSuccess();
-      }
-    });
+    this.marcaCommandService.create(this.form.value)
+      .pipe(finalize(() => this.onCreateUpdate$.next(false)))
+      .subscribe((res) => {
+        if (res) {
+          this.messageSuccess();
+        }
+      });
   }
 
   updateMarca() {
@@ -135,6 +142,7 @@ export class MarcaFormComponent extends FormBase implements OnInit {
     };
     this.marcaCommandService
       .update(this.responseMarca.idString, marcaDTO)
+      .pipe(finalize(() => this.onCreateUpdate$.next(false)))
       .subscribe((res) => {
         if (res) {
           this.messageSuccess();
