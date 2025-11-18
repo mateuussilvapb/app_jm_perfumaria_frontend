@@ -1,5 +1,11 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { Directive, ElementRef, HostListener, Input, forwardRef } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  forwardRef,
+} from '@angular/core';
 
 @Directive({
   selector: '[appPorcentagemMask]',
@@ -7,22 +13,20 @@ import { Directive, ElementRef, HostListener, Input, forwardRef } from "@angular
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PorcentagemMaskDirective),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class PorcentagemMaskDirective implements ControlValueAccessor {
-
   @Input() numeroCasasDecimais: number = 2;
   @Input() maxValue: number = 100;
 
-  private valorTexto: string = '';
+  private valorTexto: string = ''; // Valor puro (ex: '3500')
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
-  constructor(private readonly el: ElementRef<HTMLInputElement>) {}
+  constructor(private readonly el: ElementRef<HTMLInputElement>) {} // Chamado pelo Angular quando o FormControl faz setValue/patchValue/reset
 
-  // Chamado pelo Angular quando o FormControl faz setValue/patchValue/reset
   writeValue(value: any): void {
     if (value == null || value === '') {
       this.valorTexto = '';
@@ -30,7 +34,6 @@ export class PorcentagemMaskDirective implements ControlValueAccessor {
       return;
     }
 
-    // Se vier algo (ex.: número ou string formatada), normaliza e formata
     let numericValue = typeof value === 'number' ? value : parseFloat(value);
     if (isNaN(numericValue)) {
       this.valorTexto = '';
@@ -38,47 +41,90 @@ export class PorcentagemMaskDirective implements ControlValueAccessor {
       return;
     }
 
-    this.valorTexto = (numericValue * Math.pow(10, this.numeroCasasDecimais)).toString();
-    this.formatar();
+    // Use Math.round para evitar problemas de precisão com ponto flutuante
+    this.valorTexto = Math.round(
+      numericValue * 100 * Math.pow(10, this.numeroCasasDecimais - 2)
+    ).toString();
+    this.formatar(false); // Não notifica o form (onChange) ao carregar o valor inicial
   }
 
-  // 👉 chamado pelo Angular para registrar mudanças (model → view)
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  // 👉 chamado pelo Angular para registrar quando o campo foi tocado
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  // 👉 opcional: chamado pelo Angular se o campo for desabilitado
   setDisabledState?(isDisabled: boolean): void {
     this.el.nativeElement.disabled = isDisabled;
   }
 
+  // ----------------------------------------------------------------------
+  // ✅ 1. HOST LISTENER PRINCIPAL (Desktop e Backspace Controlado)
+  // ----------------------------------------------------------------------
+  // Mantém sua lógica original de keydown para controle total da digitação e backspace.
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    const key = event.key;
-    const teclasAceitas = /^(\d|Backspace)$/;
+    const key = event.key; // Adicionamos teclas de navegação para melhor usabilidade (Home, End, Arrows, Tab)
+    const teclasAceitas =
+      /^(\d|Backspace|Delete|ArrowLeft|ArrowRight|Tab|Home|End)$/;
+
+    // Permite comandos de Ctrl/Cmd (C, V, X, A, Z) sem intervir
+    if (event.ctrlKey || event.metaKey) {
+      return;
+    }
 
     if (!teclasAceitas.test(key)) {
       event.preventDefault();
       return;
     }
 
+    // Apenas Backspace e Dígitos alteram this.valorTexto
     if (key === 'Backspace') {
       this.valorTexto = this.valorTexto.slice(0, -1);
-    } else {
+    } else if (key.match(/\d/)) {
+      // Apenas se for um dígito (evita teclas de navegação)
       this.valorTexto += key;
+    } else {
+      // Ignora teclas de navegação/controle sem preventDefault para permitir a ação nativa
+      return;
     }
 
     if (+this.valorTexto === 0) {
       this.valorTexto = '';
     }
 
-    this.formatar();
-    event.preventDefault(); // evita o caracter bruto
+    this.formatar(true); // Atualiza o visual e o modelo
+    event.preventDefault(); // ESSENCIAL: Evita o caracter bruto ser inserido pelo browser
+  }
+
+  // ----------------------------------------------------------------------
+  // ✅ 2. HOST LISTENER FALLBACK (Mobile e Paste/Autofill)
+  // ----------------------------------------------------------------------
+  // Captura alterações que não vieram de um keydown controlado (mobile, autofill).
+  // Se o `keydown` com `preventDefault` falhar no mobile, o `input` será disparado.
+  @HostListener('input', ['$event'])
+  onInput(event: Event) {
+    const inputElement = this.el.nativeElement;
+
+    // 1. Remove toda a formatação para obter o valor puro (lida com paste e digitação mobile)
+    const rawValue = inputElement.value;
+    const apenasDigitos = rawValue.replace(/\D/g, '');
+
+    // 2. Se o valor interno de dígitos não mudou, evita reprocessamento (e o cursor não é afetado)
+    if (this.valorTexto === apenasDigitos) {
+      return;
+    }
+
+    this.valorTexto = apenasDigitos;
+    this.formatar(true);
+    this.onTouched();
+
+    // CORREÇÃO DO CURSOR (opcional, mas melhora muito a UX no mobile)
+    // Move o cursor para antes do ' %'
+    const position = inputElement.value.length - 2;
+    inputElement.setSelectionRange(position, position);
   }
 
   @HostListener('paste', ['$event'])
@@ -91,27 +137,43 @@ export class PorcentagemMaskDirective implements ControlValueAccessor {
     if (!apenasDigitos) return;
 
     this.valorTexto = apenasDigitos;
-    this.formatar();
+    this.formatar(true); // Notifica o form
+    this.onTouched();
   }
 
-  private formatar() {
-    let valorNumerico = 0;
+  private formatar(notify: boolean) {
+    let valorNumericoFormatado = 0; // Ex: 35.00
+    let valorParaModel = 0; // Ex: 0.35
 
     if (this.valorTexto) {
-      valorNumerico = +this.valorTexto / Math.pow(10, this.numeroCasasDecimais);
+      valorNumericoFormatado =
+        +this.valorTexto / Math.pow(10, this.numeroCasasDecimais);
+    } // aplica limite
+
+    if (valorNumericoFormatado > this.maxValue) {
+      valorNumericoFormatado = this.maxValue;
+      this.valorTexto = (
+        this.maxValue * Math.pow(10, this.numeroCasasDecimais)
+      ).toFixed(0);
     }
 
-    // aplica limite
-    if (valorNumerico > this.maxValue) {
-      valorNumerico = this.maxValue;
-      this.valorTexto = (this.maxValue * Math.pow(10, this.numeroCasasDecimais)).toString();
+    // Se o valor puro for 0, limpa o campo visualmente, exceto se houver digitos depois da virgula.
+    if (!this.valorTexto && this.el.nativeElement.value !== '') {
+      this.el.nativeElement.value = '';
     }
 
-    const formatado = valorNumerico.toFixed(this.numeroCasasDecimais) + ' %';
-    this.el.nativeElement.value = formatado;
+    // Se há dígitos, formata
+    if (this.valorTexto) {
+      const formatado =
+        valorNumericoFormatado.toFixed(this.numeroCasasDecimais) + ' %';
+      this.el.nativeElement.value = formatado;
+    } // Atualiza o FormControl com valor numérico puro (0.35 para 35%)
 
-    // 🔥 Atualiza o FormControl com valor numérico puro (0.35 = 35%)
-    this.onChange(valorNumerico / 100); // ou `valorNumerico`, se quiser guardar 35 ao invés de 0.35
-    this.onTouched();
+    valorParaModel = valorNumericoFormatado / 100;
+
+    if (notify) {
+      this.onChange(valorParaModel);
+      this.onTouched();
+    }
   }
 }
