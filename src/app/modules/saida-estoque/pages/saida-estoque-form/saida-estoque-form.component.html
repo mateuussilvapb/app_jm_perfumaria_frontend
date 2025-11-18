@@ -12,15 +12,15 @@
           <div class="flex flex-row justify-content-center md:justify-content-start align-items-center align-content-center md:pb-0 pb-2">
             <small><strong>Código da Saida: </strong> {{ responseSaidaEstoque?.codigo ?? '-'}} </small>
           </div>
-            <p-tag [severity]="responseSaidaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(responseSaidaEstoque.situacao)" />
+            <p-tag [severity]="responseSaidaEstoque.situacao === SITUACAO.CADASTRO_FINALIZADO ? 'success' : 'warn'" [value]="getSituacaoNormalized(responseSaidaEstoque.situacao)" class="w-full md:w-auto" />
         </div>
       }
 
       <!-- Data da Saida de Estoque -->
       <div class="grid my-2">
-        <div class="col-12 md:col-3">
+        <div class="col-12 md:col-4 xl:col-3">
           <label for="data-saida-estoque">Data da Saida de Estoque</label>
-          <p-datepicker id="data-saida-estoque" formControlName="dataMovimentacaoEstoque" [maxDate]="maxDate" />
+          <p-datepicker id="data-saida-estoque" formControlName="dataMovimentacaoEstoque" [maxDate]="maxDate" class="flex w-full" styleClass="w-full" />
         </div>
       </div>
 
