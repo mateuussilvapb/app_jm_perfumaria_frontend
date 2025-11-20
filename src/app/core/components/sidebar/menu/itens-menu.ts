@@ -20,7 +20,7 @@ export const ItensMenu: ItemMenu[] = [
     roles: ALL_ROLES,
     children: [
       {
-        label: 'Painel Informativo',
+        label: 'Dashboard',
         separator: false,
         icon: PrimeIcons.CHART_BAR,
         route: '/',

@@ -4,12 +4,12 @@ import { Routes } from '@angular/router';
 //Internos
 import { ALL_ROLES } from '@shared/models/roles';
 import { AuthGuard } from '@core/guards/auth.guard';
-import { PainelInformativoComponent } from '@home/painel-informativo/painel-informativo.component';
+import { DashboardComponent } from '@home/pages/dashboard/dashboard.component';
 
 export const HOME_ROUTES: Routes = [
   {
     path: '',
-    component: PainelInformativoComponent,
+    component: DashboardComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ALL_ROLES,
