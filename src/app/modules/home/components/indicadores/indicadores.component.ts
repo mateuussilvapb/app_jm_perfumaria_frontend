@@ -4,8 +4,9 @@ import { Component, OnInit } from '@angular/core';
 
 //Externos
 import { DividerModule } from 'primeng/divider';
-import { SkeletonModule } from 'primeng/skeleton';
+import { TooltipModule } from 'primeng/tooltip';
 import { BehaviorSubject, finalize } from 'rxjs';
+import { SkeletonModule } from 'primeng/skeleton';
 
 //Internos
 import { DashboardQueryService } from '@home/services/dashboard-query.service';
@@ -21,6 +22,7 @@ import { CardIndicadorComponent } from '@home/components/card-indicador/card-ind
 
     //Externos
     DividerModule,
+    TooltipModule,
     SkeletonModule,
 
     //Internos
@@ -33,6 +35,9 @@ export class IndicadoresComponent implements OnInit{
   public $loadingEstoqueInfo: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public informacoesEstoque: InformacoesEstoqueDTO;
+
+  public readonly heightSkeleton = '8rem';
+  public readonly tooltipMessage = 'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais';
 
   constructor(private readonly dashboardQueryService: DashboardQueryService) {}
 
