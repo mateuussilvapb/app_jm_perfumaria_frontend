@@ -1,6 +1,6 @@
 //Angular
-import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 //Externos
 import { DividerModule } from 'primeng/divider';
@@ -11,7 +11,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 //Internos
 import { DashboardQueryService } from '@home/services/dashboard-query.service';
 import { InformacoesEstoqueDTO } from '@home/interfaces/informacoes-estoque-dto';
-import { CardIndicadorComponent } from '@home/components/card-indicador/card-indicador.component';
+import { CardIndicadorComponent } from '@home/components/indicadores/components/card-indicador/card-indicador.component';
+import { TabelaBaixaQuantidadeEstoqueComponent } from '@home/components/indicadores/components/tabela-baixa-quantidade-estoque/tabela-baixa-quantidade-estoque.component';
 
 
 @Component({
@@ -26,7 +27,8 @@ import { CardIndicadorComponent } from '@home/components/card-indicador/card-ind
     SkeletonModule,
 
     //Internos
-    CardIndicadorComponent
+    CardIndicadorComponent,
+    TabelaBaixaQuantidadeEstoqueComponent
   ],
   templateUrl: './indicadores.component.html',
 })
@@ -37,6 +39,7 @@ export class IndicadoresComponent implements OnInit{
   public informacoesEstoque: InformacoesEstoqueDTO;
 
   public readonly heightSkeleton = '8rem';
+  public readonly heightCards = '9rem';
   public readonly tooltipMessage = 'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais';
 
   constructor(private readonly dashboardQueryService: DashboardQueryService) {}

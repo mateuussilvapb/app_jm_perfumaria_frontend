@@ -1,0 +1,41 @@
+<div class="w-full h-28rem md:h-25rem">
+    @if ($loadingBaixaQuantidadeInfo | async) {
+        <p-skeleton class="w-full" height="24rem"/>
+    } @else {
+        <p-card header="Produtos com baixa quantidade" styleClass="h-full border-2 border-red-500">
+            <ng-template #title>
+                <div class="p-card-title flex flex-row justify-content-between align-items-center gap-2">
+                    <div class="flex flex-row justify-content-start align-items-center gap-1 min-w-0 text-red-500">
+                        <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
+                            Produtos com baixa quantidade
+                        </div>
+                        <i class="pi pi-info-circle font-medium" [pTooltip]="tooltipMessage" tooltipPosition="bottom"></i>                        
+                    </div>
+                    <i class="pi border-round-lg p-2 text-xl text-white pi-table bg-red-500"></i>
+                </div>
+            </ng-template>
+            <p-table 
+                [rows]="5" 
+                [paginator]="true" 
+                [scrollable]="true" 
+                class="table-custom" 
+                [responsiveLayout]="'scroll'" 
+                [value]="produtosBaixaQuantidade" 
+                styleClass="p-datatable-gridlines" 
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-50 text-center surface-100 text-color" style="width: 70%; min-width: 5rem">Nome</th>
+                        <th class="text-50 text-center surface-100 text-color" style="width: 30%; min-width: 5rem">Quantidade</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-produto>
+                    <tr>
+                        <td class="text-center" style="width: 70%; min-width: 5rem">{{produto.nome}}</td>
+                        <td class="text-center" style="width: 30%; min-width: 5rem">{{produto.quantidadeEmEstoque}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+    }
+</div>

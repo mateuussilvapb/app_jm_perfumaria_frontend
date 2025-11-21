@@ -26,7 +26,6 @@ import { TooltipModule } from 'primeng/tooltip';
 export class CardIndicadorComponent implements OnInit {
   @Input({required: true}) tipoCard: TIPO_CARD_INDICADOR;
   @Input({required: true}) titulo: string;
-  @Input() subTitulo?: string;
   @Input() tooltip?: string;
   @Input() icone?: TIPOS_ICONES;
   @Input() duasColunas: boolean = false;
@@ -34,9 +33,9 @@ export class CardIndicadorComponent implements OnInit {
   @Input() valorColunaDois?: string | number;
 
   public estiloClasseCard: string = 'border-2 h-full ';
-  public estiloClasseIcone: string = 'pi pi-box border-round-lg p-2 text-xl text-white ';
+  public estiloClasseIcone: string = 'pi border-round-lg p-2 text-xl text-white ';
   public estiloTitulo: string = 'flex flex-row justify-content-start align-items-center gap-1 min-w-0	flex-1 ';
-  public estiloSubTitulo: string = 'p-card-subtitle ng-star-inserted text-start ';
+  public estiloSubTitulo: string = 'p-card-subtitle text-start ';
 
   constructor(private readonly layoutService: LayoutService) {}
 
