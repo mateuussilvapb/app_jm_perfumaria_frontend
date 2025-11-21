@@ -13,6 +13,7 @@ import { DashboardQueryService } from '@home/services/dashboard-query.service';
 import { InformacoesEstoqueDTO } from '@home/interfaces/informacoes-estoque-dto';
 import { CardIndicadorComponent } from '@home/components/indicadores/components/card-indicador/card-indicador.component';
 import { TabelaBaixaQuantidadeEstoqueComponent } from '@home/components/indicadores/components/tabela-baixa-quantidade-estoque/tabela-baixa-quantidade-estoque.component';
+import { TabelaBaixaMovimentacaoEstoqueComponent } from '@home/components/indicadores/components/tabela-baixa-movimentacao-estoque/tabela-baixa-movimentacao-estoque.component';
 
 
 @Component({
@@ -28,7 +29,8 @@ import { TabelaBaixaQuantidadeEstoqueComponent } from '@home/components/indicado
 
     //Internos
     CardIndicadorComponent,
-    TabelaBaixaQuantidadeEstoqueComponent
+    TabelaBaixaQuantidadeEstoqueComponent,
+    TabelaBaixaMovimentacaoEstoqueComponent
   ],
   templateUrl: './indicadores.component.html',
 })

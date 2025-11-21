@@ -42,7 +42,7 @@ export class TabelaBaixaQuantidadeEstoqueComponent implements OnInit {
 
   private carregarProdutosBaixaQuantidade(): void {
     this.$loadingBaixaQuantidadeInfo.next(true);
-    this.dashboardQueryService.getProdutoBaixaQuantidadeEstoque()
+    this.dashboardQueryService.getProdutosBaixaQuantidadeEstoque()
       .pipe(finalize(() => this.$loadingBaixaQuantidadeInfo.next(false)))
       .subscribe({
         next: (response) => {

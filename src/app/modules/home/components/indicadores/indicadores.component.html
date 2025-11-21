@@ -29,7 +29,7 @@
             ></app-card-indicador>
         }
     </div>
-    <div class="col-12 md:col-6 xl:col-4 h-{{heightCards}}">
+    <div class="col-12 xl:col-4 h-{{heightCards}}">
         @if ($loadingEstoqueInfo | async) {
             <p-skeleton class="w-full" [height]="heightSkeleton"/>
         } @else {
@@ -74,5 +74,8 @@
 <div class="grid mt-1">
     <div class="col-12 md:col-6">
         <app-tabela-baixa-quantidade-estoque></app-tabela-baixa-quantidade-estoque>
+    </div>
+    <div class="col-12 md:col-6">
+        <app-tabela-baixa-movimentacao-estoque></app-tabela-baixa-movimentacao-estoque>
     </div>
 </div>
