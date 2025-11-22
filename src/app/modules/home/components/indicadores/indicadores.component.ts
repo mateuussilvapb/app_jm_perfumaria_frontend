@@ -61,7 +61,7 @@ export class IndicadoresComponent implements OnInit{
   private setConfigTabelaProdutosBaixaMovimentacao(): void {
     this.configTabelaProdutosBaixaMovimentacao = {
       titulo: 'Produtos com baixa movimentação',
-      icone: 'pi-table',
+      icone: 'pi-times',
       tooltipMessage: 'Considera-se como baixa movimentação no estoque os produtos que não foram vendidos a mais de 60 dias',
       borderColor: 'border-red-500',
       iconColor: 'text-red-500',
