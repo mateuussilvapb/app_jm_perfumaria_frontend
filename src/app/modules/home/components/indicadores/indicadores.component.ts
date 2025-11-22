@@ -105,6 +105,6 @@ export class IndicadoresComponent implements OnInit{
 
   valorMonetarioFormatado(valor: number): string {
     const pipeCurrency = new CurrencyPipe('pt-BR');
-    return pipeCurrency.transform(valor, 'BRL', true, '1.2-2');
+    return pipeCurrency.transform(valor, 'BRL', 'symbol', '1.2-2');
   }
 }

@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 
 // Interface para configurar a tabela
 export interface TabelaProdutosEstoqueConfig {
