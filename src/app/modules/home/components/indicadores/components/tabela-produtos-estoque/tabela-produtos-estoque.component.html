@@ -17,42 +17,45 @@
         </div>
       </ng-template>
       
-      <p-table 
-        [rows]="5" 
-        [paginator]="true" 
-        [scrollable]="true"
-        class="table-custom" 
-        [value]="dados" 
-        [scrollHeight]="scrollHeight"
-        [responsiveLayout]="'scroll'" 
-        styleClass="p-datatable-gridlines">
-        
-        <ng-template pTemplate="header">
-          <tr>
-            @for (coluna of config.colunas; track coluna.field) {
-              <th class="text-50 text-center surface-100 text-color" 
-                  [style.width]="coluna.width" 
-                  [style.min-width]="coluna.minWidth || '5rem'">
-                {{ coluna.header }}
-              </th>
-            }
-          </tr>
-        </ng-template>
-        
-        <ng-template pTemplate="body" let-row>
-          <tr>
-            @for (coluna of config.colunas; track coluna.field) {
-              <td class="text-center min-w-0" 
-                  [style.width]="coluna.width" 
-                  [style.min-width]="coluna.minWidth || '5rem'">
-                <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
-                  {{ formatarValor(row[coluna.field], coluna) }}
-                </div>
-              </td>
-            }
-          </tr>
-        </ng-template>
-      </p-table>
+      @if (dados?.length > 0) {
+        <p-table 
+          [rows]="5" 
+          [paginator]="true" 
+          [scrollable]="true"
+          class="table-custom" 
+          [value]="dados" 
+          [scrollHeight]="scrollHeight"
+          [responsiveLayout]="'scroll'" 
+          styleClass="p-datatable-gridlines">
+          
+          <ng-template pTemplate="header">
+            <tr>
+              @for (coluna of config.colunas; track coluna.field) {
+                <th class="text-50 text-center surface-100 text-color" 
+                    [style.width]="coluna.width" 
+                    [style.min-width]="coluna.minWidth || '5rem'">
+                  {{ coluna.header }}
+                </th>
+              }
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              @for (coluna of config.colunas; track coluna.field) {
+                <td class="text-center min-w-0" 
+                    [style.width]="coluna.width" 
+                    [style.min-width]="coluna.minWidth || '5rem'">
+                  <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
+                    {{ formatarValor(row[coluna.field], coluna) }}
+                  </div>
+                </td>
+              }
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+      <sem-dados [data]="dados"></sem-dados>
     </p-card>
   }
 </div>
