@@ -1,0 +1,148 @@
+<form [formGroup]="form" (ngSubmit)="onAdicionarProduto()" novalidate autocomplete="off">
+    <!-- CAMPOS -->
+    <div class="grid">
+        <!-- Produto -->
+        <div class="col-12 lg:col-6 flex-column flex min-w-0">
+            <label for="id-produto" class="flex flex-row align-items-center text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
+                Produto *
+                <i class="pi pi-info-circle ml-1 text-primary" (mouseenter)="onMouseEnterProduto($event)"></i>
+            </label>
+            <p-select 
+                [filter]="true"
+                id="id-produto"
+                [showClear]="true"
+                optionValue="id"
+                optionLabel="nome"
+                class="w-full mt-1"
+                [options]="produtosOptions"
+                formControlName="idProduto"
+                filterPlaceholder="Busca..."
+            ></p-select>
+            <app-form-control-errors [control]="form.get('idProduto')"></app-form-control-errors>
+        </div>
+
+        <!-- Preço de custo cliente por unidade -->
+        <div class="col-12 lg:col-6 flex-column flex min-w-0">
+            <label for="preco-custo-cliente" class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">Preço Custo Cliente por Unidade *</label>
+            <input
+                pInputText
+                step="0.01"
+                type="text"
+                currencyMask
+                placeholder="R$"
+                class="w-full mt-1"
+                id="preco-custo-cliente"
+                formControlName="precoCustoCliente"
+                [options]="optionsCurrencyMask"
+            />
+            <app-form-control-errors [control]="form.get('precoCustoCliente')"></app-form-control-errors>
+        </div>
+
+        <!-- Quantidade Comprada-->
+        <div class="col-12 lg:col-3 flex-column flex min-w-0">
+            <label for="quantidade-comprada" class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">Quantidade Comprada *</label>
+            <input
+                step="1"
+                pInputText
+                type="number"
+                class="w-full mt-1"
+                id="quantidade-comprada"
+                formControlName="quantidade"
+                max="9999"
+            />
+            <app-form-control-errors [control]="form.get('quantidade')"></app-form-control-errors>
+        </div>
+
+        <!-- Desconto para o cliente -->
+        <div class="col-12 lg:col-3 flex-column flex min-w-0">
+            <label for="desconto-cliente" class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">Desconto para o Cliente</label>
+            <input
+                pInputText
+                type="text"
+                id="desconto-cliente"
+                appPorcentagemMask
+                class="w-full mt-1"
+                formControlName="descontoCliente"
+            />
+            <app-form-control-errors [control]="form.get('descontoCliente')"></app-form-control-errors>
+        </div>
+
+        <!-- Margem Lucro Vendedor -->
+        <div class="col-12 lg:col-3 flex-column flex min-w-0">
+            <label for="porcentagem-lucro" class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">Margem Lucro Vendedor *</label>
+            <input
+                pInputText
+                type="text"
+                id="porcentagem-lucro"
+                appPorcentagemMask
+                class="w-full mt-1"
+                formControlName="porcentagemLucro"
+            />
+            <app-form-control-errors [control]="form.get('porcentagemLucro')"></app-form-control-errors>
+        </div>
+
+
+        <div class="col-12 lg:col-3 flex-column flex min-w-0">
+            <label for="preco-unitario" class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">Preço por Unidade</label>
+            <input
+                pInputText
+                step="0.01"
+                type="text"
+                currencyMask
+                placeholder="R$"
+                class="w-full mt-1"
+                id="preco-unitario"
+                formControlName="precoUnitario"
+                [options]="optionsCurrencyMask"
+            />
+            <app-form-control-errors [control]="form.get('precoUnitario')"></app-form-control-errors>
+        </div>
+
+    </div>
+
+    <!-- Informações do Produto selecionado -->
+    @if (produtoSelecionado) {
+        <div class="flex flex-column md:flex-row" @slideInOut>
+            <!-- Quantidade em estoque -->
+            <small>
+                <strong>Estoque atual:</strong>
+                {{produtoSelecionado?.quantidadeEmEstoque ?? '-'}}
+            </small>
+
+            <!-- Preço de custo -->
+            <small class="md:mx-4 md:my-0 my-2">
+                <strong>Preço de custo atual:</strong>
+                {{(produtoSelecionado?.precoCusto | currency:'BRL') ?? '-'}}
+            </small>
+
+            <!-- Preço de venda -->
+            <small>
+                <strong>Preço de venda atual:</strong>
+                {{(produtoSelecionado?.precoVenda | currency:'BRL') ?? '-'}}
+            </small>
+        </div>
+    }
+
+    <!-- BOTÕES -->
+    <div class="pt-2 flex flex-wrap flex-column-reverse md:flex-row justify-content-end h-full">
+        <div class="col-12 lg:col-2 flex-column flex">
+        <p-button
+            type="submit"
+            [text]="true"
+            [rounded]="true"
+            class="w-full h-full p-0"
+            icon="pi pi-plus"
+            tooltipPosition="left"
+            styleClass="w-full h-full p-0"
+            [disabled]="form.invalid"
+            label="Adicionar"
+            pTooltip="Adicionar"/>
+        </div>
+    </div>
+</form>
+
+<app-generic-pop-over (mouseleave)="onMouseLeavePopOver()"></app-generic-pop-over>
+
+@if (false) {
+    <pre>{{form.value | json}}</pre>
+}

@@ -46,8 +46,12 @@ export class ListaProdutosEntradaEstoqueToAddComponent {
   getDescontoToPresenter(desconto: number | string) {
     if (desconto !== null && desconto !== undefined) {
       if (typeof desconto === 'number') {
-        const descontoPresenter = (desconto * 100).toFixed(2);
-        return descontoPresenter + ' %';
+        if (desconto > 0) {
+          const descontoPresenter = (desconto * 100).toFixed(2);
+          return descontoPresenter + ' %';
+        } else {
+          return '-';
+        }
       }
       return desconto;
     }

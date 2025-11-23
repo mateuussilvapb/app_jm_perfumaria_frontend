@@ -318,13 +318,20 @@ export class EntradaEstoqueFormComponent extends FormBase implements OnInit {
   validadeProdutoCanAdd(
     produto: Partial<ProdutoMovimentacaoEstoqueCreateDto>
   ): boolean {
+    const camposObrigatorios = ['idProduto', 'precoUnitario', 'quantidade'];
     for (const key of Object.keys(produto)) {
-      if (key !== 'desconto' && key !== 'status') {
+      if (camposObrigatorios.includes(key)) {
         if (
           produto[key] === null ||
           produto[key] === undefined ||
           produto[key] === ''
         ) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Atenção',
+            detail: 'Preencha todos os campos obrigatórios.',
+            life: 5000,
+          });
           return false;
         }
       }

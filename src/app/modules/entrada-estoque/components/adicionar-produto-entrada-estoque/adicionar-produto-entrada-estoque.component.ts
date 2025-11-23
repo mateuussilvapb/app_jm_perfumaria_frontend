@@ -1,33 +1,18 @@
 //Angular
-import {
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { CommonModule, Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 //Externos
 import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { TooltipModule } from 'primeng/tooltip';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputTextModule } from 'primeng/inputtext';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 //Internos
-import { STATUS } from '@shared/enums/status.enum';
-import { FormBase } from '@shared/directives/form-base';
-import { OPTIONS_CURRENCY_MASK } from '@utils/constants';
-import { ROTAS_FORM } from '@shared/enums/rotas-form.enum';
-import { PorcentagemMaskDirective } from '@shared/directives/porcentagem-mask-directive';
-import { GenericPopOverComponent } from '@shared/components/generic-pop-over/generic-pop-over.component';
 import { ProdutoMovimentacaoAutocompleteDto } from '@produto/interfaces/produto-movimentacao-autocomplete-dto';
-import { FormControlErrorsComponent } from '@shared/components/form-control-errors/form-control-errors.component';
+import { InputPrecoCustoComponent } from '@entrada-estoque/components/adicionar-produto-entrada-estoque/components/input-preco-custo/input-preco-custo.component';
+import { InputPrecoClienteComponent } from '@entrada-estoque/components/adicionar-produto-entrada-estoque/components/input-preco-cliente/input-preco-cliente.component';
+import { STATUS } from '@shared/enums/status.enum';
 
 @Component({
   selector: 'app-adicionar-produto-entrada-estoque',
@@ -40,89 +25,87 @@ import { FormControlErrorsComponent } from '@shared/components/form-control-erro
 
     //Externo
     CardModule,
-    SelectModule,
-    ButtonModule,
-    TooltipModule,
-    InputTextModule,
-    InputMaskModule,
+    SelectButtonModule,
 
     //Interno
-    GenericPopOverComponent,
-    PorcentagemMaskDirective,
-    FormControlErrorsComponent,
+    InputPrecoCustoComponent,
+    InputPrecoClienteComponent,
   ],
-  templateUrl: './adicionar-produto-entrada-estoque.component.html',
-  animations: [
-    trigger('slideInOut', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }), // começa acima
-        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })) // desce
-      ]),
-      transition(':leave', [
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' })) // sobe e some
-      ])
-    ])
-  ]
+  templateUrl: './adicionar-produto-entrada-estoque.component.html'
 })
-export class AdicionarProdutoEntradaEstoqueComponent extends FormBase implements OnInit, OnChanges {
-  @ViewChild(GenericPopOverComponent)
-  genericPopOverComponent!: GenericPopOverComponent;
-
-  @Input({required: true}) produtosOptions: ProdutoMovimentacaoAutocompleteDto[] = [];
-  @Input({required: true}) produtoToEdit: any = null;
+export class AdicionarProdutoEntradaEstoqueComponent implements OnInit, OnChanges {
+  @Input({ required: true }) produtoToEdit: any = null;
+  @Input({ required: true }) produtosOptions: ProdutoMovimentacaoAutocompleteDto[] = [];
 
   @Output() adicionarProduto = new EventEmitter<any>();
 
-  public optionsCurrencyMask = OPTIONS_CURRENCY_MASK;
+  constructor(private readonly fb: FormBuilder) {
+  }
 
-  constructor(
-    private readonly fb: FormBuilder,
-    protected override readonly router: Router,
-    protected override readonly location: Location,
-    public override readonly activatedRoute: ActivatedRoute,
-  ) {
-    super(router, location, '/', activatedRoute);
+  public form: FormGroup;
+  public valueFormaInputDados: any = 'preco-cliente';
+  public opcoesFormasInputDados: any[] = [{ label: 'Preço para cliente', value: 'preco-cliente' }, { label: 'Preço de custo', value: 'preco-custo' }];
+
+  ngOnInit(): void {
+    this.buildForm();
+    this.onChangeFormaInputDados(this.valueFormaInputDados);
+    if (this.produtoToEdit) {
+      this.patchForm();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['produtoToEdit'] && this.produtoToEdit) {
-      this.form.patchValue(this.produtoToEdit);
+    if (!this.form) {
+      this.buildForm();
     }
+    this.tratarProdutoToEdit(changes);
+  }
+
+  private tratarProdutoToEdit(changes?: SimpleChanges) {
+    if (changes?.['produtoToEdit'] && this.produtoToEdit) {
+      this.patchForm();
+    }
+  }
+
+  patchForm() {
+    this.form.patchValue(this.produtoToEdit);
   }
 
   buildForm() {
+    if (this.form) return;
     this.form = this.fb.group({
       idProduto: [null, Validators.required],
       precoUnitario: [null, [Validators.required, Validators.min(0.01)]],
+      
+      descontoCliente: [null],
+      porcentagemLucro: [null],
+      precoCustoCliente: [null, [Validators.min(0.01)]],
+      
       quantidade: [null, [Validators.required, Validators.min(1)]],
-      status: [STATUS.ATIVO, Validators.required],
       desconto: [null],
+      status: [STATUS.ATIVO, Validators.required],
     });
   }
 
-  onAdicionarProduto() {
+  onAdicionarProduto(event: any) {
     if (this.form.valid) {
-      this.adicionarProduto.emit(this.form.getRawValue());
-      this.form.reset();
-      this.form.get('status')?.setValue(STATUS.ATIVO);
+      if (this.valueFormaInputDados === 'preco-cliente') {
+        this.form.get('desconto').setValue(null);
+        this.form.get('desconto').updateValueAndValidity();
+      }
+      this.adicionarProduto.emit(event);
       this.produtoToEdit = null;
+      this.form.reset();
     }
   }
 
-  onMouseEnterProduto(event: any) {
-    this.genericPopOverComponent.showBtnAction = true;
-    this.genericPopOverComponent.labelBtn = 'Adicionar Produto';
-    this.genericPopOverComponent.acao = () => this.router.navigate([`/produto/${ROTAS_FORM.ADICIONAR}`]);
-    this.genericPopOverComponent.mensagem = 'Caso queira adicionar um novo produto, clique no botão abaixo.'
-
-    this.genericPopOverComponent.show(event);
-  }
-
-  onMouseLeavePopOver() {
-    this.genericPopOverComponent.hide();
-  }
-
-  get produtoSelecionado(): ProdutoMovimentacaoAutocompleteDto | undefined {
-    return this.produtosOptions.find(produto => produto.id === this.form.get('idProduto')?.value);
+  onChangeFormaInputDados(value: any) {
+    const precoUnitarioControl = this.form.get('precoUnitario');
+    if (value === 'preco-cliente' && this.form) {
+      precoUnitarioControl?.disable();
+    }
+    if (value === 'preco-custo' && this.form) {
+      precoUnitarioControl?.enable();
+    }
   }
 }
