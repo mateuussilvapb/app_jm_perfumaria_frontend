@@ -141,6 +141,7 @@ export class InputPrecoClienteComponent implements OnInit {
     }  else if (precoUnitarioControl?.value > 0) {
       precoUnitario = precoUnitarioControl.value;
     }
+    precoUnitario = Number(precoUnitario.toFixed(2));
     precoUnitarioControl.setValue(precoUnitario);
     precoUnitarioControl.updateValueAndValidity();
   }
