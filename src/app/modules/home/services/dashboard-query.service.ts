@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 
 //Internos
 import { AbstractQueryService } from '@shared/services/abstract-query.service';
-import { InformacoesEstoqueDTO } from '@home/interfaces/informacoes-estoque-dto';
-import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/produtos-baixa-quantidade-dto';
-import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/produtos-baixa-movimentacao-estoque-dto';
+import { InformacoesEstoqueDTO } from '@home/interfaces/indicadores/informacoes-estoque-dto';
+import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/indicadores/produtos-baixa-quantidade-dto';
+import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-estoque-dto';
+import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/indicadores/produtos-baixa-movimentacao-estoque-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,11 @@ export class DashboardQueryService extends AbstractQueryService<any> {
     return this.http.get<ProdutosBaixaMovimentacaoEstoqueDTO[]>(
       `${this.baseURL}/query/produtos-sem-movimentacao`
     );
+  }
+  
+  getResumoMensalSaidasEstoque = () => {
+    return this.http.get<MovimentacoesEstoqueDTO[]>(
+      `${this.baseURL}/query/resumo-mensal-saida-estoque`
+    )
   }
 }

@@ -10,8 +10,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 
 //Internos
 import { DashboardQueryService } from '@home/services/dashboard-query.service';
-import { InformacoesEstoqueDTO } from '@home/interfaces/informacoes-estoque-dto';
-import { TabelaProdutosEstoqueConfig } from '@home/interfaces/tabela-produtos-estoque-config';
+import { InformacoesEstoqueDTO } from '@home/interfaces/indicadores/informacoes-estoque-dto';
+import { TabelaProdutosEstoqueConfig } from '@home/interfaces/indicadores/tabela-produtos-estoque-config';
 import { CardIndicadorComponent } from '@home/components/indicadores/components/card-indicador/card-indicador.component';
 import { TabelaProdutosEstoqueComponent } from '@home/components/indicadores/components/tabela-produtos-estoque/tabela-produtos-estoque.component';
 

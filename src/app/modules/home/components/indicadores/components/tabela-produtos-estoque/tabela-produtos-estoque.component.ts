@@ -13,9 +13,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { LayoutService } from '@core/services/layout.service';
 import { ScreenSizeService } from '@core/services/screen-size.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
-import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/produtos-baixa-quantidade-dto';
-import { TabelaColuna, TabelaProdutosEstoqueConfig } from '@home/interfaces/tabela-produtos-estoque-config';
-import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/produtos-baixa-movimentacao-estoque-dto';
+import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/indicadores/produtos-baixa-quantidade-dto';
+import { TabelaColuna, TabelaProdutosEstoqueConfig } from '@home/interfaces/indicadores/tabela-produtos-estoque-config';
+import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/indicadores/produtos-baixa-movimentacao-estoque-dto';
 
 @Component({
   selector: 'app-tabela-produtos-estoque',
