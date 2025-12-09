@@ -56,7 +56,6 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
       ).subscribe({
         next: (data) => {
           this.initChart(data);
-          console.log(data);
         },
         error: (error) => {
           console.error('Erro ao carregar movimentações de estoque.', error);
