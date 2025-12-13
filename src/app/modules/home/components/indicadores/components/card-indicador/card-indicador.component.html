@@ -3,7 +3,7 @@
         <ng-template #title>
             <div class="p-card-title flex flex-row justify-content-between align-items-center gap-2">
                 <div [class]="estiloTitulo">
-                    <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
+                    <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0 text-base">
                         {{titulo}}
                     </div>
                     @if (tooltip) {
@@ -16,7 +16,7 @@
             </div>
         </ng-template>
     }
-    <div class="flex flex-row justify-content-center align-items-center gap-2 font-normal min-w-0 flex-1 {{fontSizeByScreenSize}}">
+    <div class="flex flex-row justify-content-start align-items-center gap-2 font-normal min-w-0 flex-1 font-medium {{fontSizeByScreenSize}}">
         <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
             {{valorColunaUm}}
         </div>

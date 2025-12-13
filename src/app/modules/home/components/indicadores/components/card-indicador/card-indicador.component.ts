@@ -24,7 +24,7 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './card-indicador.component.html',
 })
 export class CardIndicadorComponent implements OnInit {
-  @Input({required: true}) tipoCard: TIPO_CARD_INDICADOR;
+  @Input() tipoCard: TIPO_CARD_INDICADOR;
   @Input({required: true}) titulo: string;
   @Input() tooltip?: string;
   @Input() icone?: TIPOS_ICONES;
@@ -32,7 +32,7 @@ export class CardIndicadorComponent implements OnInit {
   @Input({ required: true }) valorColunaUm: string | number = '';
   @Input() valorColunaDois?: string | number;
 
-  public estiloClasseCard: string = 'border-2 h-full ';
+  public estiloClasseCard: string = 'border-2 h-full shadow-3 hover:shadow-5 transition-linear transition-duration-200 ';
   public estiloClasseIcone: string = 'pi border-round-lg p-2 text-xl text-white ';
   public estiloTitulo: string = 'flex flex-row justify-content-start align-items-center gap-1 min-w-0	flex-1 ';
   public estiloSubTitulo: string = 'p-card-subtitle text-start ';
@@ -193,7 +193,7 @@ export class CardIndicadorComponent implements OnInit {
 
   private definirEstiloDefault() {
     this.estiloClasseCard = this.estiloClasseCard + 'border-white';
-    this.estiloClasseIcone = this.estiloClasseIcone + 'bg-white';
+    this.estiloClasseIcone = this.estiloClasseIcone + 'background-default-custom';
   }
 
   get fontSizeByScreenSize(): string {

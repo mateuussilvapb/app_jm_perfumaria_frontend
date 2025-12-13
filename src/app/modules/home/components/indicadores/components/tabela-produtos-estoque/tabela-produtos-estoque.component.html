@@ -2,10 +2,10 @@
   @if ($loadingData | async) {
     <p-skeleton class="w-full" height="24rem"/>
   } @else {
-    <p-card [styleClass]="'h-full border-2 ' + config.borderColor">
+    <p-card [styleClass]="'h-full border-2 ' + config.cardStyle">
       <ng-template #title>
         <div class="p-card-title flex flex-row justify-content-between align-items-center gap-2">
-          <div [class]="'flex flex-row justify-content-start align-items-center gap-1 min-w-0 ' + config.iconColor">
+          <div [class]="'flex flex-row justify-content-start align-items-center gap-1 min-w-0 ' + config.titleStyle">
             <div class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0">
               {{ config.titulo }}
             </div>

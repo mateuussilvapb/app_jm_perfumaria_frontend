@@ -15,7 +15,6 @@ import { TabelaProdutosEstoqueConfig } from '@home/interfaces/indicadores/tabela
 import { CardIndicadorComponent } from '@home/components/indicadores/components/card-indicador/card-indicador.component';
 import { TabelaProdutosEstoqueComponent } from '@home/components/indicadores/components/tabela-produtos-estoque/tabela-produtos-estoque.component';
 
-
 @Component({
   selector: 'app-indicadores',
   imports: [
@@ -29,13 +28,13 @@ import { TabelaProdutosEstoqueComponent } from '@home/components/indicadores/com
 
     //Internos
     CardIndicadorComponent,
-    TabelaProdutosEstoqueComponent
+    TabelaProdutosEstoqueComponent,
   ],
   templateUrl: './indicadores.component.html',
 })
-export class IndicadoresComponent implements OnInit{
-  
-  public $loadingEstoqueInfo: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+export class IndicadoresComponent implements OnInit {
+  public $loadingEstoqueInfo: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
   public informacoesEstoque: InformacoesEstoqueDTO;
 
@@ -44,7 +43,8 @@ export class IndicadoresComponent implements OnInit{
 
   public readonly heightSkeleton = '8rem';
   public readonly heightCards = '9rem';
-  public readonly tooltipMessage = 'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais';
+  public readonly tooltipMessage =
+    'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais';
 
   constructor(private readonly dashboardQueryService: DashboardQueryService) {}
 
@@ -62,36 +62,49 @@ export class IndicadoresComponent implements OnInit{
     this.configTabelaProdutosBaixaMovimentacao = {
       titulo: 'Produtos com baixa movimentação',
       icone: 'pi-times',
-      tooltipMessage: 'Considera-se como baixa movimentação no estoque os produtos que não foram vendidos a mais de 60 dias',
-      borderColor: 'border-red-500',
-      iconColor: 'text-red-500',
+      tooltipMessage:
+        'Considera-se como baixa movimentação no estoque os produtos que não foram vendidos a mais de 60 dias',
+      cardStyle:
+        'border-white shadow-3 hover:shadow-5 transition-linear transition-duration-200',
+      titleStyle: 'text-base',
+      iconColor: 'background-default-custom',
       colunas: [
-          { header: 'Nome', field: 'nome', width: '50%' },
-          { header: 'Dias sem movimentação', field: 'diasSemMovimentacao', width: '50%', formatter: (value) => value ? value : 'Nunca houve movimentação' }
-        ],
-      getMethod: () => this.dashboardQueryService.getProdutosBaixaMovimentacaoEstoque()
-    }
-    
+        { header: 'Nome', field: 'nome', width: '50%' },
+        {
+          header: 'Dias sem movimentação',
+          field: 'diasSemMovimentacao',
+          width: '50%',
+          formatter: (value) => (value ? value : 'Nunca houve movimentação'),
+        },
+      ],
+      getMethod: () =>
+        this.dashboardQueryService.getProdutosBaixaMovimentacaoEstoque(),
+    };
   }
 
   private setConfigTabelaProdutosBaixaQuantidade(): void {
     this.configTabelaProdutosBaixaQuantidade = {
       titulo: 'Produtos com baixa quantidade',
       icone: 'pi-table',
-      tooltipMessage: 'Considera-se como baixa quantidade de produtos os que estão abaixo de 5 unidades em estoque',
-      borderColor: 'border-red-500',
-      iconColor: 'text-red-500',
+      tooltipMessage:
+        'Considera-se como baixa quantidade de produtos os que estão abaixo de 5 unidades em estoque',
+      cardStyle:
+        'border-white shadow-3 hover:shadow-5 transition-linear transition-duration-200',
+      titleStyle: 'text-base',
+      iconColor: 'background-default-custom',
       colunas: [
-          { header: 'Nome', field: 'nome', width: '70%' },
-          { header: 'Quantidade', field: 'quantidadeEmEstoque', width: '30%' }
-        ],
-      getMethod: () => this.dashboardQueryService.getProdutosBaixaQuantidadeEstoque()
-    }
+        { header: 'Nome', field: 'nome', width: '70%' },
+        { header: 'Quantidade', field: 'quantidadeEmEstoque', width: '30%' },
+      ],
+      getMethod: () =>
+        this.dashboardQueryService.getProdutosBaixaQuantidadeEstoque(),
+    };
   }
 
   private carregarInformacoesEstoque(): void {
     this.$loadingEstoqueInfo.next(true);
-    this.dashboardQueryService.getInformacoesEstoque()
+    this.dashboardQueryService
+      .getInformacoesEstoque()
       .pipe(finalize(() => this.$loadingEstoqueInfo.next(false)))
       .subscribe({
         next: (response) => {
@@ -99,7 +112,7 @@ export class IndicadoresComponent implements OnInit{
         },
         error: (error) => {
           console.error('Erro ao carregar informações de estoque', error);
-        }
+        },
       });
   }
 

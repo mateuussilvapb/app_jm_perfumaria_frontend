@@ -1,81 +1,93 @@
 <!-- Indicadores -->
 <div class="grid">
-    <div class="col-12">
-        <h2 class="m-0">Indicadores <i class="pi pi-info-circle font-medium" [pTooltip]="tooltipMessage" tooltipPosition="bottom"></i></h2>
-    </div>
-    <div class="col-12 md:col-6 xl:col-4 h-{{heightCards}}">
-        @if ($loadingEstoqueInfo | async) {
-            <p-skeleton class="w-full" [height]="heightSkeleton"/>
-        } @else {
-            <app-card-indicador
-                icone="pi-box"
-                tipoCard="cyan"
-                titulo="Total de Itens"
-                tooltip="Quantidade total de itens em estoque cadastrados no sistema"
-                [valorColunaUm]="informacoesEstoque.quantidadeTotalProdutos"
-            ></app-card-indicador>
-        }
-    </div>
-    <div class="col-12 md:col-6 xl:col-4 h-{{heightCards}}">
-        @if ($loadingEstoqueInfo | async) {
-            <p-skeleton class="w-full" [height]="heightSkeleton"/>
-        } @else {
-            <app-card-indicador
-                icone="pi-list"
-                tipoCard="indigo"
-                titulo="Total de Itens Diferentes"
-                tooltip="Quantidade total de itens únicos em estoque cadastrados no sistema"
-                [valorColunaUm]="informacoesEstoque.quantidadeItensDiferentes"
-            ></app-card-indicador>
-        }
-    </div>
-    <div class="col-12 xl:col-4 h-{{heightCards}}">
-        @if ($loadingEstoqueInfo | async) {
-            <p-skeleton class="w-full" [height]="heightSkeleton"/>
-        } @else {
-            <app-card-indicador
-                icone="pi-money-bill"
-                tipoCard="yellow"
-                titulo="Custo Total do Estoque"
-                tooltip="Valor de custo total do estoque. Esse valor é calculado considerando o preço de custo atual de cada produto e a quantidade em estoque. Esse valor é estimado sem os valores de desconto"
-                [valorColunaUm]="valorMonetarioFormatado(informacoesEstoque.valorTotalCusto)"
-            ></app-card-indicador>
-        }
-    </div>
-    <div class="col-12 md:col-6 h-{{heightCards}}"> 
-        @if ($loadingEstoqueInfo | async) {
-            <p-skeleton class="w-full" [height]="heightSkeleton"/>
-        } @else {
-            <app-card-indicador
-                icone="pi-dollar"
-                tipoCard="green"
-                titulo="Venda Total do Estoque"
-                tooltip="Valor de venda total do estoque. Esse valor é calculado considerando o preço de venda atual de cada produto e a quantidade em estoque. Esse valor é estimado sem os valores de desconto"
-                [valorColunaUm]="valorMonetarioFormatado(informacoesEstoque.valorTotalVenda)"
-            ></app-card-indicador>
-        }
-    </div>
-    <div class="col-12 md:col-6 h-{{heightCards}}"> 
-        @if ($loadingEstoqueInfo | async) {
-            <p-skeleton class="w-full" [height]="heightSkeleton"/>
-        } @else {
-            <app-card-indicador
-                icone="pi-chart-line"
-                tipoCard="green"
-                [duasColunas]="true"
-                titulo="Lucro e Margem de Lucro Potencial"
-                tooltip="Valores de lucro e margem de lucro pontencial do estoque. Esses valores são calculados com base no preço de venda e de custo atuais de cada produto, desconsiderando valores de desconto"
-                [valorColunaUm]="valorMonetarioFormatado(informacoesEstoque.lucroPotencial)"
-                [valorColunaDois]="`${informacoesEstoque.margemLucroPotencial} %`"
-            ></app-card-indicador>
-        }
-    </div>
+  <div class="col-12">
+    <h2 class="m-0">
+      Indicadores
+      <i
+        class="pi pi-info-circle font-medium"
+        [pTooltip]="tooltipMessage"
+        tooltipPosition="bottom"
+      ></i>
+    </h2>
+  </div>
+  <div class="col-12 md:col-6 xl:col-4 h-{{ heightCards }}">
+    @if ($loadingEstoqueInfo | async) {
+    <p-skeleton class="w-full" [height]="heightSkeleton" />
+    } @else {
+    <app-card-indicador
+      icone="pi-box"
+      titulo="Total de Itens"
+      tooltip="Quantidade total de itens em estoque cadastrados no sistema"
+      [valorColunaUm]="informacoesEstoque.quantidadeTotalProdutos"
+    ></app-card-indicador>
+    }
+  </div>
+  <div class="col-12 md:col-6 xl:col-4 h-{{ heightCards }}">
+    @if ($loadingEstoqueInfo | async) {
+    <p-skeleton class="w-full" [height]="heightSkeleton" />
+    } @else {
+    <app-card-indicador
+      icone="pi-list"
+      titulo="Total de Itens Diferentes"
+      tooltip="Quantidade total de itens únicos em estoque cadastrados no sistema"
+      [valorColunaUm]="informacoesEstoque.quantidadeItensDiferentes"
+    ></app-card-indicador>
+    }
+  </div>
+  <div class="col-12 xl:col-4 h-{{ heightCards }}">
+    @if ($loadingEstoqueInfo | async) {
+    <p-skeleton class="w-full" [height]="heightSkeleton" />
+    } @else {
+    <app-card-indicador
+      icone="pi-money-bill"
+      titulo="Custo Total do Estoque"
+      tooltip="Valor de custo total do estoque. Esse valor é calculado considerando o preço de custo atual de cada produto e a quantidade em estoque. Esse valor é estimado sem os valores de desconto"
+      [valorColunaUm]="
+        valorMonetarioFormatado(informacoesEstoque.valorTotalCusto)
+      "
+    ></app-card-indicador>
+    }
+  </div>
+  <div class="col-12 md:col-6 h-{{ heightCards }}">
+    @if ($loadingEstoqueInfo | async) {
+    <p-skeleton class="w-full" [height]="heightSkeleton" />
+    } @else {
+    <app-card-indicador
+      icone="pi-dollar"
+      titulo="Venda Total do Estoque"
+      tooltip="Valor de venda total do estoque. Esse valor é calculado considerando o preço de venda atual de cada produto e a quantidade em estoque. Esse valor é estimado sem os valores de desconto"
+      [valorColunaUm]="
+        valorMonetarioFormatado(informacoesEstoque.valorTotalVenda)
+      "
+    ></app-card-indicador>
+    }
+  </div>
+  <div class="col-12 md:col-6 h-{{ heightCards }}">
+    @if ($loadingEstoqueInfo | async) {
+    <p-skeleton class="w-full" [height]="heightSkeleton" />
+    } @else {
+    <app-card-indicador
+      icone="pi-chart-line"
+      [duasColunas]="true"
+      titulo="Lucro e Margem de Lucro Potencial"
+      tooltip="Valores de lucro e margem de lucro pontencial do estoque. Esses valores são calculados com base no preço de venda e de custo atuais de cada produto, desconsiderando valores de desconto"
+      [valorColunaUm]="
+        valorMonetarioFormatado(informacoesEstoque.lucroPotencial)
+      "
+      [valorColunaDois]="`${informacoesEstoque.margemLucroPotencial} %`"
+    ></app-card-indicador>
+    }
+  </div>
 </div>
 <div class="grid mt-1">
-    <div class="col-12 md:col-6">
-        <app-tabela-produtos-estoque [config]="configTabelaProdutosBaixaQuantidade"></app-tabela-produtos-estoque>
-    </div>
-    <div class="col-12 md:col-6">
-        <app-tabela-produtos-estoque [config]="configTabelaProdutosBaixaMovimentacao"></app-tabela-produtos-estoque>
-    </div>
+  <div class="col-12 md:col-6">
+    <app-tabela-produtos-estoque
+      [config]="configTabelaProdutosBaixaQuantidade"
+    ></app-tabela-produtos-estoque>
+  </div>
+  <div class="col-12 md:col-6">
+    <app-tabela-produtos-estoque
+      [config]="configTabelaProdutosBaixaMovimentacao"
+    ></app-tabela-produtos-estoque>
+  </div>
 </div>
