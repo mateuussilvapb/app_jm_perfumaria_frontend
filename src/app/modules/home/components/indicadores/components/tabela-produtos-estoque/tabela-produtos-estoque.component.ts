@@ -10,8 +10,6 @@ import { BehaviorSubject, finalize } from 'rxjs';
 import { SkeletonModule } from 'primeng/skeleton';
 
 //Internos
-import { LayoutService } from '@core/services/layout.service';
-import { ScreenSizeService } from '@core/services/screen-size.service';
 import { SemDadosComponent } from '@shared/components/sem-dados/sem-dados.component';
 import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/indicadores/produtos-baixa-quantidade-dto';
 import { TabelaColuna, TabelaProdutosEstoqueConfig } from '@home/interfaces/indicadores/tabela-produtos-estoque-config';
@@ -32,7 +30,8 @@ import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/indicadore
     //Internos
     SemDadosComponent
   ],
-  templateUrl: './tabela-produtos-estoque.component.html'
+  templateUrl: './tabela-produtos-estoque.component.html',
+  styleUrl: './tabela-produtos-estoque.component.scss'
 })
 export class TabelaProdutosEstoqueComponent implements OnInit {
   @Input({required: true}) config!: TabelaProdutosEstoqueConfig;
@@ -40,16 +39,9 @@ export class TabelaProdutosEstoqueComponent implements OnInit {
   $loadingData = new BehaviorSubject<boolean>(false);
 
   public dados: ProdutosBaixaMovimentacaoEstoqueDTO[] | ProdutosBaixaQuantidadeDTO[] = [];
-  public scrollHeight: string = '400px';
-
-  constructor(
-    private readonly layoutService: LayoutService,
-    private readonly screenSizeService: ScreenSizeService
-  ) { }
 
   ngOnInit(): void {
     this.getData();
-    this.defineScrollHeight();
   }
 
   getData() {
@@ -72,33 +64,5 @@ export class TabelaProdutosEstoqueComponent implements OnInit {
     }
     return valor ?? '-';
   }
-
-
-  get getScrollHeight(): string {
-    return this.scrollHeight;
-  }
-
-  set setScrollHeight(value: string) {
-    this.scrollHeight = value;
-  }
-
-  private defineScrollHeight() {
-    this.screenSizeService.width$.subscribe((width) => {
-      if (width >= 1180) {
-        this.scrollHeight = '400px';
-      } else if (width >= 992 && this.layoutService.mainMenuVisible) {
-        this.scrollHeight = '180px';
-      } else if (width >= 840 && width < 992) {
-        this.scrollHeight = '400px';
-      } else if (width >= 768 && width < 840) {
-        this.scrollHeight = '230px';
-      } else if (width >= 356 && width < 768) {
-        this.scrollHeight = '400px';
-      } else {
-        this.scrollHeight = '230px';
-      }
-    });
-  }
-
 
 }

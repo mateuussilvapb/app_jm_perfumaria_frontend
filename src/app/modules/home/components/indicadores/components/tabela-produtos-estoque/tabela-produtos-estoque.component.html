@@ -1,4 +1,4 @@
-<div class="w-full h-28rem md:h-25rem">
+<div class="tabela-produtos-estoque">
   @if ($loadingData | async) {
     <p-skeleton class="w-full" height="24rem"/>
   } @else {
@@ -20,11 +20,9 @@
       @if (dados?.length > 0) {
         <p-table 
           [rows]="5" 
-          [paginator]="true" 
-          [scrollable]="true"
+          [paginator]="true"
           class="table-custom" 
-          [value]="dados" 
-          [scrollHeight]="scrollHeight"
+          [value]="dados"
           [responsiveLayout]="'scroll'" 
           styleClass="p-datatable-gridlines">
           

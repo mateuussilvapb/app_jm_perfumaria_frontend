@@ -88,6 +88,7 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
     };
 
     this.optionsChart = {
+      indexAxis: 'y',
       maintainAspectRatio: false,
       aspectRatio: 0.5,
       plugins: {

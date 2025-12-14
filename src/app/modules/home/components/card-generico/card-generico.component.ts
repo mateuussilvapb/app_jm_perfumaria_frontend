@@ -22,14 +22,14 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './card-generico.component.html',
 })
 export class CardGenericoComponent implements OnInit {
-  @Input({required: true}) tipoCard: TIPO_CARD_INDICADOR;
+  @Input() tipoCard: TIPO_CARD_INDICADOR;
   @Input({required: true}) titulo: string;
   @Input() tooltip?: string;
   @Input() icone?: TIPOS_ICONES;
 
   public estiloClasseCard: string = 'border-2 h-full ';
   public estiloClasseIcone: string = 'pi border-round-lg p-2 text-xl text-white ';
-  public estiloTitulo: string = 'flex flex-row justify-content-start align-items-center gap-1 min-w-0\tflex-1 ';
+  public estiloTitulo: string = 'flex flex-row justify-content-start align-items-center gap-1 min-w-0 flex-1 ';
   public estiloSubTitulo: string = 'p-card-subtitle text-start ';
 
   constructor(private readonly layoutService: LayoutService) {}
@@ -188,7 +188,7 @@ export class CardGenericoComponent implements OnInit {
 
   private definirEstiloDefault() {
     this.estiloClasseCard = this.estiloClasseCard + 'border-white';
-    this.estiloClasseIcone = this.estiloClasseIcone + 'bg-white';
+    this.estiloClasseIcone = this.estiloClasseIcone + 'background-default-custom';
   }
 
   get fontSizeByScreenSize(): string {

@@ -44,7 +44,7 @@ export class IndicadoresComponent implements OnInit {
   public readonly heightSkeleton = '8rem';
   public readonly heightCards = '9rem';
   public readonly tooltipMessage =
-    'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais';
+    'Os valores monetários (custo, venda e lucro) são estimativas baseadas nos preços atuais dos produtos. Caso tenham ocorrido alterações nos valores de custo ou venda ao longo do tempo, os resultados podem apresentar divergências — indicando quantidades maiores ou menores do que as reais.';
 
   constructor(private readonly dashboardQueryService: DashboardQueryService) {}
 
