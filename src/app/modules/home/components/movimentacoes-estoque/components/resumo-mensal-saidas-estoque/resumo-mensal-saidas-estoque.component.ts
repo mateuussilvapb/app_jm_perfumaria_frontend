@@ -12,6 +12,8 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { MESES_MAP } from '@utils/constants';
 import { DashboardQueryService } from '@home/services/dashboard-query.service';
 import { CardGenericoComponent } from '@home/components/card-generico/card-generico.component';
+import { MovimentacoesEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-entrada-saida-estoque-dto';
+import { SelectItem } from 'primeng/api';
 import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-estoque-dto';
 
 @Component({
@@ -26,13 +28,15 @@ import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/
     SkeletonModule,
 
     //Internos
-    CardGenericoComponent
+    CardGenericoComponent,
   ],
-  templateUrl: './resumo-mensal-saidas-estoque.component.html'
+  templateUrl: './resumo-mensal-saidas-estoque.component.html',
 })
 export class ResumoMensalSaidasEstoqueComponent implements OnInit {
-  public $loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  
+  public $loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+
   public dataChart: any;
   public optionsChart: any;
 
@@ -40,89 +44,134 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
   public readonly heightCards = '43rem';
 
   constructor(
-    private cd: ChangeDetectorRef, 
+    private cd: ChangeDetectorRef,
     private readonly dashboardQueryService: DashboardQueryService
-  ) { }
+  ) {}
+
+  // Opções e valor selecionado do SelectButton (agora recebidos via @Input)
+  public stateOptions: SelectItem[] = [
+    { label: 'Entradas', value: 'entradas' },
+    { label: 'Saidas', value: 'saidas' },
+  ];
+
+  private _selectedView: string = 'entradas';
+
+  public get selectedView(): string {
+    return this._selectedView;
+  }
+
+  public set selectedView(val: string) {
+    this._selectedView = val;
+    this.updateChartBySelectedView();
+  }
+  public dataChartView: { [key: string]: any } = {};
 
   ngOnInit(): void {
     this.loadData();
   }
 
+  private updateChartBySelectedView(): void {
+    if (!this.dataChartView || Object.keys(this.dataChartView).length === 0) {
+      return;
+    }
+
+    this.dataChart = this.dataChartView[this.selectedView];
+    this.cd.markForCheck();
+  }
+
   private loadData(): void {
     this.$loading.next(true);
-    this.dashboardQueryService.getResumoMensalSaidasEstoque()
-      .pipe(
-        finalize(() => this.$loading.next(false))
-      ).subscribe({
+    this.dashboardQueryService
+      .getResumoMensalSaidasEstoque()
+      .pipe(finalize(() => this.$loading.next(false)))
+      .subscribe({
         next: (data) => {
           this.initChart(data);
         },
         error: (error) => {
           console.error('Erro ao carregar movimentações de estoque.', error);
-        }
+        },
       });
   }
 
-  private initChart(data: MovimentacoesEstoqueDTO[]): void {
+  private processarDadosParaChart(data: MovimentacoesEstoqueDTO[], isEntrada: boolean): any {
     const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--p-text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-    const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
 
-    this.dataChart = {
-      labels: data.map(item => MESES_MAP[item.mes] + '/' + item.ano),
+    return {
+      labels: data.map((item) => MESES_MAP[item.mes] + '/' + item.ano),
       datasets: [
         {
-          label: 'Quantidade de Saídas de Estoque',
+          label: `Quantidade de ${
+            isEntrada ? 'Entradas' : 'Saídas'
+          } de Estoque`,
           backgroundColor: documentStyle.getPropertyValue('--p-orange-400'),
           borderColor: documentStyle.getPropertyValue('--p-orange-400'),
-          data: data.map(item => item.quantidadeSaidas)
+          data: data.map((item) => item.quantidadeSaidas),
         },
         {
           label: 'Quantidade de Itens Vendidos',
           backgroundColor: documentStyle.getPropertyValue('--p-green-400'),
           borderColor: documentStyle.getPropertyValue('--p-green-400'),
-          data: data.map(item => item.quantidadeTotal)
-        }
-      ]
+          data: data.map((item) => item.quantidadeTotal),
+        },
+      ],
     };
+  }
+
+  private initChart(data: MovimentacoesEntradaSaidaEstoqueDTO): void {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--p-text-color');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--p-text-muted-color'
+    );
+    const surfaceBorder = documentStyle.getPropertyValue(
+      '--p-content-border-color'
+    );
+
+    this.dataChartView = {
+      "entradas": this.processarDadosParaChart(data.entradaEstoqueItens, true),
+      "saidas": this.processarDadosParaChart(data.saidaEstoqueItens, false)
+    };
+
+    this.dataChart = this.dataChartView[this.selectedView];
+
 
     this.optionsChart = {
       indexAxis: 'y',
       maintainAspectRatio: false,
       aspectRatio: 0.5,
       plugins: {
-          legend: {
-              labels: {
-                  color: textColor
-              }
-          }
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
       },
       scales: {
-          x: {
-              ticks: {
-                  color: textColorSecondary,
-                  font: {
-                      weight: 500
-                  }
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
+            },
           },
-          y: {
-              ticks: {
-                  color: textColorSecondary
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
-          }
-      }
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
     };
 
-    this.cd.markForCheck()
+    this.cd.markForCheck();
   }
 }

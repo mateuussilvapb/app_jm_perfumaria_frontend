@@ -1,13 +1,16 @@
 //Angular
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { LayoutService } from '@core/services/layout.service';
 import { TIPO_CARD_INDICADOR_ENUM } from '@shared/enums/tipo-card-indicador.enum';
 import { TIPO_CARD_INDICADOR, TIPOS_ICONES } from '@utils/constants';
 
-//Externos  
+//Externos
 import { CardModule } from 'primeng/card';
+import { SelectButton } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-card-generico',
@@ -18,22 +21,33 @@ import { TooltipModule } from 'primeng/tooltip';
     //Externos
     CardModule,
     TooltipModule,
+    FormsModule,
+    SelectButton,
   ],
   templateUrl: './card-generico.component.html',
 })
 export class CardGenericoComponent implements OnInit {
   @Input() tipoCard: TIPO_CARD_INDICADOR;
-  @Input({required: true}) titulo: string;
+  @Input({ required: true }) titulo: string;
   @Input() tooltip?: string;
   @Input() icone?: TIPOS_ICONES;
-
+  @Input() _stateOptions: SelectItem[];
+  @Input() value: any;
+  @Output() valueChange = new EventEmitter<any>();
+  
   public estiloClasseCard: string = 'border-2 h-full ';
-  public estiloClasseIcone: string = 'pi border-round-lg p-2 text-xl text-white ';
-  public estiloTitulo: string = 'flex flex-row justify-content-start align-items-center gap-1 min-w-0 flex-1 ';
+  public estiloClasseIcone: string =
+    'pi border-round-lg p-2 text-xl text-white ';
+  public estiloTitulo: string =
+    'flex flex-row justify-content-start align-items-center gap-1 min-w-0 ';
   public estiloSubTitulo: string = 'p-card-subtitle text-start ';
 
   constructor(private readonly layoutService: LayoutService) {}
-
+  
+  get stateOptions(): SelectItem[] {
+    return this._stateOptions;
+  }
+  
   ngOnInit(): void {
     this.definirClassesDeEstilo();
   }
@@ -85,7 +99,7 @@ export class CardGenericoComponent implements OnInit {
       default:
         this.definirEstiloDefault();
         break;
-    }    
+    }
   }
 
   private definirEstiloSurface() {
@@ -99,7 +113,7 @@ export class CardGenericoComponent implements OnInit {
     this.estiloClasseCard = this.estiloClasseCard + 'border-primary';
     this.estiloClasseIcone = this.estiloClasseIcone + 'bg-primary';
     this.estiloTitulo = this.estiloTitulo + 'text-primary';
-    this.estiloSubTitulo = this.estiloSubTitulo + 'text-primary'; 
+    this.estiloSubTitulo = this.estiloSubTitulo + 'text-primary';
   }
 
   private definirEstiloBlue() {
@@ -188,7 +202,8 @@ export class CardGenericoComponent implements OnInit {
 
   private definirEstiloDefault() {
     this.estiloClasseCard = this.estiloClasseCard + 'border-white';
-    this.estiloClasseIcone = this.estiloClasseIcone + 'background-default-custom';
+    this.estiloClasseIcone =
+      this.estiloClasseIcone + 'background-default-custom';
   }
 
   get fontSizeByScreenSize(): string {
@@ -197,4 +212,10 @@ export class CardGenericoComponent implements OnInit {
     }
     return 'text-3xl';
   }
+
+  onValueChange(val: any) {
+    this.value = val;
+    this.valueChange.emit(val);
+  }
+
 }
