@@ -8,6 +8,7 @@ import { InformacoesEstoqueDTO } from '@home/interfaces/indicadores/informacoes-
 import { ProdutosBaixaQuantidadeDTO } from '@home/interfaces/indicadores/produtos-baixa-quantidade-dto';
 import { MovimentacoesEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-entrada-saida-estoque-dto';
 import { ProdutosBaixaMovimentacaoEstoqueDTO } from '@home/interfaces/indicadores/produtos-baixa-movimentacao-estoque-dto';
+import { ValoresEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/valores-entrada-saida-estoque-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -37,9 +38,15 @@ export class DashboardQueryService extends AbstractQueryService<any> {
     );
   };
 
-  getResumoMensalSaidasEstoque = () => {
+  getResumoMensalMovimentacaoEstoque = () => {
     return this.http.get<MovimentacoesEntradaSaidaEstoqueDTO>(
-      `${this.baseURL}/query/resumo-mensal-saida-estoque`
+      `${this.baseURL}/query/resumo-mensal-movimentacao-estoque`
+    );
+  };
+
+  getValoresMensaisMovimentacaoEstoque = () => {
+    return this.http.get<ValoresEntradaSaidaEstoqueDTO>(
+      `${this.baseURL}/query/resumo-valores-movimentacao-estoque`
     );
   };
 }

@@ -15,9 +15,11 @@ import { CardGenericoComponent } from '@home/components/card-generico/card-gener
 import { MovimentacoesEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-entrada-saida-estoque-dto';
 import { SelectItem } from 'primeng/api';
 import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-estoque-dto';
+import { ValoresEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/valores-entrada-saida-estoque-dto';
+import { ValoresEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/valores-estoque-dto';
 
 @Component({
-  selector: 'app-resumo-mensal-saidas-estoque',
+  selector: 'app-valores-mensais-movimentacoes-estoque',
   imports: [
     //Angular
     CommonModule,
@@ -30,9 +32,9 @@ import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/
     //Internos
     CardGenericoComponent,
   ],
-  templateUrl: './resumo-mensal-saidas-estoque.component.html',
+  templateUrl: './valores-mensais-movimentacoes-estoque.component.html',
 })
-export class ResumoMensalSaidasEstoqueComponent implements OnInit {
+export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
   public $loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -82,10 +84,11 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
   private loadData(): void {
     this.$loading.next(true);
     this.dashboardQueryService
-      .getResumoMensalSaidasEstoque()
+      .getValoresMensaisMovimentacaoEstoque()
       .pipe(finalize(() => this.$loading.next(false)))
       .subscribe({
         next: (data) => {
+          console.log(data);
           this.initChart(data);
         },
         error: (error) => {
@@ -94,31 +97,28 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
       });
   }
 
-  private processarDadosParaChart(data: MovimentacoesEstoqueDTO[], isEntrada: boolean): any {
+  private processarDadosParaChart(
+    data: ValoresEstoqueDTO[],
+    isEntrada: boolean
+  ): any {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
       labels: data.map((item) => MESES_MAP[item.mes] + '/' + item.ano),
       datasets: [
         {
-          label: `Quantidade de ${
+          label: `Valores de ${
             isEntrada ? 'Entradas' : 'Saídas'
           } de Estoque`,
           backgroundColor: documentStyle.getPropertyValue('--p-orange-400'),
           borderColor: documentStyle.getPropertyValue('--p-orange-400'),
-          data: data.map((item) => item.quantidadeSaidas),
-        },
-        {
-          label: 'Quantidade de Itens Vendidos',
-          backgroundColor: documentStyle.getPropertyValue('--p-green-400'),
-          borderColor: documentStyle.getPropertyValue('--p-green-400'),
-          data: data.map((item) => item.quantidadeTotal),
+          data: data.map((item) => item.valorTotal),
         },
       ],
     };
   }
 
-  private initChart(data: MovimentacoesEntradaSaidaEstoqueDTO): void {
+  private initChart(data: ValoresEntradaSaidaEstoqueDTO): void {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--p-text-color');
     const textColorSecondary = documentStyle.getPropertyValue(
@@ -129,12 +129,11 @@ export class ResumoMensalSaidasEstoqueComponent implements OnInit {
     );
 
     this.dataChartView = {
-      "entradas": this.processarDadosParaChart(data.entradaEstoqueItens, true),
-      "saidas": this.processarDadosParaChart(data.saidaEstoqueItens, false)
+      entradas: this.processarDadosParaChart(data.entradaEstoqueValores, true),
+      saidas: this.processarDadosParaChart(data.saidaEstoqueValores, false),
     };
 
     this.dataChart = this.dataChartView[this.selectedView];
-
 
     this.optionsChart = {
       indexAxis: 'y',

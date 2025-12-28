@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 
 //Internos
-import { ResumoMensalSaidasEstoqueComponent } from '@home/components/movimentacoes-estoque/components/resumo-mensal-saidas-estoque/resumo-mensal-saidas-estoque.component';
+import { ResumoMensalMovimentacaoEstoqueComponent } from '@home/components/movimentacoes-estoque/components/resumo-mensal-movimentacao-estoque/resumo-mensal-movimentacao-estoque.component';
+import { ValoresMensaisMovimentacoesEstoqueComponent } from '@home/components/movimentacoes-estoque/components/valores-mensais-movimentacao-estoque/valores-mensais-movimentacoes-estoque.component';
 
 @Component({
   selector: 'app-movimentacoes-estoque',
@@ -18,7 +19,8 @@ import { ResumoMensalSaidasEstoqueComponent } from '@home/components/movimentaco
     DividerModule,
 
     //Internos
-    ResumoMensalSaidasEstoqueComponent
+    ResumoMensalMovimentacaoEstoqueComponent,
+    ValoresMensaisMovimentacoesEstoqueComponent
   ],
   templateUrl: './movimentacoes-estoque.component.html'
 })
