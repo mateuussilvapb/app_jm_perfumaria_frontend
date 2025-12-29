@@ -1,5 +1,5 @@
 //Angular
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 //Externos
@@ -12,11 +12,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { MESES_MAP } from '@utils/constants';
 import { DashboardQueryService } from '@home/services/dashboard-query.service';
 import { CardGenericoComponent } from '@home/components/card-generico/card-generico.component';
-import { MovimentacoesEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-entrada-saida-estoque-dto';
-import { SelectItem } from 'primeng/api';
-import { MovimentacoesEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/movimentacoes-estoque-dto';
 import { ValoresEntradaSaidaEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/valores-entrada-saida-estoque-dto';
-import { ValoresEstoqueDTO } from '@home/interfaces/movimentacoes-estoque/valores-estoque-dto';
 
 @Component({
   selector: 'app-valores-mensais-movimentacoes-estoque',
@@ -50,35 +46,8 @@ export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
     private readonly dashboardQueryService: DashboardQueryService
   ) {}
 
-  // Opções e valor selecionado do SelectButton (agora recebidos via @Input)
-  public stateOptions: SelectItem[] = [
-    { label: 'Entradas', value: 'entradas' },
-    { label: 'Saidas', value: 'saidas' },
-  ];
-
-  private _selectedView: string = 'entradas';
-
-  public get selectedView(): string {
-    return this._selectedView;
-  }
-
-  public set selectedView(val: string) {
-    this._selectedView = val;
-    this.updateChartBySelectedView();
-  }
-  public dataChartView: { [key: string]: any } = {};
-
   ngOnInit(): void {
     this.loadData();
-  }
-
-  private updateChartBySelectedView(): void {
-    if (!this.dataChartView || Object.keys(this.dataChartView).length === 0) {
-      return;
-    }
-
-    this.dataChart = this.dataChartView[this.selectedView];
-    this.cd.markForCheck();
   }
 
   private loadData(): void {
@@ -88,7 +57,6 @@ export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
       .pipe(finalize(() => this.$loading.next(false)))
       .subscribe({
         next: (data) => {
-          console.log(data);
           this.initChart(data);
         },
         error: (error) => {
@@ -97,28 +65,8 @@ export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
       });
   }
 
-  private processarDadosParaChart(
-    data: ValoresEstoqueDTO[],
-    isEntrada: boolean
-  ): any {
-    const documentStyle = getComputedStyle(document.documentElement);
-
-    return {
-      labels: data.map((item) => MESES_MAP[item.mes] + '/' + item.ano),
-      datasets: [
-        {
-          label: `Valores de ${
-            isEntrada ? 'Entradas' : 'Saídas'
-          } de Estoque`,
-          backgroundColor: documentStyle.getPropertyValue('--p-orange-400'),
-          borderColor: documentStyle.getPropertyValue('--p-orange-400'),
-          data: data.map((item) => item.valorTotal),
-        },
-      ],
-    };
-  }
-
-  private initChart(data: ValoresEntradaSaidaEstoqueDTO): void {
+  private getOptionsChart() {
+    const currencyPipe = new CurrencyPipe('pt-BR', 'BRL');
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--p-text-color');
     const textColorSecondary = documentStyle.getPropertyValue(
@@ -128,21 +76,26 @@ export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
       '--p-content-border-color'
     );
 
-    this.dataChartView = {
-      entradas: this.processarDadosParaChart(data.entradaEstoqueValores, true),
-      saidas: this.processarDadosParaChart(data.saidaEstoqueValores, false),
-    };
-
-    this.dataChart = this.dataChartView[this.selectedView];
-
-    this.optionsChart = {
-      indexAxis: 'y',
+    return {
+      indexAxis: 'x',
       maintainAspectRatio: false,
       aspectRatio: 0.5,
       plugins: {
         legend: {
           labels: {
             color: textColor,
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: (tooltipItems) => {
+              return tooltipItems[0].label;
+            },
+            label: (context) => {
+              const label = context.dataset.label || '';
+              const value = context.raw as number;
+              return `${label}: ${currencyPipe.transform(value)}`;
+            },
           },
         },
       },
@@ -170,6 +123,82 @@ export class ValoresMensaisMovimentacoesEstoqueComponent implements OnInit {
         },
       },
     };
+  }
+
+  private processarDadosParaChart(data: ValoresEntradaSaidaEstoqueDTO): any {
+    const documentStyle = getComputedStyle(document.documentElement);
+
+    // Cria um mapa de meses únicos combinando entrada e saída
+    const mesesMap = new Map<string, { ano: number; mes: number; entrada: number; entradaDesconto: number; saida: number; saidaDesconto: number }>();
+
+    // Processa entradas
+    data.entradaEstoqueValores.forEach((item) => {
+      const key = `${item.ano}-${item.mes}`;
+      if (!mesesMap.has(key)) {
+        mesesMap.set(key, { ano: item.ano, mes: item.mes, entrada: 0, entradaDesconto: 0, saida: 0, saidaDesconto: 0 });
+      }
+      mesesMap.get(key)!.entrada = item.valorTotal;
+      mesesMap.get(key)!.entradaDesconto = item.valorTotal - item.descontoTotal;
+    });
+
+    // Processa saídas
+    data.saidaEstoqueValores.forEach((item) => {
+      const key = `${item.ano}-${item.mes}`;
+      if (!mesesMap.has(key)) {
+        mesesMap.set(key, { ano: item.ano, mes: item.mes, entrada: 0, entradaDesconto: 0, saida: 0, saidaDesconto: 0 });
+      }
+      mesesMap.get(key)!.saida = item.valorTotal;
+      mesesMap.get(key)!.saidaDesconto = item.valorTotal - item.descontoTotal;
+    });
+
+    // Ordena por ano e mês
+    const mesesOrdenados = Array.from(mesesMap.values()).sort((a, b) => {
+      if (a.ano !== b.ano) return a.ano - b.ano;
+      return a.mes - b.mes;
+    });
+
+    // Cria labels e datasets
+    const labels = mesesOrdenados.map((item) => MESES_MAP[item.mes] + '/' + item.ano);
+    const entradasData = mesesOrdenados.map((item) => item.entrada);
+    const saidasData = mesesOrdenados.map((item) => item.saida);
+    const entradasDataDesconto = mesesOrdenados.map((item) => item.entradaDesconto);
+    const saidasDataDesconto = mesesOrdenados.map((item) => item.saidaDesconto);
+
+    return {
+      labels,
+      datasets: [
+          {
+          label: 'Valores de Entradas de Estoque (sem desconto)',
+          backgroundColor: documentStyle.getPropertyValue('--p-orange-200'),
+          borderColor: documentStyle.getPropertyValue('--p-orange-200'),
+          data: entradasData,
+        },
+        {
+          label: 'Valores de Entradas de Estoque (com desconto)',
+          backgroundColor: documentStyle.getPropertyValue('--p-orange-400'),
+          borderColor: documentStyle.getPropertyValue('--p-orange-400'),
+          data: entradasDataDesconto,
+        },
+        {
+          label: 'Valores de Saídas de Estoque (sem desconto)',
+          backgroundColor: documentStyle.getPropertyValue('--p-green-200'),
+          borderColor: documentStyle.getPropertyValue('--p-green-200'),
+          data: saidasData,
+        },
+        {
+          label: 'Valores de Saídas de Estoque (com desconto)',
+          backgroundColor: documentStyle.getPropertyValue('--p-green-400'),
+          borderColor: documentStyle.getPropertyValue('--p-green-400'),
+          data: saidasDataDesconto,
+        },
+      ],
+    };
+  }
+
+  private initChart(data: ValoresEntradaSaidaEstoqueDTO): void {
+    this.dataChart = this.processarDadosParaChart(data);
+
+    this.optionsChart = this.getOptionsChart()
 
     this.cd.markForCheck();
   }

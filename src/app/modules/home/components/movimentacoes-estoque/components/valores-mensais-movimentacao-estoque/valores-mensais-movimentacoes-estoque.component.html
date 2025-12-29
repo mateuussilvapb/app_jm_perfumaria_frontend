@@ -4,9 +4,8 @@
     } @else {
         <app-card-generico
             [icone]="'pi-dollar'"
-            [titulo]="`${selectedView === 'saidas' ? 'Saídas' : 'Entradas'} de Estoque dos últimos 12 meses`"
-            [_stateOptions]="stateOptions"
-            [(value)]="selectedView"
+            [titulo]="'Movimentações (R$)'"
+            [tooltip]="'Valores totais de entradas (compras) e saídas (vendas) por mês nos últimos 12 meses.'"
         >
             <p-chart type="bar" [data]="dataChart" [options]="optionsChart" class="w-full" />
         </app-card-generico>

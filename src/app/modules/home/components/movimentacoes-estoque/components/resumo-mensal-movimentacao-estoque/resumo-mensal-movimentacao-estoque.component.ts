@@ -94,25 +94,20 @@ export class ResumoMensalMovimentacaoEstoqueComponent implements OnInit {
       });
   }
 
-  private processarDadosParaChart(
-    data: MovimentacoesEstoqueDTO[],
-    isEntrada: boolean
-  ): any {
+  private processarDadosParaChart(data: MovimentacoesEstoqueDTO[], isEntrada: boolean): any {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
       labels: data.map((item) => MESES_MAP[item.mes] + '/' + item.ano),
       datasets: [
         {
-          label: `Quantidade de ${
-            isEntrada ? 'Entradas' : 'Saídas'
-          } de Estoque`,
+          label: this.getLabelsMovimentacaoGraphByView(isEntrada),
           backgroundColor: documentStyle.getPropertyValue('--p-orange-400'),
           borderColor: documentStyle.getPropertyValue('--p-orange-400'),
           data: data.map((item) => item.quantidadeSaidas),
         },
         {
-          label: 'Quantidade de Itens Vendidos',
+          label: this.getLabelsItemsGraphByView(isEntrada),
           backgroundColor: documentStyle.getPropertyValue('--p-green-400'),
           borderColor: documentStyle.getPropertyValue('--p-green-400'),
           data: data.map((item) => item.quantidadeTotal),
@@ -175,5 +170,41 @@ export class ResumoMensalMovimentacaoEstoqueComponent implements OnInit {
     };
 
     this.cd.markForCheck();
+  }
+
+  get getTitleByView() {
+    const titleMap = {
+      'entradas': 'Compras (Qtd.)',
+      'saidas': 'Vendas (Qtd.)',
+    };
+
+    return titleMap[this.selectedView] || '';
+  }
+
+  get getTooltipByView() {
+    const tooltipMap = {
+      'entradas': 'Quantidade de itens adquiridos por mês nos últimos 12 meses.',
+      'saidas': 'Quantidade de itens vendidos por mês nos últimos 12 meses.',
+    };
+
+    return tooltipMap[this.selectedView] || '';
+  }
+
+  getLabelsMovimentacaoGraphByView(isEntrada: boolean) {
+    const labelsMap = {
+      'true': 'Quantidade de Entradas de Estoque',
+      'false': 'Quantidade de Saídas de Estoque',
+    };
+
+    return labelsMap[isEntrada.toString()] || '';
+  }
+
+  getLabelsItemsGraphByView(isEntrada: boolean) {
+    const labelsMap = {
+      'true': 'Quantidade de Itens Comprados',
+      'false': 'Quantidade de Itens Vendidos',
+    };
+
+    return labelsMap[isEntrada.toString()] || '';
   }
 }

@@ -1,42 +1,41 @@
 <p-card [styleClass]="estiloClasseCard">
   @if (titulo) {
-  <ng-template #title>
-    <div
-      class="p-card-title flex flex-row justify-content-between align-items-center gap-2"
-    >
-      <div [class]="estiloTitulo">
-        <div
-          class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0 text-base"
-        >
-          {{ titulo }}
+    <ng-template #title>
+      <div
+        class="p-card-title flex flex-row justify-content-between align-items-center gap-2"
+      >
+        <div [class]="estiloTitulo">
+          <div
+            class="text-overflow-ellipsis overflow-hidden white-space-nowrap min-w-0 text-base"
+          >
+            {{ titulo }}
+          </div>
+          @if (tooltip) {
+            <i
+              class="pi pi-info-circle font-medium"
+              [pTooltip]="tooltip"
+              tooltipPosition="bottom"
+            ></i>
+          }
         </div>
-        @if (tooltip) {
-        <i
-          class="pi pi-info-circle font-medium"
-          [pTooltip]="tooltip"
-          tooltipPosition="bottom"
-        ></i>
+        @if (stateOptions) {
+          <div>
+            <p-selectbutton
+              size="small"
+              [(ngModel)]="value"
+              optionValue="value"
+              [options]="stateOptions"
+              (ngModelChange)="onValueChange($event)"
+            />
+          </div>
+        }
+        @if (icone && !stateOptions) {
+          <i [class]="estiloClasseIcone" [ngClass]="icone"></i>
         }
       </div>
-      <div>
-        <p-selectbutton
-          [options]="stateOptions"
-          [(ngModel)]="value"
-          (ngModelChange)="onValueChange($event)"
-          optionValue="value"
-        />
-      </div>
-      @if (icone) {
-      <i [class]="estiloClasseIcone" [ngClass]="icone"></i>
-      }
-    </div>
-  </ng-template>
+    </ng-template>
   }
-  <div
-    class="flex flex-row justify-content-center align-items-center gap-2 font-normal min-w-0 flex-1 {{
-      fontSizeByScreenSize
-    }}"
-  >
+  <div class="flex flex-row justify-content-center align-items-center gap-2 font-normal min-w-0 flex-1 {{fontSizeByScreenSize}}">
     <ng-content></ng-content>
   </div>
 </p-card>
